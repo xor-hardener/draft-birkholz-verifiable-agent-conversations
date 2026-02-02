@@ -85,6 +85,6 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 # Agent Conversations
 
-Content 
+Content
 
 --- back
