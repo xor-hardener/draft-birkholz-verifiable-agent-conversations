@@ -87,4 +87,10 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 
 Content
 
+~~~ cddl
+{::include agent-conversation.cddl}
+~~~
+{: #fig-cddl-record artwork-align="left"
+   title="CDDL definition of an Agent Conversation"}
+
 --- back
