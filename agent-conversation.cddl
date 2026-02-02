@@ -1,0 +1,56 @@
+agent-convo-record = {
+ version: text                   ; Agent Trace specification version (e.g., '1.0'). Should be semver?
+ id: text                        ; "Unique identifier" (uuid type 4) for this convo-record
+ timestamp: text .regexp date-time-regexp ; RFC 3339 timestamp when the convo was recorded
+ ? vcs: vcs                      ; Version control system information for this convo
+ ? tool: tool                    ; The tool that generated this convo
+ files: [* file]                 ; Array of files with attributed ranges
+ ? metadata: anymap              ; Additional metadata for implementation-specific or vendor-specific data
+}
+
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?" ; FIXME
+
+anymap = { * label => value }    ; placeholder for later
+label = any
+value = any
+
+vcs = {
+ type: "git" / "jj" / "hg" / "svn"; Version control system type
+ revision: text                  ; Revision identifier (e.g., git commit SHA, jj change ID)
+}
+
+tool = {
+ ? name: text
+ ? version: text
+}
+
+file = {
+ path: text                      ; Relative file path from repository root
+ conversations: [* conversation] ; Array of conversations that contributed to this file
+}
+
+contributor = {
+ type: "human" / "ai" / "mixed" / "unknown"
+ ? model_id: text                ; The model's unique identifier following models.dev convention (e.g., 'anthropic/claude-opus-4-5-20251101'), maxLength of 250?
+}
+
+resource = {
+ type: text
+ url: text .regexp uri-regexp
+}
+
+conversation = {
+ ? url: text .regexp uri-regexp  ; URL to look up the conversation that produced this code
+ ? contributor: contributor      ; The contributor for ranges in this conversation (can be overridden per-range)
+ ranges: [* range]               ; Array of line ranges produced by this conversation
+ ? related: [* resource]         ; Other related resources
+}
+
+range = {
+ start_line: uint                 ; min of 1? was int
+ end_line: uint                   ; min of 1? was int
+ ? content_hash: text            ; Hash of attributed content for position-independent tracking
+ ? contributor: contributor      ; Override contributor for this specific range (e.g., for agent handoffs)
+}
