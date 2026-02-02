@@ -176,8 +176,8 @@ conversation = {
 }
 
 range = {
- start_line: uint                 ; min of 1? was int
- end_line: uint                   ; min of 1? was int
+ start_line: uint                ; min of 1? was int
+ end_line: uint                  ; min of 1? was int
  ? content_hash: text            ; Hash of attributed content for position-independent tracking
  ? contributor: contributor      ; Override contributor for this specific range (e.g., for agent handoffs)
 }
