@@ -73,26 +73,26 @@ The fourth goal is to use existing IETF building blocks to render conversation r
 
 Most agent conversations today are represented in "human-readable" text formats.
 For example, {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-Nevertheless, the Concise Binary Object Representation (CBOR {{STD94}}) is used as the primary representation next to the established representation that is JSON.
+The Concise Binary Object Representation (CBOR {{STD94}}) is used as the primary representation next to the established representation that is JSON.
 
 ## Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-In this document, CDDL {{-cddl}} is used to describe the
-data formats.
+In this document, CDDL {{-cddl}} is used to describe the data formats.
 
-The reader is assumed to be familiar with the vocabulary and concepts
-defined in {{-rats-arch}} and {{-scitt-arch}}.
+The reader is assumed to be familiar with the vocabulary and concepts defined in {{-rats-arch}} and {{-scitt-arch}}.
 
 # Agent Conversations
 
 Content 
 
+<!--
 ~~~ cddl
 {::include agent-conversation.cddl}
 ~~~
 {: #fig-cddl-record artwork-align="left"
    title="CDDL definition of an Agent Conversation"}
+-->
 
 --- back
