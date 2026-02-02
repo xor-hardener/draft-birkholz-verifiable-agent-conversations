@@ -59,11 +59,11 @@ Abstract
 
 # Introduction
 
-Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--often interact with each other.
-The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous, or a mix of them.
-In agentic systems machines often task machines.
-While the responsible party is ultimately human-centric (a natural legal entity or organization), agents do not only act on behalf of humans they can also act on behalf of agents.
-These increasingly complex interactions between multiple machines that can also be triggered by machines (recursively) creates the need to understand the decision making of autonomous agents, retroactively.
+Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
+The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous), or a mix of them.
+In agentic AI systems, machine actors interact with other machine actors.
+While the responsible parties ultimately are humans (e.g., a natural legal entity or an organization), agents do not only act on behalf of humans they can also act on behalf of other agents.
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increases the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
 
 This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
 The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
