@@ -1,0 +1,71 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2026-02-03T02:27:13.431653+00:00",
+  "repo": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDORG4n7s7npIN4",
+      "title": "XOR Evergreen Issue",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/issues/1",
+      "state": "OPEN",
+      "author": "xor-hardener-dev",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "## XOR Security_AppSec Abilities\n\n| Ability                                                         | Trigger comment (top of Issue/PR) + Preview                                                                                                                                                                                                                                                                                                       | Required input (templates / context)                                                              | What XOR does                                                                                                                       |\n| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |\n| **CVE/GHSA \u2192 Autopatch PR**                                     | **@xor-hardener** Minimal autopatch for advisory; add failing test; keep CI green.<br>**Preview:** [Advisory Issue](https://github.com/get-xor/langchain-ai-XOR-langchain/issues/385#issuecomment-3507710488) \u00b7 [Fix PR #386](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/386) \u00b7 [PR #389](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/389) | Issue using **XOR: Autopatch request** with GHSA/CVE/OSV link, repro/failing test, target branch. | Creates **branch + PR** with **minimal fix**, updates/adds test, links advisory + short risk note; ensures **CI passes**.           |\n| **PR audit packet (evidence-linked)**                           | **@xor-hardener** Compile audit packet for this PR after checks; link SHAs, tests, CI, reviewers.<br>**Preview:** [PR Review #387](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387#issuecomment-3507725866)                                                                                                                        | Run on the autopatch PR after CI/checks complete.                                                 | Posts **single evidence packet** (comment/artifact) linking files/SHAs, tests added, CI/checks URLs, Issue ref, reviewers.          |\n| **Harden GitHub Actions (pin + least-privilege)**               | **@xor-hardener** Pin actions by SHA and reduce workflow permissions per job; keep CI green.<br>**Preview:** [Issue #388](https://github.com/get-xor/langchain-ai-XOR-langchain/issues/388#issuecomment-3507728669) \u00b7 [PR #389](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/389/files)                                             | PR that modifies `.github/workflows/*.yml` + note runners/secrets actually needed.                | Reviews and proposes/commits **SHA-pinned actions** and **least-privilege permissions** per job with rationale; **keeps CI green**. |\n| **Guardrail review (stop on low confidence)** | **@xor-hardener** Review risky refactor; flag unsafe changes; don't flag risks if confidence is low.<br>**Preview: [PR-Review + fix suggestions](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387#issuecomment-3507725866)** \u2013                                                                                                                                                                                                                                        | PR that deletes/refactors something potentially risky.                                            | Leaves **inline review** with risk call-outs and **uncertainty stop**, concrete next steps; **no writes** unless clearly safe.      |\n\n---\n\n## XOR DevSecOps_Platform Abilities\n\n| Ability                                                            | Trigger comment (top of Issue/PR) + Preview                                                                       | Required input (templates / context)                                                          | What XOR does                                                                                                                                 |\n| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |\n| **Green-build autopatch (fix failing CI)** **(coming soon)**       | **@xor-hardener** Diagnose failing test and restore green CI with the smallest safe diff.<br>**Preview:** \u2013       | PR with one failing test; include failing job log snippet in PR body.                         | Produces **small diff** to restore **green CI**, plus comment explaining **root cause** and why the fix is minimal, with link to passing run. |\n| **OSV dependency review \u2192 patch plan** **(coming soon)**           | **@xor-hardener** Summarize OSV scan; triage exploitable vs not; propose minimal version bumps.<br>**Preview:** \u2013 | Issue using **XOR: OSV dependency review**; attach/paste `osv-scanner` JSON; note ecosystems. | Posts **triage table** and **prioritized patch plan**; if safe, opens **minimal bump PR(s)** referencing the Issue.                           |\n| **Workflow permissions audit (least-privilege)** **(coming soon)** | **@xor-hardener** Audit workflow permissions; propose per-job least-privilege YAML patch.<br>**Preview:** \u2013       | PR that adds/changes a workflow with broad permissions.                                       | Proposes **YAML patch** with per-job `permissions` map + rationale; optionally commits; **CI remains green**.                                 |\n\n---\n\n## XOR Compliance_GRC Abilities\n\n| Ability                                                 | Trigger comment (top of Issue/PR) + Preview                                                                                                                                                                      | Required input (templates / context)                                                       | What XOR does                                                                                                                  |\n| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |\n| **PR audit packet (evidence-linked)**                   | **@xor-hardener** Compile audit packet for this PR after checks; link SHAs, tests, CI, reviewers.<br>**Preview:** [PR #387](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387) *(also #386 / #389)* | Run on the autopatch PR after CI/checks complete.                                          | Posts **single evidence packet** linking files/SHAs, tests added, CI/checks URLs, Issue ref, reviewers.                        |\n| **Repo controls \u2192 live evidence map** **(coming soon)** | **@xor-hardener** Map repo controls to evidence (tests, pipelines, scanners); list gaps and next steps.<br>**Preview:** \u2013                                                                                        | Issue using **XOR: Map controls to evidence** listing tests/build/code-scanning pipelines. | Publishes **control \u2192 evidence table** with live links to jobs, suites, scanners, artifacts; adds **gap list** + next actions. |\n",
+      "createdAt": "2026-02-02T14:44:02Z",
+      "updatedAt": "2026-02-02T14:44:02Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": []
+}
