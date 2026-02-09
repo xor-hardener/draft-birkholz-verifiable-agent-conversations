@@ -791,6 +791,11 @@ alone and require external data sources:
 
 # Empirical Basis {#empirical-basis}
 
+<!-- See: PR #2 agent-conversation.cddl for the schema derived from this dataset -->
+<!-- See: PR #4 examples/DATASET_MANIFEST.md for complete dataset inventory -->
+<!-- See: PR #4 examples/traces/ for representative trace samples -->
+<!-- See: PR #4 examples/reasoning-artifacts/ for full derivation chain (RLM→Agent0→Quint→Council) -->
+
 The data formats defined in this document are derived from empirical
 analysis of 4 agent implementations across 221 coding sessions that
 addressed 23 distinct software vulnerabilities.
@@ -818,6 +823,10 @@ addressed 23 distinct software vulnerabilities.
   Notable omissions include Cursor, Windsurf, and Devin.
 
 # Test Vectors {#test-vectors}
+
+<!-- See: PR #2 agent-conversation.cddl for schema validation -->
+<!-- See: PR #4 examples/traces/ for real-world agent trace samples (Claude, Gemini, Codex, OpenCode) -->
+<!-- See: Section: Empirical Basis for dataset context -->
 
 This appendix provides concrete examples of valid verifiable agent records.
 
@@ -968,6 +977,11 @@ A COSE-signed record with custom metadata:
 {: #fig-signed-trace artwork-align="left" title="Signed Record with Vendor Data"}
 
 # Implementation Considerations {#implementation-considerations}
+
+<!-- See: PR #2 agent-conversation.cddl for normative schema definition -->
+<!-- See: PR #4 docs/cddl-extraction-methodology.md for schema derivation process -->
+<!-- See: PR #4 docs/agent-type-mapping-table.md for vendor format conversion guidance -->
+<!-- See: Section: Conformance Requirements for Producer/Verifier/Consumer classes -->
 
 This section provides guidance for building conforming producers,
 verifiers, and consumers.
