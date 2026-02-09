@@ -1230,10 +1230,18 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">Â
 ;   - File Attribution (Birkholz): WHAT code was produced and by whom
 ;   - Session Records (XOR): HOW the code was produced (conversation replay)
 ;
+; Cross-References (for reviewers):
+;   See: PR #3 draft-birkholz-verifiable-agent-conversations.md for full I-D specification
+;   See: PR #4 docs/cddl-extraction-methodology.md for how this schema was derived
+;   See: PR #4 docs/agent-type-mapping-table.md for vendor format coverage (4/4 agents)
+;   See: PR #4 examples/DATASET_MANIFEST.md for complete dataset inventory
+;   See: PR #4 examples/reasoning-artifacts/ for full derivation chain (RLMâ†’Agent0â†’Quintâ†’Council)
+;
 ; Empirical Basis:
 ;   - 221 CVE-fixing sessions across 4 agent implementations
 ;   - 23 CVEs x ~10 agent-model configurations
 ;   - Agents: Claude Code, Gemini CLI, Codex CLI, OpenCode
+;   - Dataset: CVE-Bench "arvo-250iq" (see PR #4 examples/DATASET_MANIFEST.md)
 ;
 ; Specification References:
 ;   RFC 8610: Concise Data Definition Language (CDDL)
@@ -1258,6 +1266,9 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">Â
 ; Timestamp: accepts BOTH RFC 3339 strings AND epoch milliseconds
 ; Evidence: Claude/Gemini/Codex use ISO 8601; OpenCode uses epoch ms.
 ; 4/4 vendor support with format variance.
+; See: PR #4 examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md (Q5 CHALLENGE)
+; See: PR #4 examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md (confidence 0.85)
+; See: PR #4 docs/agent-type-mapping-table.md Section: Timestamp Format Comparison
 abstract-timestamp = tstr / number
 ; Implementations SHOULD use RFC 3339 (tstr) for new traces.
 ; Implementations MUST accept epoch milliseconds (number) for interop.
@@ -1609,6 +1620,10 @@ vendor-extension = {
 
 extension-data = { * extension-key =&gt; any }
 extension-key = tstr / int              ; tstr for JSON, int for CBOR compact encoding
+; Rationale: JSON maps use string keys; CBOR benefits from integer key compression.
+; See: PR #4 examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md (Q6 CONTRADICT)
+; See: PR #4 examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md (confidence 0.82)
+; Decision: Dual support enables JSON-CBOR interop without key translation
 
 ; =============================================================================
 ; SECTION 11: SIGNING ENVELOPE (COSE_Sign1)
