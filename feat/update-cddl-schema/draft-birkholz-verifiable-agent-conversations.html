@@ -1053,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz &amp; Heldt</td>
-<td class="center">Expires 13 August 2026</td>
+<td class="center">Expires 15 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-birkholz-verifiable-agent-conversations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-09" class="published">9 February 2026</time>
+<time datetime="2026-02-11" class="published">11 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-13">13 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-15">15 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1260,6 +1260,35 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 ; =============================================================================
 
 ; =============================================================================
+; ROOT RULE - MUST BE FIRST FOR CDDL TOOLING COMPATIBILITY
+; =============================================================================
+;
+; The root rule defines what this schema validates. Multiple targets supported:
+;
+;   1. verifiable-agent-record: Full envelope with session + file-attribution
+;   2. session-trace: Just the session conversation (interactive or autonomous)
+;   3. [* entry]: Raw entry array (vendor-native JSONL converted to array)
+;   4. signed-agent-record: COSE_Sign1 wrapped record
+;
+; Usage with cddl gem:
+;   cddl schema.cddl validate data.json                    # validates against 'start'
+;   cddl schema.cddl validate data.json verifiable-agent-record  # explicit rule
+;   cddl schema.cddl g                                     # generates from 'start'
+;
+; ROOT RULE - Must be first for cddl gem compatibility
+;
+; For generation testing, use a single target:
+;   cddl schema.cddl g                     -&gt; generates verifiable-agent-record
+;   cddl schema.cddl g 1 entry             -&gt; generates single entry
+;   cddl schema.cddl g 1 session-trace     -&gt; generates session-trace
+;
+; For validation, specify the target explicitly:
+;   cddl schema.cddl validate data.json verifiable-agent-record
+;   cddl schema.cddl validate entries.json "[* entry]"
+;
+start = verifiable-agent-record
+
+; =============================================================================
 ; SECTION 1: COMMON TYPES
 ; =============================================================================
 
@@ -1343,12 +1372,12 @@ session-trace = interactive-session / autonomous-session
 
 interactive-session = {
     format: "interactive"
-    &amp; session-envelope
+    session-envelope
 }
 
 autonomous-session = {
     format: "autonomous"
-    &amp; session-envelope
+    session-envelope
     ? task-description: tstr
     ? task-result: tstr
 }
@@ -1448,7 +1477,7 @@ entry = user-entry
 ; Human or system input to the agent.
 ; Evidence: all 4 formats have user/human role messages.
 user-entry = {
-    &amp; base-entry
+    base-entry
     type: "user"
     content: tstr
     ? parent-id: entry-id               ; Parent message (2/4: Claude, OpenCode)
@@ -1458,7 +1487,7 @@ user-entry = {
 ; --- Assistant Entry ---
 ; Agent/model response.
 assistant-entry = {
-    &amp; base-entry
+    base-entry
     type: "assistant"
     content: tstr
     ? model-id: tstr                    ; Model used for this response (4/4)
@@ -1478,7 +1507,7 @@ assistant-entry = {
 ;   This links to file-attribution.files[].conversations[].ranges[]
 ;
 tool-call-entry = {
-    &amp; base-entry
+    base-entry
     type: "tool-call"
     call-id: tstr                       ; Links to tool-result-entry (4/4)
     name: tstr                          ; Tool name (4/4)
@@ -1490,7 +1519,7 @@ tool-call-entry = {
 ; --- Tool Result Entry ---
 ; Result of a tool invocation.
 tool-result-entry = {
-    &amp; base-entry
+    base-entry
     type: "tool-result"
     call-id: tstr                       ; Links to tool-call-entry (4/4)
     output: any                         ; Tool output (4/4)
@@ -1502,7 +1531,7 @@ tool-result-entry = {
 ; --- Reasoning Entry ---
 ; Chain-of-thought, thinking, or reasoning content.
 reasoning-entry = {
-    &amp; base-entry
+    base-entry
     type: "reasoning"
     ? content: tstr                     ; Plaintext reasoning
     ? encrypted: tstr                   ; Encrypted content (Codex)
@@ -1513,7 +1542,7 @@ reasoning-entry = {
 ; --- System Event Entry ---
 ; Lifecycle events, token counts, session management.
 system-event-entry = {
-    &amp; base-entry
+    base-entry
     type: "system-event"
     event-type: tstr                    ; "session-start", "session-end", etc.
     ? data: vendor-extension            ; Event-specific payload (tagged)
@@ -1523,7 +1552,7 @@ system-event-entry = {
 ; --- Vendor Entry ---
 ; Catch-all for vendor-specific entry types.
 vendor-entry = {
-    &amp; base-entry
+    base-entry
     type: tstr                          ; Vendor-specific type string
     vendor-ext: vendor-extension        ; Required: must identify vendor
 }
@@ -1618,8 +1647,11 @@ vendor-extension = {
     ? data: extension-data              ; Vendor-specific payload
 }
 
-extension-data = { * extension-key =&gt; any }
-extension-key = tstr / int              ; tstr for JSON, int for CBOR compact encoding
+; NOTE: For JSON, extension-key is always tstr.
+;       For CBOR, implementations MAY use int keys for compact encoding.
+;       The cddl gem only supports tstr keys for generation.
+extension-data = { * tstr =&gt; any }
+extension-key = tstr / int              ; INFORMATIVE: tstr for JSON, int for CBOR
 ; Rationale: JSON maps use string keys; CBOR benefits from integer key compression.
 ; See: PR #4 examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md (Q6 CONTRADICT)
 ; See: PR #4 examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md (confidence 0.82)
@@ -1715,7 +1747,7 @@ trace-format-id = "ietf-vac-v2.0"      ; This spec's format
 ; Example: Claude Code extends user-entry with vendor-specific fields
 ;
 ; claude-user-entry = {
-;     &amp; base-entry
+;     base-entry
 ;     type: "user"
 ;     content: tstr
 ;     parent-id: entry-id
@@ -1734,7 +1766,7 @@ trace-format-id = "ietf-vac-v2.0"      ; This spec's format
 ; Example: OpenCode tool result with rich file metadata
 ;
 ; opencode-tool-result = {
-;     &amp; base-entry
+;     base-entry
 ;     type: "tool-result"
 ;     call-id: tstr
 ;     output: tstr
