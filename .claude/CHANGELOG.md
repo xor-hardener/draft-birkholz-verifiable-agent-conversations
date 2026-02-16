@@ -2,6 +2,38 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-16: COSE_Sign1 Signing Implementation
+
+Implemented `scripts/sign-record.py` — a standalone tool that produces cryptographically
+signed agent session records using COSE_Sign1 (RFC 9052), matching the `signed-agent-record`
+type defined in CDDL Section 11.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | New script or extend validate-sessions.py? | **New standalone `scripts/sign-record.py`** | Separation of concerns: validation ≠ signing. Different dependencies (pycose, cbor2). |
+| 2 | Algorithm? | **Ed25519 (EdDSA)** | Fast, small 64-byte signatures, deterministic. Used by RATS/SCITT examples. COSE algorithm ID: -8. |
+| 3 | Payload mode? | **Detached only** | COSE_Sign1 with `payload=null`. JSON record file stays separate, can be inspected/diffed. Signature file is small (~300 bytes). |
+| 4 | Key format? | **PEM files (PKCS8/SubjectPublicKeyInfo)** | Standard, interoperable. Private key unencrypted for dev use. |
+| 5 | Dependencies? | **`requirements.txt` with pycose, cbor2** | No flake.nix changes. Nix dev shell already installs `requirements*.txt`. |
+| 6 | Trace-metadata source? | **Extracted from record JSON** | session-id, agent-vendor, timestamps from the verifiable-agent-record structure. Content hash (SHA-256) computed over canonical JSON bytes. |
+
+### Implementation
+
+- **`keygen`**: Generates Ed25519 keypair via `cryptography` library, writes PEM files.
+- **`sign`**: Canonicalizes JSON (compact, sorted keys), builds COSE_Sign1 with detached payload,
+  stores trace-metadata in unprotected header at label 100 (per CDDL `trace-metadata-key`).
+- **`verify`**: Decodes COSE_Sign1, reattaches detached payload, verifies Ed25519 signature,
+  checks content-hash integrity.
+
+### Verification
+
+- All 13 session records signed and verified successfully
+- CBOR output inspected: Tag 18, 4-element array, protected header `{1: -8, 3: "application/json"}`,
+  unprotected header `{100: trace-metadata}`, payload `null`, 64-byte signature
+- Structure matches `signed-agent-record` in CDDL Section 11 exactly
+
 ## 2026-02-16: Schema Simplification (content: any + children)
 
 Goal: Minimize the translation layer in `validate-sessions.py` by making the CDDL spec

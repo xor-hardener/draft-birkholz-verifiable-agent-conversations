@@ -13,6 +13,7 @@ The draft is authored using the [martinthomson/i-d-template](https://github.com/
 - `draft-birkholz-verifiable-agent-conversations.md` — The Internet-Draft source (kramdown-rfc Markdown format with YAML front matter)
 - `agent-conversation.cddl` — CDDL schema defining the `agent-convo-record` data structure, included into the draft via `{::include agent-conversation.cddl}`
 - `scripts/validate-sessions.py` — Parses 5 agent formats and validates against the CDDL schema
+- `scripts/sign-record.py` — Signs/verifies agent records with COSE_Sign1 (Ed25519)
 - `Makefile` — Delegates to `lib/main.mk` from i-d-template (auto-cloned on first `make`)
 
 ## Tracked Documentation (MUST maintain)
@@ -58,6 +59,30 @@ python3 scripts/validate-sessions.py --dump-dir /tmp/vac-produced  # write produ
 ```
 
 - Uses `ruff` for formatting (line-length 121, config in `ruff.toml`)
+
+## Signing Script
+
+```sh
+# Generate Ed25519 keypair
+python3 scripts/sign-record.py keygen --out /tmp/vac-keys/
+
+# Sign a record (detached COSE_Sign1 payload)
+python3 scripts/sign-record.py sign \
+  --key /tmp/vac-keys/signing-key.pem \
+  --record /tmp/vac-produced/claude-opus-4-6.spec.json \
+  --out /tmp/vac-produced/claude-opus-4-6.sig.cbor
+
+# Verify a signature
+python3 scripts/sign-record.py verify \
+  --key /tmp/vac-keys/signing-key.pub.pem \
+  --sig /tmp/vac-produced/claude-opus-4-6.sig.cbor \
+  --record /tmp/vac-produced/claude-opus-4-6.spec.json
+```
+
+- Produces `signed-agent-record` per CDDL Section 11 (COSE_Sign1, Tag 18)
+- Algorithm: Ed25519 (EdDSA), detached payload mode
+- Trace-metadata in unprotected header at label 100
+- Dependencies: `pycose`, `cbor2` (see `requirements.txt`)
 
 ## Conventions
 
