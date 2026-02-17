@@ -9,7 +9,7 @@ the `verifiable-agent-record` schema defined in agent-conversation.cddl.
 Each agent uses a different native format. The mapping per agent is:
 
   CDDL field     | Claude           | Gemini      | Codex                  | OpenCode        | Cursor
-  type: "user"   | .message.role    | .type        | .payload.role          | .role (inferred)| .role
+  type: "user"   | .message.role    | .type        | .payload.role          | .role / messageID→role | .role
   timestamp      | .timestamp       | .timestamp   | .timestamp             | .time.created   | (none)
   content        | .message.content | .content     | .payload.content[].text| .text           | .message.content[].text
   id             | .uuid            | .id          | (positional)           | .id             | (none)
@@ -484,6 +484,11 @@ def parse_opencode(path):
     with no inline text. Content follows in child objects. These entries are
     emitted without a content field.
 
+    Text parts (type="text") are attributed to user or assistant by looking
+    up their messageID against message-level role objects. Role messages
+    appear AFTER their child parts in the file, so a two-pass approach is
+    used: first collect all role messages, then process parts.
+
     Model extracted from: modelID on assistant message objects.
     Provider extracted from: providerID on assistant message objects.
     Multi-model: collects all modelID values seen.
@@ -516,6 +521,14 @@ def parse_opencode(path):
         "models": set(),
     }
     entries = []
+
+    # First pass: collect message-level role objects so we can attribute
+    # text parts to the correct role (user vs assistant).  Role messages
+    # appear AFTER their child parts in the file, so a lookahead is needed.
+    message_roles = {}
+    for obj in objects:
+        if isinstance(obj, dict) and "role" in obj and "type" not in obj:
+            message_roles[obj.get("id")] = obj.get("role")
 
     for obj in objects:
         if not isinstance(obj, dict):
@@ -556,7 +569,10 @@ def parse_opencode(path):
         otype = obj.get("type")
 
         if otype == "text":
-            entries.append(_make_entry("assistant", content=obj.get("text", ""), id=obj.get("id")))
+            msg_id = obj.get("messageID")
+            role = message_roles.get(msg_id, "assistant")
+            entry_type = "user" if role == "user" else "assistant"
+            entries.append(_make_entry(entry_type, content=obj.get("text", ""), id=obj.get("id")))
         elif otype == "tool":
             state = obj.get("state", {})
             call_id = obj.get("callID")
@@ -730,6 +746,9 @@ def _count_original_items(path, agent):
         with open(path) as f:
             content = f.read()
         decoder = json.JSONDecoder()
+        # Two-pass: first collect role messages for text-part attribution
+        all_objs = []
+        msg_roles = {}
         pos = 0
         while pos < len(content):
             stripped = content[pos:].lstrip()
@@ -737,36 +756,44 @@ def _count_original_items(path, agent):
                 break
             try:
                 obj, end = decoder.raw_decode(stripped)
-                counts["total_lines"] += 1
-                if not isinstance(obj, dict):
-                    counts["other"] += 1
-                elif "worktree" in obj:
-                    counts["other"] += 1
-                elif "role" in obj and "type" not in obj:
-                    role = obj.get("role", "")
-                    if role == "user":
-                        counts["user"] += 1
-                    else:
-                        counts["assistant"] += 1
-                elif obj.get("type") == "text":
-                    counts["assistant"] += 1
-                elif obj.get("type") == "tool":
-                    counts["tool_call"] += 1
-                    # Tool objects also contain results inline
-                    state = obj.get("state", {})
-                    if state.get("output") is not None or state.get("status"):
-                        counts["tool_result"] += 1
-                elif obj.get("type") == "patch":
-                    counts["tool_result"] += 1
-                elif obj.get("type") == "reasoning":
-                    counts["reasoning"] += 1
-                elif obj.get("type") in ("step-start", "step-finish"):
-                    counts["other"] += 1
-                else:
-                    counts["other"] += 1
+                all_objs.append(obj)
+                if isinstance(obj, dict) and "role" in obj and "type" not in obj:
+                    msg_roles[obj.get("id")] = obj.get("role")
                 pos += (len(content[pos:]) - len(stripped)) + end
             except json.JSONDecodeError:
                 break
+        for obj in all_objs:
+            counts["total_lines"] += 1
+            if not isinstance(obj, dict):
+                counts["other"] += 1
+            elif "worktree" in obj:
+                counts["other"] += 1
+            elif "role" in obj and "type" not in obj:
+                role = obj.get("role", "")
+                if role == "user":
+                    counts["user"] += 1
+                else:
+                    counts["assistant"] += 1
+            elif obj.get("type") == "text":
+                msg_id = obj.get("messageID")
+                if msg_roles.get(msg_id) == "user":
+                    counts["user"] += 1
+                else:
+                    counts["assistant"] += 1
+            elif obj.get("type") == "tool":
+                counts["tool_call"] += 1
+                # Tool objects also contain results inline
+                state = obj.get("state", {})
+                if state.get("output") is not None or state.get("status"):
+                    counts["tool_result"] += 1
+            elif obj.get("type") == "patch":
+                counts["tool_result"] += 1
+            elif obj.get("type") == "reasoning":
+                counts["reasoning"] += 1
+            elif obj.get("type") in ("step-start", "step-finish"):
+                counts["other"] += 1
+            else:
+                counts["other"] += 1
         return counts
 
     # JSONL formats: claude, codex, cursor

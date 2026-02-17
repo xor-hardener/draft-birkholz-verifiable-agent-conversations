@@ -2,6 +2,211 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-17: Breakdown Review — Round 10
+
+Tenth review using 5 parallel verification agents. All existing claims verified correct;
+found 1 precision gap in `gemini-cli.md`.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `gemini-cli.md` | "Each toolCall produces two children" stated unconditionally but parser code is conditional (`if result is not None`, line 306); tool-result child only emitted when result field exists | Qualified to "produces a `tool-call` child, and a `tool-result` child when `result` is not null" |
+
+### Context
+
+Round 10 deployed 5 parallel agents (same methodology as Rounds 3-9). No fabrications found.
+The single issue is a precision gap: the Gemini parser conditionally emits tool-result children
+(only when `tc.get("result") is not None`), but the breakdown stated unconditionally that each
+toolCall produces two children. In practice all toolCalls in the current session data have
+non-null results, so this is always true for observed data — but the breakdown documents parser
+behavior, which is explicitly conditional.
+
+False alarms triaged: OpenCode text objects lacking `time` fields (agent checked one of the
+23/190 text objects without `time`; 167/190 DO have them — Round 7 fix confirmed valid);
+native schema examples missing minor subfields in dropped objects (cosmetic, covered by
+existing dropped-field documentation).
+
+## 2026-02-17: Breakdown Review — Round 9
+
+Ninth review using 5 parallel verification agents. All existing claims verified correct;
+found 1 completeness gap in `opencode.md`.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `opencode.md` | `id` field silently dropped from role-message and step-start/step-finish entries but not listed in dropped fields (parser lines 566, 614 don't pass `id`; content-bearing entries at lines 575, 589, 610, 612 do) | Added `id` to both dropped-field lists: step-start/step-finish and role objects |
+
+### Context
+
+Round 9 deployed 5 parallel agents (same methodology as Rounds 3-8). No fabrications found.
+The single issue is a completeness gap: role-message objects (`msg_...` IDs) and
+step-start/step-finish objects (`prt_...` IDs) have `id` fields in the native data that the
+parser drops, but the dropped fields section only listed other fields from these entry types
+(`snapshot`/`reason`/`cost`/`tokens` for step-start/step-finish; `parentID`/`modelID`/etc. for
+role objects). The "Direct matches" section's `id` → `id` claim remains correct for
+content-bearing entries (text, tool-call, patch, reasoning).
+
+## 2026-02-17: Breakdown Review — Round 8
+
+Eighth review using 5 parallel verification agents. All existing claims verified correct;
+found 2 issues in `codex-cli.md` and updated `BREAKDOWN.md` summary table.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `codex-cli.md` | `token_count` grouped under "duplicates `response_item`" heading, but it is unique data with no `response_item` equivalent | Restructured: 3 of 4 event_msg subtypes labeled as duplicates; `token_count` labeled as unique |
+| 2 | `codex-cli.md` | Missing `payload.content` → `content` un-nest for `response_item` message entries (same pattern as `payload.output` → `output`) | Added to Renames section |
+| 3 | `BREAKDOWN.md` | Codex renames 8→9, un-nest 8→9 (reflects new `payload.content` rename) | Updated summary table |
+
+### Context
+
+Round 8 deployed 5 parallel agents (same methodology as Rounds 3-7). No fabrications
+found. Both Codex issues are completeness/accuracy gaps: one incorrectly grouped unique
+data under a "duplicates" heading, and one missing un-nest rename that follows the same
+pattern as other documented renames in the same file.
+
+## 2026-02-17: Breakdown Review — Round 7
+
+Seventh review using 5 parallel verification agents. All existing claims verified correct;
+found 1 completeness gap in `opencode.md`.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `opencode.md` | `time.start`/`time.end` on text objects (167/190 text objects across 4 files) silently dropped but only documented as dropped on reasoning objects | Changed "(from reasoning objects)" to "(from reasoning and text objects)" |
+
+### Context
+
+Round 7 deployed 5 parallel agents (same methodology as Rounds 3-6). No fabrications
+found. The single issue is a completeness gap: text-type objects in OpenCode sessions
+carry `time.start`/`time.end` fields that the parser drops, but the dropped fields
+documentation only mentioned these fields on reasoning objects.
+
+## 2026-02-17: Breakdown Review — Round 6
+
+Sixth review using 5 parallel verification agents. All existing claims verified correct;
+found 2 factual errors in `codex-cli.md`.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `codex-cli.md` | Native schema example shows `collaboration_mode` as string `"none"` and `truncation_policy` as string `"auto"`, but real data has objects (`{"mode": "default", "settings": {...}}` and `{"mode": "bytes", "limit": 10000}`) | Updated example to match real session data |
+| 2 | `codex-cli.md` | `payload.content` on reasoning described as "raw encrypted reasoning" — it is actually always `null`; encrypted reasoning lives in `encrypted_content` | Changed to "always `null`; would contain unencrypted reasoning if available, but models with encrypted reasoning never populate it" |
+
+### Context
+
+Round 6 deployed 5 parallel agents (same methodology as Rounds 3-5). No fabrications
+found. Both issues are in `codex-cli.md`: one factual error in the native schema example
+(wrong data types for two `turn_context` fields) and one misleading description of
+`payload.content` on reasoning entries.
+
+## 2026-02-17: Breakdown Review — Round 5
+
+Fifth review using 5 parallel verification agents. All existing claims verified correct;
+found 4 completeness gaps.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `claude-code.md` | Line-level `type` field (e.g., `"user"`, `"assistant"`) silently ignored by parser (uses `message.role` instead) but not listed as dropped | Added to per-entry dropped with explanation |
+| 2 | `codex-cli.md` | `turn_context.model` described as "primary source" but code checks `session_meta.model` first; `turn_context` is structurally a fallback | Changed to "fallback source, but always used because `session_meta` lacks `model` field" |
+| 3 | `opencode.md` | Session summary dropped field list missing `id` field | Added `id` to session summary field list |
+| 4 | `opencode.md` | Nested `model` object on user role messages (containing `providerID`, `modelID`) undocumented | Added to per-entry dropped with note about metadata extraction |
+
+### Context
+
+Round 5 deployed 5 parallel agents (same methodology as Rounds 3-4). No fabrications
+found. The 4 issues are all completeness gaps: one undocumented ignored field (Claude
+line-level `type`), one misleading characterization (Codex "primary" vs "fallback"), and
+two missing dropped fields (OpenCode). The Codex "9 values" type count in BREAKDOWN.md
+was investigated and confirmed correct (counts `developer` and `user` as separate source
+values; excludes event_msg duplicates).
+
+## 2026-02-17: Breakdown Review — Round 4
+
+Fourth review using 5 parallel verification agents. All existing claims verified correct;
+found 13 completeness gaps (missing fields, undocumented mappings).
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `claude-code.md` | `tool_use` child structural extraction missing `name` → `name` and `input` → `input` pass-throughs | Added to tool_use child mapping |
+| 2 | `claude-code.md` | `gitBranch` listed as "per-entry dropped" but parser extracts it into `meta["branch"]` (then discarded by `wrap_record`) | Moved to metadata-extracted with "not emitted" note |
+| 3 | `claude-code.md` | `operation` on queue-operation lines undocumented as dropped | Added to per-entry dropped |
+| 4 | `claude-code.md` | `slug` field undocumented as dropped | Added to per-entry dropped |
+| 5 | `claude-code.md` | Conditional `agent-meta.models` list in record wrapper undocumented | Added note to record wrapper fabrication |
+| 6 | `gemini-cli.md` | `toolCalls[].timestamp` → `timestamp` on children undocumented | Added to toolCalls structural extraction |
+| 7 | `codex-cli.md` | `payload.git.branch` listed as "Metadata-extracted" but `wrap_record` never emits it | Moved to "extracted but not emitted" note |
+| 8 | `codex-cli.md` | `session_meta` lacks `model` field; `turn_context` is primary (not fallback) source | Corrected description |
+| 9 | `codex-cli.md` | "Silently dropped from `turn_context`" missing 4 fields: `cwd`, `collaboration_mode`, `user_instructions`, `truncation_policy` | Added all 4 |
+| 10 | `codex-cli.md` | Missing `payload.rate_limits` and `payload.status` from dropped fields | Added to event_msg and response_item dropped |
+| 11 | `codex-cli.md` | Native schema examples for `turn_context` and `token_count` incomplete | Added missing fields |
+| 12 | `opencode.md` | Patch objects' `hash` and `files` fields not listed as dropped | Added to per-entry dropped |
+| 13 | `opencode.md` | Session summary objects (slug, projectID, etc.) undocumented | Added as silently dropped |
+
+### Context
+
+Round 4 deployed 5 parallel agents (same methodology as Round 3). No outright fabrications
+were found — all existing claims in the breakdowns are correct. The 13 issues are all
+completeness gaps: missing dropped fields, undocumented field mappings, and miscategorized
+metadata fields that are extracted but never emitted to the output record.
+
+## 2026-02-17: Breakdown Review — Round 3
+
+Third review using 5 parallel verification agents, each cross-referencing one breakdown file
+against parser code and actual session data.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `claude-code.md` | Direct matches listed `type: "user"/"assistant"` but entry type actually comes from `message.role`, not line-level `type` | Changed to 1 direct match (`timestamp`); moved `message.role` → `type` to renames |
+| 2 | `claude-code.md` | `message.model` → `model-id` listed as per-entry rename but is record-level metadata extraction | Moved to new "Metadata-extracted" paragraph in dropped fields |
+| 3 | `claude-code.md` | `cwd`, `sessionId`, `version` listed as "dropped" but are metadata-extracted to record wrapper | Split dropped fields into metadata-extracted vs per-entry dropped |
+| 4 | `claude-code.md` | `queue-operation` → `system-event` type mapping undocumented | Added to structural extraction |
+| 5 | `gemini-cli.md` | Claimed `result[].functionResponse.response.output` deep nesting extraction — fabricated; parser passes raw `result` as-is | Corrected to "raw result array passed through" |
+| 6 | `gemini-cli.md` | Bare `description` in dropped list ambiguous (could mean `thoughts[].description` which IS used) | Qualified all dropped fields with parent path: `toolCalls[].description`, etc. |
+| 7 | `gemini-cli.md` | Missing `"human"` → `"user"` type mapping | Added alongside `"gemini"` → `"assistant"` |
+| 8 | `gemini-cli.md` | Top-level `sessionId`/`startTime` metadata extraction undocumented | Added "Metadata extraction" section |
+| 9 | `opencode.md` | `"patch"` → `"tool-result"` type mapping missing | Added to type mapping |
+| 10 | `opencode.md` | Missing dropped fields: reasoning `time.start`/`time.end`, role `summary`/`time.completed`, step-finish `cost`/`tokens` | Added to per-entry dropped list |
+| 11 | `codex-cli.md` | Only 4 renames listed; missing reasoning, event_msg, and input-variant renames | Added 4 more renames (summary→content, encrypted_content→encrypted, message→content, text→content) |
+| 12 | `codex-cli.md` | "session_meta fields (moved to meta)" overstatement — several fields silently dropped | Split into metadata-extracted, per-entry dropped, and silently-dropped-from paragraphs |
+| 13 | `cursor.md` | Catch-all role mapping undocumented (all non-"user" → "assistant") | Added to rename description |
+| 14 | `BREAKDOWN.md` | Summary table: Claude direct matches 3→1, Codex renames 4→8, un-nest 5→8, type map 5→9, fabricated 2→3; Gemini type map 3→4; OpenCode type map 5→6 | Updated all cells |
+
+### Context
+
+Round 3 deployed 5 parallel agents (one per breakdown file) plus a summary-table checker.
+Most critical finding was Gemini's fabricated `result` nesting path — the parser passes the raw
+`result` array through as `output`, no deep extraction occurs. Claude's entry type was being
+misattributed to line-level `type` when it actually comes from `message.role`.
+
+## 2026-02-17: Breakdown Review — Round 2
+
+Second review of per-agent breakdown files (`.claude/breakdown/*.md`) against session data and parser code.
+
+### Fixes Applied
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 1 | `opencode.md` | Dropped fields omitted session header (`id`, `vcs`, `sandboxes`, `time.updated`), share-info object, and step-start/step-finish fields (`snapshot`, `reason`) | Added session-header and share-info paragraphs; added `snapshot`/`reason` to per-entry list |
+| 2 | `gemini-cli.md` | `thoughts[].timestamp` silently dropped but not listed | Added to dropped fields list |
+
+### Context
+
+Round 1 (same day, earlier session) fixed 5 issues: OpenCode text→role mapping, Claude dropped
+fields, Codex type mappings, Cursor fabricated ambiguity, and BREAKDOWN.md summary table.
+Round 2 caught these two remaining omissions by cross-referencing native schema examples
+against the dropped-fields lists.
+
 ## 2026-02-16: COSE_Sign1 Signing Implementation
 
 Implemented `scripts/sign-record.py` — a standalone tool that produces cryptographically
