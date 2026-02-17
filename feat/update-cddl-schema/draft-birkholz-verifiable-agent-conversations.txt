@@ -5,7 +5,7 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 20 August 2026                                 16 February 2026
+Expires: 21 August 2026                                 17 February 2026
 
 
                      Verifiable Agent Conversations
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 August 2026.
+   This Internet-Draft will expire on 21 August 2026.
 
 Copyright Notice
 
