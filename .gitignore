@@ -22,5 +22,3 @@ report.xml
 /versioned/
 /.vscode/
 !requirements.txt
-/arvo-136
-.claude/settings.local.json
