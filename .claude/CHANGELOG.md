@@ -2,6 +2,60 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-18: Schema Simplification v3.0.0-draft (Approach B)
+
+Major schema rewrite: 7 entry types → 4, all maps extensible via `* tstr => any`,
+no-drop policy on parsers, canonical token-usage extraction.
+
+Full decision log with options and reasoning: [`.claude/reviews/2026-02-18/simplification-plan.md`](reviews/2026-02-18/simplification-plan.md)
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Passthrough strategy | **Selective canonical + full native preservation** | Token usage gets canonical names; all other native fields preserved via `* tstr => any`. User: "do NOT DROP ANYTHING." |
+| 2 | Native field placement | **Flat merge at entry level** | Simplest. Canonical kebab-case + native camelCase/snake_case coexist. Consumers ignore unknown fields. |
+| 3 | Canonical fields to add | **Token usage only** | 4/5 agents provide tokens. Single highest-value missing data. `? token-usage: token-usage` on message-entry. |
+| 4 | File attribution | **Keep in schema with TODO comments** | Henk's original contribution. ~100 extra CDDL lines acceptable. Investigation shows derivability (see Phase 4). |
+| 5 | Session types | **Single `session-trace` with `? format: tstr`** | All 13 sessions use same structure. interactive/autonomous distinction adds CDDL complexity without value. |
+| 6 | Event entry type | **Explicit `type: "system-event"` only** | No `type: tstr` catch-all. Avoids PEG ordering ambiguity. |
+| 7 | Children behavior | **Keep current asymmetry** | Claude/Gemini nest children; Codex/OpenCode/Cursor flat. Accurate to native structures. |
+| 8 | Vendor extension type | **Remove entirely** | `* tstr => any` provides extensibility. vendor-extension ceremony adds complexity with no proven use. |
+
+### Schema Changes
+
+- 7 entry types → 4: `message-entry`, `tool-entry`, `reasoning-entry`, `event-entry`
+- All maps: added `* tstr => any` (RFC 8610 §3.5.4 extensibility, COSE precedent)
+- Removed: `vendor-extension`, `extension-key`, `extension-data`, `interactive-session`,
+  `autonomous-session`, `session-envelope`, `base-entry`, `user-entry`, `assistant-entry`,
+  `tool-call-entry`, `tool-result-entry`, `system-event-entry`, `vendor-entry`
+- Added: `token-usage` type with `? input/output/cached/reasoning: uint` + `* tstr => any`
+- Kept: file attribution (Sections 8, 10), signing envelope (Section 9)
+- Version: `2.0.0-draft` → `3.0.0-draft`
+- Trace format: `ietf-vac-v2.0` → `ietf-vac-v3.0`
+
+### Parser Changes
+
+- **No-drop policy:** All 5 parsers updated. Native fields not consumed for canonical mapping
+  are flat-merged into entries. No data is silently dropped.
+- **Token-usage extraction:** Claude (`message.usage`), Gemini (`messages[].tokens`),
+  Codex (`event_msg/token_count`), OpenCode (`role-message.tokens`). Cursor has no token data.
+- **Bug fix:** Claude `msg.type` ("message") and `msg.id` (API message ID) were overwriting
+  canonical `type` and `id` via passthrough. Fixed by adding to `_MSG_CONSUMED` set.
+
+### Validation
+
+- All 13 sessions pass CDDL validation with v3 schema
+- All 13 records signed and verified with COSE_Sign1 (trace-format: `ietf-vac-v3.0`)
+- Token-usage present: Claude 230/378, Gemini 23/24, Codex 203/568, OpenCode 199/1264, Cursor 0/79
+
+### File Attribution Investigation
+
+See [`.claude/reviews/2026-02-18/file-attribution-investigation.md`](reviews/2026-02-18/file-attribution-investigation.md).
+OpenCode provides the richest file attribution data (full before/after content, diffs, relative paths).
+Claude Edit tool provides `old_string`/`new_string` requiring string matching for line positions.
+All CDDL Section 8 fields derivable except `conversation.url` and `conversation.related`.
+
 ## 2026-02-17: Breakdown Review — Round 10
 
 Tenth review using 5 parallel verification agents. All existing claims verified correct;

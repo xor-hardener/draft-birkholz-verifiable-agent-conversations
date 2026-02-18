@@ -11,7 +11,7 @@ The draft is authored using the [martinthomson/i-d-template](https://github.com/
 ## Key Files
 
 - `draft-birkholz-verifiable-agent-conversations.md` — The Internet-Draft source (kramdown-rfc Markdown format with YAML front matter)
-- `agent-conversation.cddl` — CDDL schema defining the `agent-convo-record` data structure, included into the draft via `{::include agent-conversation.cddl}`
+- `agent-conversation.cddl` — CDDL schema defining the `verifiable-agent-record` data structure, included into the draft via `{::include agent-conversation.cddl}`
 - `scripts/validate-sessions.py` — Parses 5 agent formats and validates against the CDDL schema
 - `scripts/sign-record.py` — Signs/verifies agent records with COSE_Sign1 (Ed25519)
 - `Makefile` — Delegates to `lib/main.mk` from i-d-template (auto-cloned on first `make`)
@@ -47,7 +47,7 @@ The project uses a Nix flake for reproducible dev environments. Entering the she
 
 - The draft uses **kramdown-rfc** Markdown format — YAML front matter defines metadata, references, and authors; the body uses RFC-specific markup like `{{-rats-arch}}` for reference citations and `{::include ...}` for file inclusion.
 - The CDDL schema in `agent-conversation.cddl` is the canonical data model definition. Changes to the data model should be made there; the draft includes it automatically.
-- The data model centers on `verifiable-agent-record` which contains: version, id, optional session-trace (with entries array), optional file-attribution, optional VCS context, and extensible vendor metadata. Entry types: user, assistant, tool-call, tool-result, reasoning, system-event, vendor. Entries support `children` for nested structures.
+- The data model centers on `verifiable-agent-record` which contains: version, id, optional session-trace (with entries array), optional file-attribution, optional VCS context, and open extensibility via `* tstr => any`. Four entry types: message-entry (type: "user"/"assistant"), tool-entry (type: "tool-call"/"tool-result"), reasoning-entry (type: "reasoning"), event-entry (type: "system-event"). Entries support `children` for nested structures and `* tstr => any` for native agent field passthrough.
 - CI uses `martinthomson/i-d-template@v1` GitHub Actions to build, lint, publish to GitHub Pages, and upload tagged versions to the IETF Datatracker.
 
 ## Validation Script

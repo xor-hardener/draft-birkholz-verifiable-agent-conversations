@@ -119,6 +119,12 @@ def _make_entry(type_val, **kwargs):
     return entry
 
 
+def _passthrough(source, exclude):
+    """Collect fields from source dict that are NOT in the exclude set.
+    Returns a dict of native passthrough fields (no renaming)."""
+    return {k: v for k, v in source.items() if k not in exclude}
+
+
 def _infer_provider(model_id):
     """Infer provider from model ID prefix."""
     if not model_id or model_id == "unknown":
@@ -147,7 +153,13 @@ def parse_claude(path):
     Content is passed through as-is (string or array of blocks).
     Model extracted from: message.model on assistant lines.
     Provider inferred from: claude- prefix on model ID.
+    Token-usage extracted from: message.usage on assistant lines.
+    Native fields preserved: line-level + message-level (no-drop policy).
     """
+    # Fields consumed for canonical mapping or metadata — not passed through
+    _LINE_CONSUMED = {"timestamp", "sessionId", "version", "cwd", "gitBranch", "uuid", "type", "message"}
+    _MSG_CONSUMED = {"role", "content", "model", "type", "id", "usage"}
+
     with open(path) as f:
         lines = [json.loads(line) for line in f if line.strip()]
 
@@ -180,7 +192,9 @@ def parse_claude(path):
         line_id = line.get("uuid")
 
         if line.get("type") == "queue-operation":
-            entries.append(_make_entry("system-event", timestamp=ts, id=line_id, **{"event-type": "queue-operation"}))
+            entry = _make_entry("system-event", timestamp=ts, id=line_id, **{"event-type": "queue-operation"})
+            entry.update(_passthrough(line, _LINE_CONSUMED | {"operation"}))
+            entries.append(entry)
             continue
 
         msg = line.get("message", {})
@@ -194,6 +208,27 @@ def parse_claude(path):
             meta["models"].add(model)
 
         content = msg.get("content", "")
+
+        # Native passthrough: line-level + message-level fields
+        line_extra = _passthrough(line, _LINE_CONSUMED)
+        msg_extra = _passthrough(msg, _MSG_CONSUMED)
+
+        # Token-usage extraction (canonical)
+        usage = msg.get("usage", {})
+        token_usage = None
+        if usage:
+            token_usage = {}
+            if "input_tokens" in usage:
+                token_usage["input"] = usage["input_tokens"]
+            if "output_tokens" in usage:
+                token_usage["output"] = usage["output_tokens"]
+            if "cache_read_input_tokens" in usage:
+                token_usage["cached"] = usage["cache_read_input_tokens"]
+            # Pass through remaining native usage fields
+            usage_consumed = {"input_tokens", "output_tokens", "cache_read_input_tokens"}
+            token_usage.update(_passthrough(usage, usage_consumed))
+            # Remove usage from msg_extra since we extracted it canonically
+            msg_extra.pop("usage", None)
 
         if role == "user":
             entry = _make_entry("user", timestamp=ts, id=line_id, content=content)
@@ -214,10 +249,14 @@ def parse_claude(path):
                         )
                 if children:
                     entry["children"] = children
+            entry.update(line_extra)
+            entry.update(msg_extra)
             entries.append(entry)
 
         elif role == "assistant":
-            entry = _make_entry("assistant", timestamp=ts, id=line_id, content=content)
+            entry = _make_entry("assistant", timestamp=ts, id=line_id, content=content, **{"model-id": model})
+            if token_usage:
+                entry["token-usage"] = token_usage
             # Extract typed children from content blocks
             if isinstance(content, list):
                 children = []
@@ -237,6 +276,8 @@ def parse_claude(path):
                         children.append(_make_entry("reasoning", content=part.get("thinking", "")))
                 if children:
                     entry["children"] = children
+            entry.update(line_extra)
+            entry.update(msg_extra)
             entries.append(entry)
 
     meta["provider"] = _infer_provider(meta["model_id"])
@@ -252,7 +293,14 @@ def parse_gemini(path):
     Content is passed through as-is (already a string in Gemini).
     Model extracted from: messages[].model on gemini-type messages.
     Provider inferred from: gemini- prefix.
+    Token-usage extracted from: messages[].tokens on assistant messages.
+    Native fields preserved: message-level + toolCall-level (no-drop policy).
     """
+    # Fields consumed for canonical mapping or metadata
+    _MSG_CONSUMED = {"type", "timestamp", "content", "id", "model", "thoughts", "toolCalls"}
+    _TC_CONSUMED = {"timestamp", "name", "args", "id", "result", "status"}
+    _THOUGHT_CONSUMED = {"description", "subject"}
+
     with open(path) as f:
         data = json.load(f)
 
@@ -278,30 +326,54 @@ def parse_gemini(path):
             meta["model_id"] = model
             meta["models"].add(model)
 
+        msg_extra = _passthrough(msg, _MSG_CONSUMED)
+
+        # Token-usage extraction (canonical)
+        tokens = msg.get("tokens")
+        token_usage = None
+        if isinstance(tokens, dict):
+            token_usage = {}
+            if "inputTokens" in tokens:
+                token_usage["input"] = tokens["inputTokens"]
+            if "outputTokens" in tokens:
+                token_usage["output"] = tokens["outputTokens"]
+            # Pass through remaining native token fields
+            tokens_consumed = {"inputTokens", "outputTokens"}
+            token_usage.update(_passthrough(tokens, tokens_consumed))
+            msg_extra.pop("tokens", None)
+        elif tokens is not None:
+            # tokens is a scalar — keep as native passthrough
+            pass
+
         if t in ("user", "human"):
-            entries.append(_make_entry("user", timestamp=ts, content=msg.get("content", ""), id=msg.get("id")))
+            entry = _make_entry("user", timestamp=ts, content=msg.get("content", ""), id=msg.get("id"))
+            entry.update(msg_extra)
+            entries.append(entry)
         else:
             entry = _make_entry(
                 "assistant", timestamp=ts, content=msg.get("content", ""), id=msg.get("id"), **{"model-id": model}
             )
+            if token_usage:
+                entry["token-usage"] = token_usage
 
             # Build typed children from thoughts and toolCalls
             children = []
             for thought in msg.get("thoughts", []):
-                children.append(
-                    _make_entry("reasoning", content=thought.get("description", ""), subject=thought.get("subject"))
-                )
+                child = _make_entry("reasoning", content=thought.get("description", ""), subject=thought.get("subject"))
+                child.update(_passthrough(thought, _THOUGHT_CONSUMED))
+                children.append(child)
 
             for tc in msg.get("toolCalls", []):
-                children.append(
-                    _make_entry(
-                        "tool-call",
-                        timestamp=tc.get("timestamp", ts),
-                        name=tc.get("name", "unknown"),
-                        input=tc.get("args", {}),
-                        **{"call-id": tc.get("id")},
-                    )
+                child = _make_entry(
+                    "tool-call",
+                    timestamp=tc.get("timestamp", ts),
+                    name=tc.get("name", "unknown"),
+                    input=tc.get("args", {}),
+                    **{"call-id": tc.get("id")},
                 )
+                child.update(_passthrough(tc, _TC_CONSUMED))
+                children.append(child)
+
                 result = tc.get("result")
                 if result is not None:
                     children.append(
@@ -316,6 +388,7 @@ def parse_gemini(path):
 
             if children:
                 entry["children"] = children
+            entry.update(msg_extra)
             entries.append(entry)
 
     meta["provider"] = _infer_provider(meta["model_id"])
@@ -343,6 +416,8 @@ def parse_codex(path):
 
     Model extracted from: payload.model in turn_context (not in session_meta).
     Provider extracted from: payload.model_provider in session_meta.
+    Token-usage extracted from: event_msg/token_count payload info.
+    Native fields preserved: payload-level fields (no-drop policy).
     """
     with open(path) as f:
         lines = [json.loads(line) for line in f if line.strip()]
@@ -392,79 +467,133 @@ def parse_codex(path):
             if ptype == "message":
                 role = payload.get("role", "")
                 content = payload.get("content", [])
+                consumed = {"type", "role", "content"}
+                extra = _passthrough(payload, consumed)
                 if role in ("user", "developer"):
-                    entries.append(_make_entry("user", timestamp=ts, content=content))
+                    entry = _make_entry("user", timestamp=ts, content=content)
+                    entry.update(extra)
+                    entries.append(entry)
                 elif role == "assistant":
-                    entries.append(_make_entry("assistant", timestamp=ts, content=content))
+                    entry = _make_entry("assistant", timestamp=ts, content=content)
+                    entry.update(extra)
+                    entries.append(entry)
 
             elif ptype == "function_call":
-                entries.append(
-                    _make_entry(
-                        "tool-call",
-                        timestamp=ts,
-                        name=payload.get("name", "unknown"),
-                        input=payload.get("arguments", {}),
-                        **{"call-id": payload.get("call_id")},
-                    )
+                consumed = {"type", "name", "arguments", "call_id"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry(
+                    "tool-call",
+                    timestamp=ts,
+                    name=payload.get("name", "unknown"),
+                    input=payload.get("arguments", {}),
+                    **{"call-id": payload.get("call_id")},
                 )
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "function_call_output":
-                entries.append(
-                    _make_entry(
-                        "tool-result",
-                        timestamp=ts,
-                        output=payload.get("output", ""),
-                        **{"call-id": payload.get("call_id")},
-                    )
+                consumed = {"type", "output", "call_id"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry(
+                    "tool-result",
+                    timestamp=ts,
+                    output=payload.get("output", ""),
+                    **{"call-id": payload.get("call_id")},
                 )
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "reasoning":
                 summary = payload.get("summary")
                 if isinstance(summary, list):
                     summary = "\n".join(s.get("text", "") for s in summary if isinstance(s, dict))
-                entries.append(
-                    _make_entry("reasoning", timestamp=ts, content=summary, encrypted=payload.get("encrypted_content"))
+                consumed = {"type", "summary", "encrypted_content"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry(
+                    "reasoning", timestamp=ts, content=summary, encrypted=payload.get("encrypted_content")
                 )
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "web_search_call":
                 action = payload.get("action", {})
-                entries.append(_make_entry("tool-call", timestamp=ts, name="web_search", input=action))
+                consumed = {"type", "action"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry("tool-call", timestamp=ts, name="web_search", input=action)
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "custom_tool_call":
-                entries.append(
-                    _make_entry(
-                        "tool-call",
-                        timestamp=ts,
-                        name=payload.get("name", "unknown"),
-                        input=payload.get("input", ""),
-                        **{"call-id": payload.get("call_id")},
-                    )
+                consumed = {"type", "name", "input", "call_id"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry(
+                    "tool-call",
+                    timestamp=ts,
+                    name=payload.get("name", "unknown"),
+                    input=payload.get("input", ""),
+                    **{"call-id": payload.get("call_id")},
                 )
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "custom_tool_call_output":
-                entries.append(
-                    _make_entry(
-                        "tool-result",
-                        timestamp=ts,
-                        output=payload.get("output", ""),
-                        **{"call-id": payload.get("call_id")},
-                    )
+                consumed = {"type", "output", "call_id"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry(
+                    "tool-result",
+                    timestamp=ts,
+                    output=payload.get("output", ""),
+                    **{"call-id": payload.get("call_id")},
                 )
+                entry.update(extra)
+                entries.append(entry)
 
         elif ltype == "event_msg":
             ptype = payload.get("type", "")
 
             if ptype == "agent_reasoning":
-                entries.append(_make_entry("reasoning", timestamp=ts, content=payload.get("text")))
+                consumed = {"type", "text"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry("reasoning", timestamp=ts, content=payload.get("text"))
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "token_count":
-                entries.append(_make_entry("system-event", timestamp=ts, **{"event-type": "token-count"}))
+                consumed = {"type"}
+                extra = _passthrough(payload, consumed)
+                # Extract token-usage from info field if present
+                info = payload.get("info", {})
+                token_usage = None
+                if isinstance(info, dict) and info:
+                    token_usage = {}
+                    if "input_tokens" in info:
+                        token_usage["input"] = info["input_tokens"]
+                    if "output_tokens" in info:
+                        token_usage["output"] = info["output_tokens"]
+                    if "total_tokens" in info:
+                        token_usage["total"] = info["total_tokens"]
+                    info_consumed = {"input_tokens", "output_tokens", "total_tokens"}
+                    token_usage.update(_passthrough(info, info_consumed))
+                entry = _make_entry("system-event", timestamp=ts, **{"event-type": "token-count"})
+                if token_usage:
+                    entry["token-usage"] = token_usage
+                extra.pop("info", None)
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "user_message":
-                entries.append(_make_entry("user", timestamp=ts, content=payload.get("message")))
+                consumed = {"type", "message"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry("user", timestamp=ts, content=payload.get("message"))
+                entry.update(extra)
+                entries.append(entry)
 
             elif ptype == "agent_message":
-                entries.append(_make_entry("assistant", timestamp=ts, content=payload.get("message")))
+                consumed = {"type", "message"}
+                extra = _passthrough(payload, consumed)
+                entry = _make_entry("assistant", timestamp=ts, content=payload.get("message"))
+                entry.update(extra)
+                entries.append(entry)
 
     return entries, meta
 
@@ -492,7 +621,17 @@ def parse_opencode(path):
     Model extracted from: modelID on assistant message objects.
     Provider extracted from: providerID on assistant message objects.
     Multi-model: collects all modelID values seen.
+    Token-usage extracted from: role-message tokens/cost fields.
+    Native fields preserved: object-level fields (no-drop policy).
     """
+    # Fields consumed for canonical mapping per object type
+    _ROLE_CONSUMED = {"role", "modelID", "providerID", "model", "time", "id", "sessionID", "tokens", "cost"}
+    _TEXT_CONSUMED = {"type", "text", "id", "messageID"}
+    _TOOL_CONSUMED = {"type", "tool", "callID", "state", "id", "sessionID", "messageID"}
+    _PATCH_CONSUMED = {"type", "diff", "id"}
+    _REASONING_CONSUMED = {"type", "text", "id"}
+    _STEP_CONSUMED = {"type"}
+
     with open(path) as f:
         content = f.read()
 
@@ -540,6 +679,10 @@ def parse_opencode(path):
                 meta["start"] = time_info["created"]
             continue
 
+        # Skip share-info objects (contain secrets, no useful data)
+        if "secret" in obj and "url" in obj and "type" not in obj and "role" not in obj:
+            continue
+
         if obj.get("sessionID"):
             meta["session_id"] = obj["sessionID"]
 
@@ -562,8 +705,30 @@ def parse_opencode(path):
 
             ts = obj.get("time", {})
             ts = ts.get("created") if isinstance(ts, dict) else None
+
+            # Token-usage extraction (canonical) from role messages
+            token_usage = None
+            tokens_raw = obj.get("tokens")
+            cost_raw = obj.get("cost")
+            if isinstance(tokens_raw, dict):
+                token_usage = {}
+                if "input" in tokens_raw:
+                    token_usage["input"] = tokens_raw["input"]
+                if "output" in tokens_raw:
+                    token_usage["output"] = tokens_raw["output"]
+                tokens_consumed = {"input", "output"}
+                token_usage.update(_passthrough(tokens_raw, tokens_consumed))
+            if cost_raw is not None:
+                if token_usage is None:
+                    token_usage = {}
+                token_usage["cost"] = cost_raw
+
             # Content is in child objects, not here — omit content field
-            entries.append(_make_entry("user" if obj.get("role") == "user" else "assistant", timestamp=ts))
+            entry = _make_entry("user" if obj.get("role") == "user" else "assistant", timestamp=ts)
+            if token_usage:
+                entry["token-usage"] = token_usage
+            entry.update(_passthrough(obj, _ROLE_CONSUMED))
+            entries.append(entry)
             continue
 
         otype = obj.get("type")
@@ -572,7 +737,9 @@ def parse_opencode(path):
             msg_id = obj.get("messageID")
             role = message_roles.get(msg_id, "assistant")
             entry_type = "user" if role == "user" else "assistant"
-            entries.append(_make_entry(entry_type, content=obj.get("text", ""), id=obj.get("id")))
+            entry = _make_entry(entry_type, content=obj.get("text", ""), id=obj.get("id"))
+            entry.update(_passthrough(obj, _TEXT_CONSUMED))
+            entries.append(entry)
         elif otype == "tool":
             state = obj.get("state", {})
             call_id = obj.get("callID")
@@ -580,16 +747,24 @@ def parse_opencode(path):
             time_info = state.get("time", {})
             if isinstance(time_info, dict) and time_info.get("start"):
                 tool_ts = time_info["start"]
-            entries.append(
-                _make_entry(
-                    "tool-call",
-                    timestamp=tool_ts,
-                    name=obj.get("tool", "unknown"),
-                    input=state.get("input", {}),
-                    id=obj.get("id"),
-                    **{"call-id": call_id},
-                )
+
+            # Tool-call entry with native passthrough
+            entry = _make_entry(
+                "tool-call",
+                timestamp=tool_ts,
+                name=obj.get("tool", "unknown"),
+                input=state.get("input", {}),
+                id=obj.get("id"),
+                **{"call-id": call_id},
             )
+            # Pass through state-level fields (title, metadata, time)
+            state_consumed = {"input", "output", "status", "time"}
+            state_extra = _passthrough(state, state_consumed)
+            if state_extra:
+                entry.update(state_extra)
+            entry.update(_passthrough(obj, _TOOL_CONSUMED))
+            entries.append(entry)
+
             # OpenCode stores result inline in the same object
             output = state.get("output")
             status = state.get("status")
@@ -597,21 +772,29 @@ def parse_opencode(path):
                 result_ts = None
                 if isinstance(time_info, dict) and time_info.get("end"):
                     result_ts = time_info["end"]
-                entries.append(
-                    _make_entry(
-                        "tool-result",
-                        timestamp=result_ts,
-                        output=output if output is not None else "",
-                        status=status,
-                        **{"call-id": call_id},
-                    )
+                result_entry = _make_entry(
+                    "tool-result",
+                    timestamp=result_ts,
+                    output=output if output is not None else "",
+                    status=status,
+                    **{"call-id": call_id},
                 )
+                # Pass through state metadata on result too
+                if state.get("metadata"):
+                    result_entry["metadata"] = state["metadata"]
+                entries.append(result_entry)
         elif otype == "patch":
-            entries.append(_make_entry("tool-result", id=obj.get("id"), output=obj.get("diff", ""), status="success"))
+            entry = _make_entry("tool-result", id=obj.get("id"), output=obj.get("diff", ""), status="success")
+            entry.update(_passthrough(obj, _PATCH_CONSUMED))
+            entries.append(entry)
         elif otype == "reasoning":
-            entries.append(_make_entry("reasoning", content=obj.get("text"), id=obj.get("id")))
+            entry = _make_entry("reasoning", content=obj.get("text"), id=obj.get("id"))
+            entry.update(_passthrough(obj, _REASONING_CONSUMED))
+            entries.append(entry)
         elif otype in ("step-start", "step-finish"):
-            entries.append(_make_entry("system-event", **{"event-type": otype}))
+            entry = _make_entry("system-event", **{"event-type": otype})
+            entry.update(_passthrough(obj, _STEP_CONSUMED))
+            entries.append(entry)
 
     return entries, meta
 
@@ -680,10 +863,10 @@ def wrap_record(entries, meta):
         agent_meta["cli-version"] = meta["cli_version"]
 
     record = {
-        "version": "2.0.0-draft",
+        "version": "3.0.0-draft",
         "id": session_id,
         "session": {
-            "format": "autonomous",
+            "format": "interactive",
             "session-id": session_id,
             "agent-meta": agent_meta,
             "entries": entries,

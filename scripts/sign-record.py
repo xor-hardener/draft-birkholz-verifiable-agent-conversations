@@ -68,7 +68,7 @@ def _extract_trace_metadata(record, json_bytes):
     meta = {
         "session-id": session.get("session-id", record.get("id", "unknown")),
         "agent-vendor": agent_meta.get("model-provider", "unknown"),
-        "trace-format": "ietf-vac-v2.0",
+        "trace-format": "ietf-vac-v3.0",
         "content-hash": _sha256_hex(json_bytes),
         "content-hash-alg": "sha-256",
     }
