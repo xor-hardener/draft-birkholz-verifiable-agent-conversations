@@ -1,0 +1,37 @@
+name: "Validate CDDL Schema"
+
+on:
+  push:
+    paths:
+    - agent-conversation.cddl
+    - scripts/validate-sessions.py
+    - examples/sessions/**
+  pull_request:
+    paths:
+    - agent-conversation.cddl
+    - scripts/validate-sessions.py
+    - examples/sessions/**
+
+jobs:
+  validate:
+    name: "CDDL Schema Validation"
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v5
+
+    - name: "Setup Ruby"
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.3"
+
+    - name: "Install cddl gem"
+      run: gem install cddl
+
+    - name: "Setup Python"
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: "Validate sessions against schema"
+      run: python3 scripts/validate-sessions.py
