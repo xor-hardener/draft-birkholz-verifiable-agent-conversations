@@ -1,0 +1,277 @@
+
+
+
+
+Network Working Group                                        H. Birkholz
+Internet-Draft                                                          
+Intended status: Standards Track                                T. Heldt
+Expires: 22 August 2026                                 18 February 2026
+
+
+                     Verifiable Agent Conversations
+          draft-birkholz-verifiable-agent-conversations-latest
+
+Abstract
+
+   Abstract
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/xor-hardener/draft-birkholz-verifiable-agent-
+   conversations.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 22 August 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Conventions and Definitions
+   2.  Agent Conversations
+   3.  References
+     3.1.  Normative References
+     3.2.  Informative References
+   Authors' Addresses
+
+1.  Introduction
+
+   Autonomous Agents--typically workload instances of agentic artificial
+   intelligence (AI) based on large language models (LLM)--interact with
+   other actors by design.  The two main types of actors interacting
+   with autonomous agents are humans and machines (e.g., other
+   autonomous), or a mix of them.  In agentic AI systems, machine actors
+   interact with other machine actors.  While the responsible parties
+   ultimately are humans (e.g., a natural legal entity or an
+   organization), agents do not only act on behalf of humans they can
+   also act on behalf of other agents.  These increasingly complex
+   interactions between multiple actors that can also be triggered by
+   machines (recursively) increases the need to understand decision
+   making and the chain of thoughts of autonomous agents, retroactively.
+
+   This document defines conversation records representing activities of
+   autonomous agents such that long-term preservation of the evidentiary
+   value of these records across chains of custody is possible.  The
+   first goal is to assure that the recording of an agent conversation
+   (a distinct segment of the interaction with an autonomous agent)
+   being proffered is the same as the agent conversation that actually
+   occurred.  The second goal is to provide a general structure of agent
+   conversations that can represent most common types of agent
+   conversation frames, is extensible, and allows for future evolution
+   of agent conversation complexity and corresponding actor interaction.
+   The third goal is to use existing IETF building blocks to present
+   believable evidence about how an agent conversation is recorded
+   utilizing Evidence generation as laid out in the Remote ATtestation
+   ProcedureS architecture [RFC9334].  The fourth goal is to use
+   existing IETF building blocks to render conversation records
+   auditable after the fact and enable non-repudiation as laid out in
+   the Supply Chain Integrity, Transparency, and Trust architecture
+   [I-D.ietf-scitt-architecture].
+
+   Most agent conversations today are represented in "human-readable"
+   text formats.  For example, [STD90] is considered to be "human-
+   readable" as it can be presented to humans in human-computer-
+   interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
+   editors that allow such data to be consumed or modified by humans.
+   The Concise Binary Object Representation (CBOR [STD94]) is used as
+   the primary representation next to the established representation
+   that is JSON.
+
+1.1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   In this document, CDDL [RFC8610] is used to describe the data
+   formats.
+
+   The reader is assumed to be familiar with the vocabulary and concepts
+   defined in [RFC9334] and [I-D.ietf-scitt-architecture].
+
+2.  Agent Conversations
+
+   Content
+
+agent-convo-record = {
+ version: text                   ; Agent Trace specification version (e.g., '1.0'). Should be semver?
+ id: text                        ; "Unique identifier" (uuid type 4) for this convo-record
+ timestamp: text .regexp date-time-regexp ; RFC 3339 timestamp when the convo was recorded
+ ? vcs: vcs                      ; Version control system information for this convo
+ ? tool: tool                    ; The tool that generated this convo
+ files: [* file]                 ; Array of files with attributed ranges
+ ? metadata: anymap              ; Additional metadata for implementation-specific or vendor-specific data
+}
+
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?" ; FIXME
+
+anymap = { * label => value }    ; placeholder for later
+label = any
+value = any
+
+vcs = {
+ type: "git" / "jj" / "hg" / "svn"; Version control system type
+ revision: text                  ; Revision identifier (e.g., git commit SHA, jj change ID)
+}
+
+tool = {
+ ? name: text
+ ? version: text
+}
+
+file = {
+ path: text                      ; Relative file path from repository root
+ conversations: [* conversation] ; Array of conversations that contributed to this file
+}
+
+contributor = {
+ type: "human" / "ai" / "mixed" / "unknown"
+ ? model_id: text                ; The model's unique identifier following models.dev convention (e.g., 'anthropic/claude-opus-4-5-20251101'), maxLength of 250?
+}
+
+resource = {
+ type: text
+ url: text .regexp uri-regexp
+}
+
+conversation = {
+ ? url: text .regexp uri-regexp  ; URL to look up the conversation that produced this code
+ ? contributor: contributor      ; The contributor for ranges in this conversation (can be overridden per-range)
+ ranges: [* range]               ; Array of line ranges produced by this conversation
+ ? related: [* resource]         ; Other related resources
+}
+
+range = {
+ start_line: uint                ; min of 1? was int
+ end_line: uint                  ; min of 1? was int
+ ? content_hash: text            ; Hash of attributed content for position-independent tracking
+ ? contributor: contributor      ; Override contributor for this specific range (e.g., for agent handoffs)
+}
+
+          Figure 1: CDDL definition of an Agent Conversation
+
+3.  References
+
+3.1.  Normative References
+
+   [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
+              <https://www.iana.org/assignments/cwt>.
+
+   [IANA.jwt] IANA, "JSON Web Token (JWT)",
+              <https://www.iana.org/assignments/jwt>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
+
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7519>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [STD90]    Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/rfc/rfc8259>.
+
+   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+3.2.  Informative References
+
+   [I-D.ietf-scitt-architecture]
+              Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
+              Y., and S. Lasker, "An Architecture for Trustworthy and
+              Transparent Digital Supply Chains", Work in Progress,
+              Internet-Draft, draft-ietf-scitt-architecture-22, 10
+              October 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-scitt-architecture-22>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Authors' Addresses
+
+   Henk Birkholz
+   Email: henk.birkholz@ietf.contact
+
+
+   Tobias Heldt
+   Email: tobias@xor.tech
