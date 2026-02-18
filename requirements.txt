@@ -1,2 +1,0 @@
-pycose>=1.1.0   # COSE_Sign1 signing (RFC 9052) - used by scripts/sign-record.py
-cbor2>=5.6.0    # CBOR serialization (RFC 8949) - COSE dependency
