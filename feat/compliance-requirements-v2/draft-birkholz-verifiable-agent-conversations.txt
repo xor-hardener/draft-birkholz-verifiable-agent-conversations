@@ -1,0 +1,795 @@
+
+
+
+
+Network Working Group                                        H. Birkholz
+Internet-Draft                                                          
+Intended status: Standards Track                                T. Heldt
+Expires: 22 August 2026                                 18 February 2026
+
+
+                     Verifiable Agent Conversations
+          draft-birkholz-verifiable-agent-conversations-latest
+
+Abstract
+
+   Abstract
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/xor-hardener/draft-birkholz-verifiable-agent-
+   conversations.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 22 August 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Conventions and Definitions
+   2.  Agent Conversations
+   3.  References
+     3.1.  Normative References
+     3.2.  Informative References
+   Authors' Addresses
+
+1.  Introduction
+
+   Autonomous Agents--typically workload instances of agentic artificial
+   intelligence (AI) based on large language models (LLM)--interact with
+   other actors by design.  The two main types of actors interacting
+   with autonomous agents are humans and machines (e.g., other
+   autonomous), or a mix of them.  In agentic AI systems, machine actors
+   interact with other machine actors.  While the responsible parties
+   ultimately are humans (e.g., a natural legal entity or an
+   organization), agents do not only act on behalf of humans they can
+   also act on behalf of other agents.  These increasingly complex
+   interactions between multiple actors that can also be triggered by
+   machines (recursively) increases the need to understand decision
+   making and the chain of thoughts of autonomous agents, retroactively.
+
+   This document defines conversation records representing activities of
+   autonomous agents such that long-term preservation of the evidentiary
+   value of these records across chains of custody is possible.  The
+   first goal is to assure that the recording of an agent conversation
+   (a distinct segment of the interaction with an autonomous agent)
+   being proffered is the same as the agent conversation that actually
+   occurred.  The second goal is to provide a general structure of agent
+   conversations that can represent most common types of agent
+   conversation frames, is extensible, and allows for future evolution
+   of agent conversation complexity and corresponding actor interaction.
+   The third goal is to use existing IETF building blocks to present
+   believable evidence about how an agent conversation is recorded
+   utilizing Evidence generation as laid out in the Remote ATtestation
+   ProcedureS architecture [RFC9334].  The fourth goal is to use
+   existing IETF building blocks to render conversation records
+   auditable after the fact and enable non-repudiation as laid out in
+   the Supply Chain Integrity, Transparency, and Trust architecture
+   [I-D.ietf-scitt-architecture].
+
+   Most agent conversations today are represented in "human-readable"
+   text formats.  For example, [STD90] is considered to be "human-
+   readable" as it can be presented to humans in human-computer-
+   interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
+   editors that allow such data to be consumed or modified by humans.
+   The Concise Binary Object Representation (CBOR [STD94]) is used as
+   the primary representation next to the established representation
+   that is JSON.
+
+1.1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   In this document, CDDL [RFC8610] is used to describe the data
+   formats.
+
+   The reader is assumed to be familiar with the vocabulary and concepts
+   defined in [RFC9334] and [I-D.ietf-scitt-architecture].
+
+2.  Agent Conversations
+
+   Content
+
+; =============================================================================
+; Verifiable Agent Conversations - CDDL Schema
+; =============================================================================
+;
+; draft-birkholz-verifiable-agent-conversations
+; Authors: Henk Birkholz, Tobias Heldt
+;
+; Version: 3.0.0-draft
+; Date: 2026-02-18
+;
+; This schema unifies two complementary perspectives:
+;   - File Attribution (Birkholz): WHAT code was produced and by whom
+;   - Session Records (XOR): HOW the code was produced (conversation replay)
+;
+; Simplification (v3 vs v2):
+;   - 7 entry types → 4 (message, tool, reasoning, event)
+;   - All maps extensible via `* tstr => any` (RFC 8610 §3.5.4)
+;   - Removed vendor-extension ceremony (subsumed by open maps)
+;   - Merged session types into single session-trace
+;   - Native agent fields preserved via open maps (no data loss)
+;   - See: .claude/reviews/2026-02-18/ for decision log
+;
+; Cross-References (for reviewers):
+;   See: PR #3 draft-birkholz-verifiable-agent-conversations.md for full I-D specification
+;   See: PR #4 docs/cddl-extraction-methodology.md for how this schema was derived
+;   See: PR #4 docs/agent-type-mapping-table.md for vendor format coverage
+;   See: PR #4 examples/DATASET_MANIFEST.md for complete dataset inventory
+;   See: PR #4 examples/reasoning-artifacts/ for full derivation chain (RLM→Agent0→Quint→Council)
+;
+; Empirical Basis:
+;   - 1,452 sessions across 5 agent implementations (ARVO-136 benchmark)
+;   - 13 agent-model combinations validated against this schema
+;   - Agents: Claude Code, Gemini CLI, Codex CLI, OpenCode, Cursor
+;   - Dataset: ARVO-136 benchmark (see PR #2 examples/sessions/README.md)
+;
+; Specification References:
+;   RFC 8610: Concise Data Definition Language (CDDL)
+;   RFC 8949: Concise Binary Object Representation (CBOR)
+;   RFC 9052: CBOR Object Signing and Encryption (COSE)
+;   RFC 9334: Remote ATtestation procedureS (RATS) Architecture
+;   RFC 3339: Date and Time on the Internet: Timestamps
+;   draft-ietf-scitt-architecture: SCITT Architecture
+;
+; JSON/CBOR Dual Representation:
+;   This schema supports both JSON and CBOR serialization.
+;   - JSON: All keys are tstr; timestamps are RFC 3339 strings
+;   - CBOR: Integer keys permitted via `* tstr => any` for compact encoding
+;   - Signing envelope (Section 9) requires CBOR for COSE_Sign1
+;
+; Extensibility:
+;   All map types include `* tstr => any` as the last entry, following the
+;   extensibility idiom from RFC 8610 §3.5.4 and the COSE precedent
+;   (RFC 9052 uses `* label => values` on COSE_Key and header maps).
+;   Defined keys use colon syntax (implicit cut semantics), so extra
+;   fields cannot shadow canonical field type constraints.
+;
+; =============================================================================
+
+; =============================================================================
+; ROOT RULE - MUST BE FIRST FOR CDDL TOOLING COMPATIBILITY
+; =============================================================================
+;
+; The root rule defines what this schema validates. Multiple targets supported:
+;
+;   1. verifiable-agent-record: Full envelope with session + file-attribution
+;   2. session-trace: Just the session conversation
+;   3. [* entry]: Raw entry array (vendor-native JSONL converted to array)
+;   4. signed-agent-record: COSE_Sign1 wrapped record
+;
+; Usage with cddl gem:
+;   cddl schema.cddl validate data.json                    # validates against 'start'
+;   cddl schema.cddl validate data.json verifiable-agent-record  # explicit rule
+;   cddl schema.cddl g                                     # generates from 'start'
+;   cddl schema.cddl g 1 entry                             # generates single entry
+;   cddl schema.cddl g 1 session-trace                     # generates session-trace
+;
+start = verifiable-agent-record
+
+; =============================================================================
+; SECTION 1: COMMON TYPES
+; =============================================================================
+
+; Timestamp: accepts BOTH RFC 3339 strings AND epoch milliseconds.
+; Evidence: Claude/Gemini/Codex use ISO 8601; OpenCode uses epoch ms.
+; 5/5 vendor support with format variance (Cursor lacks timestamps entirely).
+; See: PR #4 docs/agent-type-mapping-table.md Section: Timestamp Format Comparison
+abstract-timestamp = tstr .regexp date-time-regexp / number
+; Implementations SHOULD use RFC 3339 (tstr) for new traces.
+; Implementations MUST accept epoch milliseconds (number) for interop.
+; When number: milliseconds since Unix epoch (1970-01-01T00:00:00Z).
+
+; Session identifier: UUID, SHA-256 hash, or opaque string.
+; Evidence: Claude/Gemini use UUID v4, Codex UUID v7, OpenCode SHA-256,
+;           Cursor lacks session ID entirely (generated by converter).
+session-id = tstr
+; Implementations SHOULD use UUID v7 (RFC 9562) for new implementations.
+
+; Entry identifier: per-entry unique reference.
+; Evidence: 3/5 formats have explicit IDs; Codex positional; Cursor lacks.
+entry-id = tstr
+
+; RFC 3339 date-time pattern
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+; URI pattern (RFC 3986) — used by file-attribution only
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+
+; =============================================================================
+; SECTION 2: ROOT TYPE - VERIFIABLE AGENT RECORD
+; =============================================================================
+
+; The verifiable-agent-record is the top-level container.
+; It unifies two complementary perspectives:
+;   - session: the conversation (how code was produced) [PRIMARY]
+;   - file-attribution: the output (what code was produced) [DERIVED]
+;   - signature: cryptographic envelope (verifiability) [OPTIONAL]
+;
+; Rationale for this architecture:
+;   Session-trace captures everything. File attribution captures a subset
+;   (the file modifications). File attribution can be partially derived
+;   from session entries (tool-call analysis) but not fully (content_hash,
+;   conversation.url require external data). Both perspectives are valuable.
+;   Neither subsumes the other.
+;
+verifiable-agent-record = {
+    version: tstr                       ; Schema version (semver)
+    id: tstr                            ; Record identifier (UUID v4/v7)
+    ? created: abstract-timestamp       ; When this record was created
+
+    ; Session record: the full conversation [PRIMARY]
+    ? session: session-trace
+
+    ; File attribution: what code was produced [DERIVED]
+    ? file-attribution: file-attribution-record
+
+    ; Version control context
+    ? vcs: vcs-context
+
+    ; The agent/tool that GENERATED this record
+    ? recording-agent: recording-agent
+
+    ; Open for extensions
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 3: SESSION TRACE
+; =============================================================================
+
+; A session trace captures the full conversation: entries, tool calls,
+; reasoning, token usage. This is the PRIMARY recording format.
+;
+; Simplified from v2: interactive-session / autonomous-session merged into
+; a single type. The format field is optional, not a discriminator.
+
+session-trace = {
+    ? format: tstr                      ; "interactive" / "autonomous" / vendor string
+    session-id: session-id              ; 4/5 vendor support (Cursor lacks)
+    ? session-start: abstract-timestamp ; 4/5 (Cursor lacks timestamps entirely)
+    ? session-end: abstract-timestamp   ; 4/5 (Cursor lacks timestamps entirely)
+    agent-meta: agent-meta              ; 5/5
+    ? environment: environment          ; 3/5 (Gemini, Cursor lack explicit working dir)
+    entries: [* entry]                  ; 5/5
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 4: AGENT METADATA
+; =============================================================================
+
+; Identifies the coding agent and model.
+; Evidence: 4/5 formats provide model identification (Cursor lacks entirely;
+;           set to "unknown" when not available).
+
+agent-meta = {
+    model-id: tstr                      ; Primary model, e.g., "claude-opus-4-5-20251101"
+    model-provider: tstr                ; Primary provider, e.g., "anthropic", "google"
+    ? models: [* tstr]                  ; All models used (multi-model sessions)
+    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+    ? cli-version: tstr                 ; Semver string (2/5 vendor support)
+    * tstr => any
+}
+
+; The tool/agent that GENERATED this record.
+; Renamed from v1 "tool" to avoid collision with tool-call-entry.
+; v1 "tool = { name, version }" -> "recording-agent = { name, version }"
+recording-agent = {
+    ? name: tstr                        ; CLI/tool name
+    ? version: tstr                     ; CLI/tool version
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 5: ENVIRONMENT
+; =============================================================================
+
+; Environment context: working directory, VCS, sandbox.
+
+environment = {
+    ? working-dir: tstr                 ; Primary working directory (3/5)
+    ? vcs: vcs-context                  ; Version control context
+    ? sandboxes: [* tstr]               ; Sandbox mount paths (OpenCode, Codex)
+    * tstr => any
+}
+
+; VCS context: git metadata for reproducibility.
+; Superset of v1 vcs (which had only type + revision).
+; Added: branch, repository (from 2/4 and 1/4 formats respectively).
+vcs-context = {
+    ? type: tstr                        ; "git" / "jj" / "hg" / "svn"
+    ? revision: tstr                    ; Commit SHA or change ID
+    ? branch: tstr                      ; Branch name (2/4: Claude, Codex)
+    ? repository: tstr                  ; Repository URL (1/4: Codex, but valuable)
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 6: ENTRY TYPES
+; =============================================================================
+
+; Entry: union of 4 types (simplified from 7 in v2).
+;
+; DESIGN DECISION (v3):
+;   Only 4 fields are universal across all 5 agent trace formats:
+;     - type (5/5), timestamp (4/5), id (3/5), content (4/5)
+;   All other fields are type-specific or vendor-specific.
+;   The IETF "running code" criterion requires 2+ independent
+;   implementations per mandatory field. These meet that bar.
+;
+; v2 → v3 merges:
+;   user-entry + assistant-entry     → message-entry
+;   tool-call-entry + tool-result-entry → tool-entry
+;   system-event-entry + vendor-entry → event-entry
+;   reasoning-entry                  → reasoning-entry (unchanged)
+;
+; All entries support:
+;   - `? children: [* entry]` for hierarchical nesting (Claude/Gemini)
+;   - `* tstr => any` for native agent field passthrough (no data loss)
+;
+; Field optionality rationale:
+;   Fields marked `?` (optional) have comments like "4/5" indicating how many
+;   of the 5 reference agents natively provide that field. A field is optional
+;   when at least one agent implementation cannot provide it (e.g., Cursor
+;   lacks timestamps, IDs, and model identification entirely). The "N/5"
+;   annotation is empirical evidence, not a normative requirement.
+;   Required fields have 5/5 support or are fabricated by the converter.
+
+entry = message-entry
+      / tool-entry
+      / reasoning-entry
+      / event-entry
+
+; --- Message Entry ---
+; Human input (user) or agent response (assistant).
+; Evidence: all 5 formats have user/assistant role messages.
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any                      ; Message text or structured content blocks.
+                                        ; tstr for simple text; array of parts for
+                                        ; multi-part messages (e.g., Claude interleaves
+                                        ; text, tool_use, and thinking blocks).
+                                        ; Optional: OpenCode message-level entries have
+                                        ; no inline text; content is in child entries.
+    ? timestamp: abstract-timestamp     ; Entry timestamp (4/5; Cursor lacks)
+    ? id: entry-id                      ; Entry identifier (3/5)
+    ? model-id: tstr                    ; Model used (4/5 on assistant; absent on user entries)
+    ? stop-reason: tstr                 ; "end_turn", "tool_use", "max_tokens" (assistant only)
+    ? parent-id: entry-id              ; Parent message (2/5: Claude, OpenCode)
+    ? token-usage: token-usage         ; Token consumption metrics
+    ? children: [* entry]              ; Nested child entries
+    * tstr => any                       ; Native agent fields (passthrough)
+}
+
+; --- Tool Entry ---
+; Tool invocation (tool-call) or tool output (tool-result).
+;
+; BRIDGE TO FILE ATTRIBUTION:
+;   When type is "tool-call" and name is "Edit"/"Write"/"replace"/"apply_patch",
+;   input contains file_path and change data linking to file-attribution.
+;
+; NOTE: name/input are always present on tool-call (5/5); output is always
+; present on tool-result (4/5). They are marked optional because this merged
+; type covers both directions — name/input are absent on tool-result entries,
+; output is absent on tool-call entries. The schema does not enforce per-subtype
+; requirements; both are optional on the union type.
+tool-entry = {
+    type: "tool-call" / "tool-result"
+    ? call-id: tstr                     ; Links call to result (3/5)
+    ? name: tstr                        ; Tool name (5/5 on tool-call; absent on tool-result)
+    ? input: any                        ; Tool arguments (5/5 on tool-call; absent on tool-result)
+    ? output: any                       ; Tool output (4/5 on tool-result; absent on tool-call)
+    ? status: tstr                      ; "success" / "error" / "completed" (3/5 on tool-result)
+    ? is-error: bool                    ; Error flag (tool-result only)
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any                       ; Native agent fields (passthrough)
+}
+
+; --- Reasoning Entry ---
+; Chain-of-thought, thinking, or reasoning content.
+reasoning-entry = {
+    type: "reasoning"
+    ? content: any                      ; Plaintext reasoning or structured content.
+                                        ; Empty string when only encrypted content available.
+    ? encrypted: tstr                   ; Encrypted content (Codex)
+    ? subject: tstr                     ; Topic label (Gemini thoughts)
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any                       ; Native agent fields (passthrough)
+}
+
+; --- Event Entry ---
+; System lifecycle events (session-start, token-count, etc.).
+event-entry = {
+    type: "system-event"
+    ? event-type: tstr                  ; "session-start", "session-end", "token-count", etc.
+    ? data: { * tstr => any }           ; Event-specific payload
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any                       ; Native agent fields (passthrough)
+}
+
+; =============================================================================
+; SECTION 7: TOKEN USAGE
+; =============================================================================
+
+; Token consumption metrics for a model response.
+; Evidence: 4/5 formats track tokens (Cursor lacks entirely).
+; Parsers normalize from native formats into these canonical fields.
+token-usage = {
+    ? input: uint                       ; Input tokens (4/5)
+    ? output: uint                      ; Output tokens (4/5)
+    ? cached: uint                      ; Cached input tokens (3/5)
+    ? reasoning: uint                   ; Reasoning/thinking tokens (2/5)
+    ? total: uint                       ; Total tokens (2/5)
+    ? cost: number                      ; Dollar cost (1/5: OpenCode)
+    * tstr => any                       ; Native token fields (passthrough)
+}
+
+; =============================================================================
+; SECTION 8: FILE ATTRIBUTION (Birkholz Model)
+; =============================================================================
+
+; TODO: This section is specified but NOT YET VALIDATED against real data.
+; No parser currently produces file-attribution-record. Implementation is
+; planned — see .claude/reviews/2026-02-18/simplification-plan.md Phase 4.
+;
+; File attribution captures WHAT code was produced: which files were
+; modified, which line ranges were changed, and who (human/AI) wrote them.
+;
+; This model was designed by Henk Birkholz for code provenance tracking.
+; It can be PARTIALLY derived from session-trace entries by analyzing
+; tool-call entries that modify files (Edit, replace, apply_patch).
+;
+; Fields NOT derivable from session-trace alone:
+;   - content_hash: requires reading final file state after all edits
+;   - conversation.url: external reference to conversation source
+;   - conversation.related: external resources
+;
+file-attribution-record = {
+    files: [* file]                     ; Array of files with attributed ranges
+}
+
+file = {
+    path: tstr                          ; Relative file path from repository root
+    conversations: [* conversation]     ; Conversations that contributed to this file
+}
+
+conversation = {
+    ? url: tstr .regexp uri-regexp      ; URL to the conversation source
+    ? contributor: contributor          ; Default contributor for ranges
+    ranges: [* range]                   ; Line ranges produced by this conversation
+    ? related: [* resource]             ; Related external resources
+}
+
+range = {
+    start_line: uint                    ; First line (1-indexed)
+    end_line: uint                      ; Last line (1-indexed, inclusive)
+    ? content_hash: tstr                ; Hash of content for position-independent tracking
+    ? content_hash_alg: tstr            ; Hash algorithm (default: "sha-256")
+    ? contributor: contributor          ; Override contributor for this range
+}
+
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model_id: tstr                    ; Model identifier (models.dev convention)
+}
+
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+
+; =============================================================================
+; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
+; =============================================================================
+
+; COSE_Sign1 signing envelope for verifiable agent records.
+; Implementation: scripts/sign-record.py (Ed25519, detached payload)
+;
+; Signing is independent of schema compliance. A record can be:
+;   - Verifiable (signed) AND schema-conformant
+;   - Verifiable (signed) but vendor-native format
+;   - Schema-conformant but unsigned
+;
+; This satisfies goals for RATS evidence generation (RFC 9334) and
+; SCITT auditability (draft-ietf-scitt-architecture), both of which
+; require cryptographic signing.
+;
+; CBOR required for COSE_Sign1. When the payload is JSON,
+; it is the UTF-8 encoded JSON bytes.
+;
+signed-agent-record = #6.18([          ; COSE_Sign1 tag
+    protected: bstr,                    ; Protected header: alg, content-type
+    unprotected: {                      ; Unprotected header: trace metadata
+        ? trace-metadata-key => trace-metadata
+    },
+    payload: bstr / null,               ; Serialized record bytes (detached if null)
+    signature: bstr                     ; Cryptographic signature
+])
+
+trace-metadata-key = 100               ; Private-use label (to be registered)
+
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr                ; SHA-256 hex digest of payload bytes
+    ? content-hash-alg: tstr            ; Hash algorithm (default: "sha-256")
+}
+
+trace-format-id = "ietf-vac-v3.0"      ; This spec's format
+               / "claude-jsonl"         ; Claude Code native JSONL
+               / "gemini-json"          ; Gemini CLI single-JSON
+               / "codex-jsonl"          ; Codex CLI JSONL
+               / "opencode-json"        ; OpenCode concatenated JSON
+               / "cursor-jsonl"         ; Cursor bare JSONL (minimal metadata)
+               / tstr                   ; Future formats (extensible)
+
+; =============================================================================
+; SECTION 10: INFORMATIVE - FILE ATTRIBUTION DERIVATION ALGORITHM
+; =============================================================================
+
+; TODO: Not yet implemented. See .claude/reviews/2026-02-18/ Phase 4.
+;
+; INFORMATIVE: How to derive file-attribution-record from session-trace.
+;
+; Algorithm:
+;   1. Walk session-trace.entries[] in order
+;   2. For each tool-entry where type is "tool-call" and name in
+;      {"Edit", "Write", "replace", "apply_patch", "edit_file", "write_file"}:
+;      a. Extract file_path from input (key varies by agent)
+;      b. Normalize to relative path (strip working-dir prefix)
+;      c. Create/update file entry in file-attribution-record.files[]
+;   3. For each matching tool-entry where type is "tool-result"
+;      (linked by call-id):
+;      a. If status == "success", the modification is confirmed
+;      b. If native metadata.files[] exists (OpenCode), extract:
+;         - relativePath -> file.path
+;         - diff -> parse for line ranges
+;         - additions/deletions -> range extent
+;         - before/after -> compute content_hash
+;   4. contributor.type = "ai" (agent-produced code)
+;      contributor.model_id = agent-meta.model-id or message-entry.model-id
+;   5. For multi-agent sessions:
+;      contributor.model_id = per-response model-id (may differ from session)
+;
+; Fields NOT derivable (require external data):
+;   - range.content_hash: requires reading final file state after ALL edits
+;   - conversation.url: must be provided by the recording system
+;   - range.start_line/end_line from Claude/Gemini: requires matching
+;     old_string against the original file to find line positions
+;
+; This algorithm is INFORMATIVE, not NORMATIVE. Implementations MAY
+; generate file-attribution-record by any means, including direct
+; instrumentation of the file system.
+
+; =============================================================================
+; SECTION 11: INFORMATIVE - PASSTHROUGH FIELD EXAMPLES
+; =============================================================================
+
+; With `* tstr => any` on all entry types, native agent fields are preserved
+; alongside canonical fields. The following examples show what produced entries
+; look like in practice.
+
+; Example: Claude Code assistant entry with passthrough fields
+;
+; {
+;     "type": "assistant",                      <- canonical
+;     "content": [{"type": "text", "text": "..."}],  <- canonical (native array)
+;     "timestamp": "2026-02-10T17:27:14.496Z",  <- canonical
+;     "id": "ad554ee9-4bf4-...",                <- canonical (from line UUID)
+;     "model-id": "claude-opus-4-6",            <- canonical
+;     "token-usage": {                          <- canonical (extracted from message.usage)
+;         "input": 3,
+;         "output": 2,
+;         "cached": 15360,
+;         "cache_creation_input_tokens": 5559   <- native (passthrough within token-usage)
+;     },
+;     "children": [                             <- canonical (tool_use blocks extracted)
+;         {"type": "tool-call", "name": "Bash", "input": {...}, "call-id": "toolu_..."}
+;     ],
+;     "parentUuid": "7e6c5e25-...",             <- native passthrough (camelCase)
+;     "isSidechain": false,                     <- native passthrough (camelCase)
+;     "userType": "external",                   <- native passthrough (camelCase)
+;     "requestId": "req_011CX...",              <- native passthrough (camelCase)
+;     "stop_reason": null,                      <- native passthrough (snake_case)
+;     "stop_sequence": null                     <- native passthrough (snake_case)
+; }
+
+; Example: OpenCode tool result with rich file metadata (passthrough)
+;
+; {
+;     "type": "tool-result",                    <- canonical
+;     "output": "Success. Updated 1 file.",     <- canonical
+;     "status": "completed",                    <- canonical
+;     "call-id": "call_xxKq...",                <- canonical
+;     "metadata": {                             <- native passthrough (from OpenCode)
+;         "diff": "@@ -80,9 +80,9 @@\n ...",
+;         "files": [{                           <- rich file attribution data
+;             "filePath": "/tmp/.../file.cpp",
+;             "relativePath": "src/file.cpp",
+;             "type": "update",
+;             "diff": "...",
+;             "before": "<full file content>",
+;             "after": "<full file content>",
+;             "additions": 4,
+;             "deletions": 3
+;         }]
+;     }
+; }
+
+; =============================================================================
+; END OF SPECIFICATION
+; =============================================================================
+;
+; Empirical Basis:
+;   This schema is derived from analysis of 5 agent implementations across
+;   1,452 sessions (ARVO-136 benchmark, 13 agent-model combinations).
+;   Agents: Claude Code (Anthropic), Gemini CLI (Google),
+;           Codex CLI (OpenAI), OpenCode (open source, multi-provider),
+;           Cursor (Anysphere).
+;
+;   Limitations:
+;     - Evidence corpus is task-biased (CVE-fixing only)
+;     - Agent versions from February 2026 (may evolve)
+;     - 5 of 9+ known coding agents represented
+;     - File attribution (Section 8) is not yet validated against real data
+;     - Signing (Section 9) validated with Ed25519 only
+;
+; Changelog:
+;   v3.0.0-draft: Schema simplification
+;     - 7 entry types → 4 (message, tool, reasoning, event)
+;     - All maps extensible via `* tstr => any` (RFC 8610 §3.5.4)
+;     - Removed vendor-extension types (subsumed by open maps)
+;     - Merged interactive/autonomous → single session-trace
+;     - Added token-usage to message-entry
+;     - Native agent fields preserved (no data loss)
+;     - Signing: updated trace-format to ietf-vac-v3.0
+;   v2.0.0-draft: Unified Birkholz file attribution with XOR session records
+;     - New root type: verifiable-agent-record (contains both perspectives)
+;     - Renamed v1 "tool" to "recording-agent" (avoids tool-call collision)
+;     - Added session-trace from XOR analysis (entries, tool-calls, reasoning)
+;     - Merged extension mechanism: vendor-extension with tstr/int keys
+;     - Added COSE_Sign1 signing envelope
+;     - Added file attribution derivation algorithm
+;   v1.0.0: Original Birkholz file attribution schema
+;     - agent-convo-record with files, conversations, ranges, contributors
+;
+
+          Figure 1: CDDL definition of an Agent Conversation
+
+3.  References
+
+3.1.  Normative References
+
+   [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
+              <https://www.iana.org/assignments/cwt>.
+
+   [IANA.jwt] IANA, "JSON Web Token (JWT)",
+              <https://www.iana.org/assignments/jwt>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
+
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7519>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [STD90]    Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/rfc/rfc8259>.
+
+   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+3.2.  Informative References
+
+   [I-D.ietf-scitt-architecture]
+              Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
+              Y., and S. Lasker, "An Architecture for Trustworthy and
+              Transparent Digital Supply Chains", Work in Progress,
+              Internet-Draft, draft-ietf-scitt-architecture-22, 10
+              October 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-scitt-architecture-22>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Authors' Addresses
+
+   Henk Birkholz
+   Email: henk.birkholz@ietf.contact
+
+
+   Tobias Heldt
+   Email: tobias@xor.tech
