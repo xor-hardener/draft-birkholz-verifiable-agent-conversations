@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz &amp; Heldt</td>
-<td class="center">Expires 22 August 2026</td>
+<td class="center">Expires 23 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-birkholz-verifiable-agent-conversations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-18" class="published">18 February 2026</time>
+<time datetime="2026-02-19" class="published">19 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-22">22 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-23">23 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1217,62 +1217,270 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <figure id="figure-1">
         <div class="alignLeft art-cddl art-text artwork" id="section-2-2.1">
 <pre>
-agent-convo-record = {
- version: text                   ; Agent Trace specification version (e.g., '1.0'). Should be semver?
- id: text                        ; "Unique identifier" (uuid type 4) for this convo-record
- timestamp: text .regexp date-time-regexp ; RFC 3339 timestamp when the convo was recorded
- ? vcs: vcs                      ; Version control system information for this convo
- ? tool: tool                    ; The tool that generated this convo
- files: [* file]                 ; Array of files with attributed ranges
- ? metadata: anymap              ; Additional metadata for implementation-specific or vendor-specific data
-}
+; =============================================================================
+; Verifiable Agent Conversations — CDDL Schema
+; =============================================================================
+;
+; draft-birkholz-verifiable-agent-conversations
+; Authors: Henk Birkholz, Tobias Heldt
+; Version: 3.0.0-draft
+; Date: 2026-02-18
+;
+; Detailed type descriptions: docs/type-descriptions.md
 
+; TODO: Consider whether signed-agent-record should be the sole start rule,
+; requiring all records to carry a COSE_Sign1 envelope. Currently both are
+; accepted to support unsigned development workflows.
+start = verifiable-agent-record / signed-agent-record
+
+; =============================================================================
+; SECTION 1: COMMON TYPES
+; =============================================================================
+
+; RFC 3339 string OR epoch milliseconds (for interop).
+abstract-timestamp = tstr .regexp date-time-regexp / number
+
+; Opaque string: UUID, SHA-256 hash, etc.
+session-id = tstr
+
+; Per-entry unique reference within a session.
+entry-id = tstr
+
+; RFC 3339 date-time pattern
 date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
 
-uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?" ; FIXME
+; URI pattern (RFC 3986)
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
 
-anymap = { * label =&gt; value }    ; placeholder for later
-label = any
-value = any
+; =============================================================================
+; SECTION 2: ROOT TYPE
+; =============================================================================
 
-vcs = {
- type: "git" / "jj" / "hg" / "svn"; Version control system type
- revision: text                  ; Revision identifier (e.g., git commit SHA, jj change ID)
+verifiable-agent-record = {
+    version: tstr                       ; Schema version (semver)
+    id: tstr                            ; Record identifier
+    session: session-trace              ; Conversation trace (required)
+    ? created: abstract-timestamp       ; Record creation time
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context                  ; Record-level VCS context
+    ? recording-agent: recording-agent  ; Tool that generated this record
+    * tstr =&gt; any
 }
 
-tool = {
- ? name: text
- ? version: text
+; =============================================================================
+; SECTION 3: SESSION TRACE
+; =============================================================================
+
+session-trace = {
+    ? format: tstr                      ; "interactive" / "autonomous" / vendor
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 4: AGENT METADATA
+; =============================================================================
+
+agent-meta = {
+    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+    model-provider: tstr                ; e.g., "anthropic", "google"
+    ? models: [* tstr]                  ; All models (multi-model sessions)
+    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+    ? cli-version: tstr
+    * tstr =&gt; any
+}
+
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 5: ENVIRONMENT
+; =============================================================================
+
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]               ; Sandbox mount paths
+    * tstr =&gt; any
+}
+
+vcs-context = {
+    type: tstr                          ; "git" / "jj" / "hg" / "svn"
+    ? revision: tstr                    ; Commit SHA or change ID
+    ? branch: tstr
+    ? repository: tstr                  ; Repository URL
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 6: ENTRY TYPES
+; =============================================================================
+
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+
+; --- Message Entry ---
+; Human input ("user") or agent response ("assistant").
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any                      ; Text string or structured content blocks
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr                    ; Model (assistant only)
+    ? parent-id: entry-id              ; Parent message reference
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Tool Call Entry ---
+; Tool invocation: which tool was called and with what arguments.
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+    input: any                          ; Tool arguments
+    ? call-id: tstr                     ; Links call ↔ result
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Tool Result Entry ---
+; Tool output: what the tool returned.
+tool-result-entry = {
+    type: "tool-result"
+    output: any                         ; Tool output
+    ? call-id: tstr                     ; Links call ↔ result
+    ? status: tstr                      ; "success" / "error" / "completed"
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Reasoning Entry ---
+; Chain-of-thought or thinking content.
+reasoning-entry = {
+    type: "reasoning"
+    content: any                        ; Plaintext reasoning or structured
+    ? encrypted: tstr                   ; Encrypted content (provider-protected)
+    ? subject: tstr                     ; Topic label
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Event Entry ---
+; System lifecycle events (session-start, token-count, etc.).
+event-entry = {
+    type: "system-event"
+    event-type: tstr                    ; Event classifier
+    ? data: { * tstr =&gt; any }           ; Event-specific payload
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 7: TOKEN USAGE
+; =============================================================================
+
+token-usage = {
+    ? input: uint                       ; Input tokens
+    ? output: uint                      ; Output tokens
+    ? cached: uint                      ; Cached input tokens
+    ? reasoning: uint                   ; Reasoning/thinking tokens
+    ? total: uint                       ; Total tokens
+    ? cost: number                      ; Dollar cost
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 8: FILE ATTRIBUTION
+; =============================================================================
+; NOTE: Specified but not yet validated against real session data.
+; Derivability analysis (4/5 agents) in docs/reviews/2026-02-18/
+; file-attribution-investigation.md. Implementation pending.
+
+file-attribution-record = {
+    files: [* file]
 }
 
 file = {
- path: text                      ; Relative file path from repository root
- conversations: [* conversation] ; Array of conversations that contributed to this file
-}
-
-contributor = {
- type: "human" / "ai" / "mixed" / "unknown"
- ? model_id: text                ; The model's unique identifier following models.dev convention (e.g., 'anthropic/claude-opus-4-5-20251101'), maxLength of 250?
-}
-
-resource = {
- type: text
- url: text .regexp uri-regexp
+    path: tstr                          ; Relative path from repo root
+    conversations: [* conversation]
 }
 
 conversation = {
- ? url: text .regexp uri-regexp  ; URL to look up the conversation that produced this code
- ? contributor: contributor      ; The contributor for ranges in this conversation (can be overridden per-range)
- ranges: [* range]               ; Array of line ranges produced by this conversation
- ? related: [* resource]         ; Other related resources
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor          ; Default contributor for ranges
+    ranges: [* range]
+    ? related: [* resource]
 }
 
 range = {
- start_line: uint                ; min of 1? was int
- end_line: uint                  ; min of 1? was int
- ? content_hash: text            ; Hash of attributed content for position-independent tracking
- ? contributor: contributor      ; Override contributor for this specific range (e.g., for agent handoffs)
+    start-line: uint                    ; 1-indexed
+    end-line: uint                      ; 1-indexed, inclusive
+    ? content-hash: tstr
+    ? content-hash-alg: tstr            ; Default: "sha-256"
+    ? contributor: contributor          ; Override for this range
 }
+
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+
+; =============================================================================
+; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
+; =============================================================================
+
+signed-agent-record = #6.18([          ; COSE_Sign1 tag
+    protected: bstr,                    ; {alg, content-type}
+    unprotected: {                      ; Trace metadata
+        ? trace-metadata-key =&gt; trace-metadata
+    },
+    payload: bstr / null,               ; Detached if null
+    signature: bstr
+])
+
+; Label 100 is provisional (private-use range per RFC 9052 §3.1).
+; IANA registration required before RFC publication.
+trace-metadata-key = 100
+
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr                ; SHA-256 hex digest of payload
+    ? content-hash-alg: tstr
+}
+
+; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+trace-format-id = tstr
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
