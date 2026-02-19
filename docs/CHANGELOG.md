@@ -2,12 +2,293 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-19: Data Quality Review & Cleanup
+
+Second review pass focused on produced record quality, null noise, dead fields, and consumer
+experience. Inspected all 13 produced records for naming convention mixing, null pollution,
+content shape diversity, and token-usage consistency.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Filter None from `_passthrough()`? | **Yes** | Fixes Claude `stop_sequence: null` noise (446 entries) and Codex `content: null` bug where native null overwrites canonical content (176 reasoning entries). No consumer benefits from null passthrough. |
+| 2 | Dead `stop-reason` field in CDDL? | **Remove** | `msg.get("stop_reason")` always returns None in Claude data (streaming API only sets on final chunk). Zero real-world data across 13 sessions. Schema field had no backing. |
+
+### Schema Changes
+
+- Removed `stop-reason` from `message-entry` in `agent-conversation.cddl`
+
+### Parser Changes
+
+- `_passthrough()`: Added `and v is not None` filter — eliminates null noise from all agents
+- Claude: Removed `stop_reason` from `_MSG_CONSUMED` set (no longer consumed for canonical
+  mapping — passes through but filtered as null)
+- Claude: Removed `stop-reason` from assistant entry construction
+
+### Documentation Changes
+
+- `docs/type-descriptions.md`: Added "Field Naming Convention" section documenting canonical
+  kebab-case vs native passthrough naming; updated `content` field description with per-agent
+  shapes; removed `stop-reason` from message-entry; added token-usage native extras note
+- `docs/BREAKDOWN.md`: Updated date to 2026-02-19; updated no-drop policy to note null
+  filtering; updated Claude passthrough details (renames 5→4, stop_reason removed)
+- `docs/breakdown/claude-code.md`: Updated renamed/dropped/passthrough field lists
+- `.claude/CLAUDE.md`: Fixed "Four entry types" → "Five", "optional session-trace" → "required"
+
+### Validation
+
+All 13 sessions pass. Zero null-valued fields in produced records. Codex reasoning entries
+now correctly retain content (181/181, was 102/181 before fix).
+
+## 2026-02-19: Critical Review & Schema Tightening
+
+Comprehensive review of spec quality, usability, and IETF CDDL conventions. Multiple issues
+fixed: stale documentation, dead canonical fields, overly-permissive root type, unreachable
+signing type.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Make `session` required on root? | **Yes** | A `{version, id}` record is useless. The spec is about conversations; every record must have a session. |
+| 2 | Dead canonical fields (stop-reason, parent-id)? | **Rename in parsers** | Populate canonical fields: `stop_reason`→`stop-reason`, `parentUuid`/`parentID`→`parent-id`. Makes canonical schema real, not aspirational. |
+| 3 | Native passthrough namespace? | **Document convention** | Canonical fields use kebab-case; native fields retain original naming (camelCase, snake_case). Already ~95% true. |
+| 4 | `content: any` consumer burden? | **Keep as-is** | The schema can't fix this — agents genuinely produce different shapes. Constraining the CDDL wouldn't help consumers. Document known shapes in prose. |
+| 5 | `signed-agent-record` reachable from start? | **Add both + TODO** | `start = verifiable-agent-record / signed-agent-record`. Open question whether signed should be the sole start rule. |
+| 6 | Rename `verifiable-agent-record`? | **Keep** | Established in codebase and docs. Rename is churn. |
+| 7 | File attribution stay in schema? | **Keep with NOTE** | Henk's original contribution. TODO/NOTE comments sufficient for -00. |
+| 8 | Draft `abbrev: "RATS CMW"`? | **Keep** | Set by Henk from first commit. Positioning within RATS ecosystem is intentional. |
+
+### Schema Changes
+
+- `session` field on `verifiable-agent-record`: optional → **required**
+- `start` rule: `verifiable-agent-record` → `verifiable-agent-record / signed-agent-record`
+  (with TODO comment re: signed-only start)
+
+### Parser Changes
+
+- Claude: `parentUuid` → `parent-id` (canonical rename, added to consumed set)
+- Claude: `stop_reason` → `stop-reason` (canonical rename, added to consumed set)
+- OpenCode: `parentID` → `parent-id` (canonical rename, added to consumed set)
+
+### Documentation Updates
+
+- `docs/CHANGELOG.md`: Added this section; fixed stale "4 entry types" → "5 entry types";
+  removed `tool-call-entry`/`tool-result-entry` from "Removed" list; removed wrong `abbrev`
+  open question; renumbered open questions.
+- `docs/BREAKDOWN.md`: Fixed "4" → "5" entry types; updated Claude renames 3→5, OpenCode
+  renames 10→11; updated passthrough/consumed details.
+- `docs/breakdown/claude-code.md`: Moved `parentUuid`, `stop_reason` from dropped to renamed.
+- `docs/breakdown/opencode.md`: Moved `parentID` from dropped to renamed.
+- `docs/type-descriptions.md`: `session` field marked required.
+
+### Validation
+
+All 13 sessions pass. Canonical fields verified: `parent-id` present on Claude (349/376)
+and OpenCode (123-199) entries. `stop-reason` not present (all Claude `stop_reason` values
+are null in current session data — correctly skipped by `_make_entry`).
+
+## 2026-02-19: Required Fields & Tool Entry Split
+
+Post-review fixes to reduce schema looseness. Two changes: making empirically-required fields
+mandatory, and splitting the merged `tool-entry` back into `tool-call-entry` + `tool-result-entry`.
+
+### Required Field Changes
+
+Analyzed field presence across all 13 sessions (6,409 entries). Five fields changed from
+optional to required based on 96-100% presence in real data:
+
+| Type | Field | Presence | Rationale |
+|------|-------|----------|-----------|
+| `recording-agent` | `name` | 100% (fabricated) | Every record has a recording agent name. The type is pointless without it. |
+| `environment` | `working-dir` | 100% (when env present) | The environment type exists to capture working directory. |
+| `vcs-context` | `type` | 100% (when vcs present) | VCS context without knowing the VCS type is useless. |
+| `reasoning-entry` | `content` | 100% (may be null/empty) | Reasoning entries must carry content (even if empty string for encrypted-only). |
+| `event-entry` | `event-type` | 100% | Events must have a classifier. An untyped event is meaningless. |
+
+Unchanged: `token-usage` (stats bag — all fields optional by design), `message-entry.content`
+(OpenCode message-level envelopes legitimately lack content).
+
+### Tool Entry Split
+
+Reversed the v3 merge of `tool-call-entry` + `tool-result-entry` into a single `tool-entry`.
+The merge forced all direction-specific fields to be optional (calls need `name`+`input`,
+results need `output`), making `{type: "tool-call"}` valid without any tool information.
+
+Split back into two types with proper required fields:
+- `tool-call-entry`: `name` (required), `input` (required)
+- `tool-result-entry`: `output` (required)
+
+Entry union now has 5 types: `message-entry`, `tool-call-entry`, `tool-result-entry`,
+`reasoning-entry`, `event-entry`.
+
+### Validation
+
+All 13 sessions pass with updated schema. No parser changes needed.
+
+## 2026-02-18: Spec Review — Fixes & Open Questions
+
+Critical review of the full spec (CDDL, type descriptions, draft, tooling). 7 issues fixed,
+5 noted as open questions for the -00 submission.
+
+### Decisions
+
+| # | Issue | Decision | Rationale |
+|---|-------|----------|-----------|
+| 3 | File attribution uses snake_case (start_line, etc.) while rest uses kebab-case | **Rename to kebab-case** | No consumers exist yet. Internal consistency. Changed: start-line, end-line, content-hash, content-hash-alg, model-id. |
+| 4 | trace-metadata-key = 100 is unregistered private-use COSE label | **Add IANA comment** | Note label 100 as provisional. IANA registration required before RFC. Appropriate for -00. |
+| 5 | trace-format-id hardcodes vendor strings in CDDL | **Simplify to tstr** | Vendor strings documented in comments only. CDDL stays clean; values are informational. |
+| 8 | recording-agent type unused by parsers | **Implement in parsers** | Set to `{name: "vac-validate", version: "3.0.0-draft"}` in wrap_record(). Quick fix. |
+| 9 | File attribution (Section 8) completely unvalidated | **Add TODO comments** | Mark as specified-but-unvalidated. Implementation is separate task. |
+| 10 | No CBOR serialization despite CBOR positioning | **Implement --cbor flag** | Added `--cbor` to validate-sessions.py producing `.spec.cbor` alongside JSON via cbor2. |
+| 12 | No Security Considerations section | **Note as open question** | Required for IETF but scope is for draft prose, not schema/tooling. |
+
+### Open Questions for -00 Submission
+
+These issues were identified during review but deferred. They need resolution before or
+during the -00 submission process.
+
+1. **Empty draft body** (#1): `draft-birkholz-verifiable-agent-conversations.md` has stub
+   abstract/body with just the CDDL include. Needs substantial prose for IETF editorial review.
+   The `docs/type-descriptions.md` content is ready for insertion.
+
+2. **Entry union discrimination** (#2): The `entry` CDDL union relies on PEG-ordered choice
+   with overlapping open maps (`* tstr => any`). Validators may match the wrong branch. The
+   spec should acknowledge this and recommend `type`-first validation.
+
+3. **`content: any` is maximally permissive** (#6): Zero validation on the most important
+   field. Consumers can't know the shape of content. Deliberate tradeoff (Decision 10 in
+   simplification plan) — draft should discuss.
+
+4. **No version negotiation** (#7): `version: tstr` is informal. No registry, no mechanism
+   for consumers to handle unknown versions or graceful degradation.
+
+5. **Security Considerations missing** (#12): Required for all IETF documents. Should cover:
+   signing threat model, key management, detached payload risks, content-hash integrity,
+   no confidentiality guarantee, trust anchor bootstrapping.
+
+## 2026-02-18: IETF CDDL Comparative Review
+
+Compared VAC schema against established IETF CDDL schemas: RFC 9052 (COSE), draft-ietf-rats-eat
+(EAT), draft-ietf-rats-corim (CoRIM), and draft-ietf-scitt-architecture (SCITT).
+
+### Critique: String map keys vs integer keys (MAJOR)
+
+Every IETF CBOR schema uses integer map keys for compactness. COSE uses `1 => tstr / int`,
+SCITT uses `&(CWT_Claims: 15) => CWT_Claims`, CoRIM uses `&(id: 0) => $corim-id-type-choice`.
+Our schema uses string keys everywhere (`version: tstr`, `id: tstr`, etc.).
+
+This is a deliberate JSON-first design, but produces unnecessarily large CBOR encodings.
+IETF convention is `&(name: int)` with an IANA registry for key assignments.
+
+**Action**: Acknowledge JSON-primary approach in draft prose. Consider an integer key assignment
+table (with IANA registry) for CBOR-optimized encoding in a future revision.
+
+### Critique: No CDDL sockets for extensibility (MODERATE)
+
+EAT uses group sockets (`$$Claims-Set-Claims //= (label => type)`), CoRIM uses
+`* $$corim-map-extension`, allowing downstream specs to formally extend the schema and
+compose with CDDL validation. Our `* tstr => any` is closest to COSE's `* label => values`
+but less typed — it accepts anything, and profiles can't add fields that validators will check.
+
+**Action**: Acceptable for -00. Plan socket-based extensibility (`$$record-extension`,
+`$$entry-extension`) for -01 or later.
+
+### Critique: No CBOR tag for root type (MODERATE)
+
+CoRIM registers CBOR tags for type identification (`#6.501(unsigned-corim-map)`). EAT uses
+tags for nesting. SCITT types are `#6.18(COSE_Sign1)`. Our `verifiable-agent-record` has no
+CBOR tag, making it impossible to distinguish from arbitrary CBOR maps. A registered tag would
+also solve the union discrimination problem (open question #2) if applied to entry types.
+
+**Action**: Register a CBOR tag for `verifiable-agent-record` in IANA Considerations section.
+
+### Critique: `content: any` has no IETF precedent (MODERATE)
+
+No reference schema uses `any` for a primary data field. COSE uses `bstr / nil` for payload.
+EAT has typed claims with size constraints (`bstr .size (8..64)`). CoRIM uses `non-empty<{}>`.
+Our `content: any` means validators accept literally anything — IETF reviewers will flag this.
+
+**Action**: Draft prose MUST justify this choice (fidelity tradeoff). Consider minimal typing
+like `content: tstr / [* any] / { * tstr => any }` (string, array of blocks, or map) to
+provide some shape while preserving flexibility.
+
+### Critique: No IANA registries for entry types (MINOR)
+
+CoRIM defines IANA registries for every extensible value. EAT registers claims. Our entry
+type values (`"user"`, `"assistant"`, `"tool-call"`, etc.) are hardcoded string literals
+with no extension mechanism or registry.
+
+**Action**: Flag for future revision. An IANA registry for entry type values would enable
+formal extension without schema changes.
+
+### Critique: Missing `.cbor` constraints on signing envelope (COSMETIC)
+
+SCITT uses `protected: bstr .cbor Protected_Header` to type the protected header bytes.
+CoRIM does the same. Our `signed-agent-record` declares `protected: bstr` without the
+`.cbor` constraint, losing the ability to validate header structure in CDDL alone.
+
+**Action**: Change `protected: bstr` to `protected: bstr .cbor protected-header-map` and
+define `protected-header-map = { 1 => int, 3 => tstr }` (alg + content-type).
+
+### What matches IETF practice (confirmed correct)
+
+- **kebab-case naming** — matches CoRIM, EAT, COSE identifier conventions
+- **COSE_Sign1 envelope structure** — matches SCITT's Signed_Statement pattern exactly
+- **Detached payload mode** — standard COSE pattern (`payload: bstr / null`)
+- **Open map extensibility** — similar to COSE's `* label => values`
+- **`?` optional field syntax** — standard CDDL throughout
+- **trace-metadata in unprotected header** — analogous to SCITT's receipts placement
+- **Ed25519 algorithm choice** — used across RATS/SCITT examples
+
+### Reference schemas consulted
+
+- RFC 9052 §§3-5: COSE_Sign1, Headers, COSE_Key (integer keys, `* label => values`)
+- draft-ietf-rats-eat-31 §§4-9: EAT claims (`$$` sockets, `JC<>` dual-encoding, `.size`)
+- draft-ietf-rats-corim-09 §§3-7: CoRIM maps (`&(name: N)`, `$$extension`, `$type-choice`)
+- draft-ietf-scitt-architecture-10 §4.2: Signed_Statement (`* int => any`, CWT binding)
+
+### Changes
+
+- `agent-conversation.cddl`: Renamed file-attribution fields to kebab-case (5 fields),
+  simplified `trace-format-id` to `tstr`, added IANA comment on label 100, added TODO to
+  Section 8.
+- `scripts/validate-sessions.py`: Added `recording-agent` to `wrap_record()`, added `--cbor`
+  flag producing CBOR records via `cbor2`.
+- `docs/type-descriptions.md`: Updated field names, trace-format-id description,
+  recording-agent description, added JSON/CBOR note, added Section 8 unvalidated note.
+- All 13 sessions pass CDDL validation. CBOR output verified.
+
+## 2026-02-18: CDDL Comment Debloat & Type Descriptions
+
+Moved verbose CDDL comments to a separate markdown document for the Internet-Draft body.
+
+### Changes
+
+- **Created `docs/type-descriptions.md`**: Detailed descriptions for every complex map type
+  in the schema. 3-4 sentences per type purpose, 1-2 sentences per member. Written as raw
+  markdown ready for insertion into the I-D body text.
+- **Debloated `agent-conversation.cddl`**: Removed multi-paragraph rationale blocks,
+  cross-references, empirical basis, specification references, JSON/CBOR explanation,
+  extensibility explanation, passthrough examples (Section 11), derivation algorithm
+  (Section 10), changelog, and limitations. Kept terse 1-line descriptions and inline
+  member comments.
+- CDDL line count: 569 → 250 total (162 code unchanged, 399 → 51 comments).
+- All 13 sessions still validate. No code changes.
+
+### Context
+
+Coworker (Henk) requested: debloat CDDL comments, create separate .md with 3-4 sentence
+type descriptions for each complex type, 1-2 sentences per member. Needed as raw markdown
+for the Internet-Draft -00 submission.
+
 ## 2026-02-18: Schema Simplification v3.0.0-draft (Approach B)
 
-Major schema rewrite: 7 entry types → 4, all maps extensible via `* tstr => any`,
+Major schema rewrite: 7 entry types → 5, all maps extensible via `* tstr => any`,
 no-drop policy on parsers, canonical token-usage extraction.
 
-Full decision log with options and reasoning: [`.claude/reviews/2026-02-18/simplification-plan.md`](reviews/2026-02-18/simplification-plan.md)
+Full decision log with options and reasoning: [`docs/reviews/2026-02-18/simplification-plan.md`](reviews/2026-02-18/simplification-plan.md)
 
 ### Decisions
 
@@ -24,11 +305,11 @@ Full decision log with options and reasoning: [`.claude/reviews/2026-02-18/simpl
 
 ### Schema Changes
 
-- 7 entry types → 4: `message-entry`, `tool-entry`, `reasoning-entry`, `event-entry`
+- 7 entry types → 5: `message-entry`, `tool-call-entry`, `tool-result-entry`, `reasoning-entry`, `event-entry`
 - All maps: added `* tstr => any` (RFC 8610 §3.5.4 extensibility, COSE precedent)
 - Removed: `vendor-extension`, `extension-key`, `extension-data`, `interactive-session`,
   `autonomous-session`, `session-envelope`, `base-entry`, `user-entry`, `assistant-entry`,
-  `tool-call-entry`, `tool-result-entry`, `system-event-entry`, `vendor-entry`
+  `system-event-entry`, `vendor-entry`
 - Added: `token-usage` type with `? input/output/cached/reasoning: uint` + `* tstr => any`
 - Kept: file attribution (Sections 8, 10), signing envelope (Section 9)
 - Version: `2.0.0-draft` → `3.0.0-draft`
@@ -51,7 +332,7 @@ Full decision log with options and reasoning: [`.claude/reviews/2026-02-18/simpl
 
 ### File Attribution Investigation
 
-See [`.claude/reviews/2026-02-18/file-attribution-investigation.md`](reviews/2026-02-18/file-attribution-investigation.md).
+See [`docs/reviews/2026-02-18/file-attribution-investigation.md`](reviews/2026-02-18/file-attribution-investigation.md).
 OpenCode provides the richest file attribution data (full before/after content, diffs, relative paths).
 Claude Edit tool provides `old_string`/`new_string` requiring string matching for line positions.
 All CDDL Section 8 fields derivable except `conversation.url` and `conversation.related`.
@@ -245,7 +526,7 @@ misattributed to line-level `type` when it actually comes from `message.role`.
 
 ## 2026-02-17: Breakdown Review — Round 2
 
-Second review of per-agent breakdown files (`.claude/breakdown/*.md`) against session data and parser code.
+Second review of per-agent breakdown files (`docs/breakdown/*.md`) against session data and parser code.
 
 ### Fixes Applied
 

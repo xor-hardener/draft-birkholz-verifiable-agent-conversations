@@ -177,8 +177,8 @@ Session summary object (optional; `id`, `slug`, `version`, `projectID`, `directo
 
 Per-entry: `sessionID`, `messageID`, `state.title`, `state.metadata`, `metadata.openai`,
 `id`/`snapshot`/`reason`/`cost`/`tokens` (from step-start/step-finish), `time.start`/`time.end`
-(from reasoning and text objects), `id`/`parentID`, `modelID`/`providerID`/`cost`/`tokens`/`finish`
-(from role objects), nested `model` object on user role messages (contains `providerID`,
+(from reasoning and text objects), `id`/`modelID`/`providerID`/`cost`/`tokens`/`finish`
+(from role objects; `parentID` renamed to `parent-id`), nested `model` object on user role messages (contains `providerID`,
 `modelID` — extracted to metadata), `summary` (with diffs), `time.completed`, `path`,
 `mode`, `agent`.
 On patch objects: `hash`, `files` (parser reads `diff` which is absent → `output` is `""`).

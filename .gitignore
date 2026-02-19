@@ -24,3 +24,4 @@ report.xml
 !requirements.txt
 /arvo-136
 .claude/settings.local.json
+__pycache__/

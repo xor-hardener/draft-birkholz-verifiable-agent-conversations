@@ -346,9 +346,9 @@ Tasks:
 
 ### Phase 5: Documentation
 
-- Update `.claude/BREAKDOWN.md` — reflect parser changes (no-drop policy, token-usage canonical)
-- Update `.claude/CHANGELOG.md` — log all 6 decisions from this planning session
-- Update `.claude/CLAUDE.md` — reflect simplified schema if needed
+- Update `docs/BREAKDOWN.md` — reflect parser changes (no-drop policy, token-usage canonical)
+- Update `docs/CHANGELOG.md` — log all 6 decisions from this planning session
+- Update `CLAUDE.md` — reflect simplified schema if needed
 - Update CDDL file header comments — version, date, changelog entry
 
 ---
@@ -387,5 +387,5 @@ Tasks:
 | 1: CDDL schema | Medium | `agent-conversation.cddl` |
 | 2: Parser updates | Large | `scripts/validate-sessions.py` |
 | 3: Validation | Small | (testing only) |
-| 4: File attribution investigation | Medium | New files in `.claude/reviews/2026-02-18/` |
-| 5: Documentation | Small | `.claude/BREAKDOWN.md`, `.claude/CHANGELOG.md` |
+| 4: File attribution investigation | Medium | New files in `docs/reviews/2026-02-18/` |
+| 5: Documentation | Small | `docs/BREAKDOWN.md`, `docs/CHANGELOG.md` |

@@ -122,7 +122,7 @@ def _make_entry(type_val, **kwargs):
 def _passthrough(source, exclude):
     """Collect fields from source dict that are NOT in the exclude set.
     Returns a dict of native passthrough fields (no renaming)."""
-    return {k: v for k, v in source.items() if k not in exclude}
+    return {k: v for k, v in source.items() if k not in exclude and v is not None}
 
 
 def _infer_provider(model_id):
@@ -157,7 +157,7 @@ def parse_claude(path):
     Native fields preserved: line-level + message-level (no-drop policy).
     """
     # Fields consumed for canonical mapping or metadata — not passed through
-    _LINE_CONSUMED = {"timestamp", "sessionId", "version", "cwd", "gitBranch", "uuid", "type", "message"}
+    _LINE_CONSUMED = {"timestamp", "sessionId", "version", "cwd", "gitBranch", "uuid", "type", "message", "parentUuid"}
     _MSG_CONSUMED = {"role", "content", "model", "type", "id", "usage"}
 
     with open(path) as f:
@@ -231,7 +231,9 @@ def parse_claude(path):
             msg_extra.pop("usage", None)
 
         if role == "user":
-            entry = _make_entry("user", timestamp=ts, id=line_id, content=content)
+            entry = _make_entry(
+                "user", timestamp=ts, id=line_id, content=content, **{"parent-id": line.get("parentUuid")}
+            )
             # Extract typed children from content blocks
             if isinstance(content, list):
                 children = []
@@ -254,7 +256,13 @@ def parse_claude(path):
             entries.append(entry)
 
         elif role == "assistant":
-            entry = _make_entry("assistant", timestamp=ts, id=line_id, content=content, **{"model-id": model})
+            entry = _make_entry(
+                "assistant",
+                timestamp=ts,
+                id=line_id,
+                content=content,
+                **{"model-id": model, "parent-id": line.get("parentUuid")},
+            )
             if token_usage:
                 entry["token-usage"] = token_usage
             # Extract typed children from content blocks
@@ -625,7 +633,7 @@ def parse_opencode(path):
     Native fields preserved: object-level fields (no-drop policy).
     """
     # Fields consumed for canonical mapping per object type
-    _ROLE_CONSUMED = {"role", "modelID", "providerID", "model", "time", "id", "sessionID", "tokens", "cost"}
+    _ROLE_CONSUMED = {"role", "modelID", "providerID", "model", "time", "id", "sessionID", "tokens", "cost", "parentID"}
     _TEXT_CONSUMED = {"type", "text", "id", "messageID"}
     _TOOL_CONSUMED = {"type", "tool", "callID", "state", "id", "sessionID", "messageID"}
     _PATCH_CONSUMED = {"type", "diff", "id"}
@@ -724,7 +732,12 @@ def parse_opencode(path):
                 token_usage["cost"] = cost_raw
 
             # Content is in child objects, not here — omit content field
-            entry = _make_entry("user" if obj.get("role") == "user" else "assistant", timestamp=ts)
+            parent_id = obj.get("parentID")
+            entry = _make_entry(
+                "user" if obj.get("role") == "user" else "assistant",
+                timestamp=ts,
+                **{"parent-id": parent_id},
+            )
             if token_usage:
                 entry["token-usage"] = token_usage
             entry.update(_passthrough(obj, _ROLE_CONSUMED))
@@ -865,6 +878,10 @@ def wrap_record(entries, meta):
     record = {
         "version": "3.0.0-draft",
         "id": session_id,
+        "recording-agent": {
+            "name": "vac-validate",
+            "version": "3.0.0-draft",
+        },
         "session": {
             "format": "interactive",
             "session-id": session_id,
@@ -1248,8 +1265,16 @@ def main():
         default=None,
         help="Write produced spec-matching JSON records to this directory",
     )
+    parser.add_argument(
+        "--cbor",
+        action="store_true",
+        help="Also write CBOR-serialized records (.spec.cbor) alongside JSON (requires --dump-dir)",
+    )
     args = parser.parse_args()
 
+    if args.cbor and not args.dump_dir:
+        print("--cbor requires --dump-dir", file=sys.stderr)
+        sys.exit(1)
     if not args.sessions_dir.exists():
         print(f"Sessions dir not found: {args.sessions_dir}", file=sys.stderr)
         sys.exit(1)
@@ -1303,6 +1328,11 @@ def main():
                 if args.dump_dir:
                     out_name = sample.stem + ".spec.json"
                     (args.dump_dir / out_name).write_text(record_json)
+                    if args.cbor:
+                        import cbor2
+
+                        cbor_name = sample.stem + ".spec.cbor"
+                        (args.dump_dir / cbor_name).write_bytes(cbor2.dumps(record))
 
                 if ok:
                     print(f"  [PASS] {sample.name} ({len(entries)} entries)")

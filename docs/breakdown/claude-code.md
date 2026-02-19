@@ -139,11 +139,16 @@ Metadata-extracted (per-entry → record wrapper): `sessionId` → `session.sess
 `message.model` → `agent-meta.model-id`. Also extracted but not emitted:
 `gitBranch` → `meta["branch"]` (collected by parser but `wrap_record` has no output mapping).
 
+Per-entry renamed to canonical: `parentUuid` → `parent-id`.
+
+Per-entry filtered (null): `stop_reason` (always null), `stop_sequence` (always null).
+
 Per-entry dropped: line-level `type` (e.g., `"user"`, `"assistant"` — ignored; parser uses
-`message.role` instead), `parentUuid`, `isSidechain`, `userType`, `slug`, `permissionMode`,
-`requestId`, `message.id`, `message.type`, `message.usage`, `message.stop_reason`,
-`message.stop_sequence`, `toolUseResult`, `sourceToolAssistantUUID`.
+`message.role` instead), `message.id`, `message.type`, `message.usage`.
 On queue-operation lines: `operation` (e.g., `"dequeue"`) is not emitted.
+
+Per-entry passthrough (non-null): `isSidechain`, `userType`, `slug`, `permissionMode`,
+`requestId`, `toolUseResult`, `sourceToolAssistantUUID`.
 
 ## Fabricated
 

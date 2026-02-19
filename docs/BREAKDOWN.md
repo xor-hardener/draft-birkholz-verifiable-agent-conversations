@@ -3,17 +3,18 @@
 Documents the exact transformations `scripts/validate-sessions.py` performs for each agent
 format, mapping native fields to the CDDL spec (`agent-conversation.cddl`).
 
-Last updated: 2026-02-18
+Last updated: 2026-02-19
 
 ## v3.0.0-draft Changes
 
-**Schema simplification** (2026-02-18): 7 entry types → 4. All maps extensible via `* tstr => any`.
-See [`.claude/reviews/2026-02-18/simplification-plan.md`](reviews/2026-02-18/simplification-plan.md).
+**Schema simplification** (2026-02-18): 7 entry types → 5. All maps extensible via `* tstr => any`.
+See [`docs/reviews/2026-02-18/simplification-plan.md`](reviews/2026-02-18/simplification-plan.md).
 
-**No-drop policy**: Parsers now preserve ALL native fields. Fields not consumed for canonical
-mapping are flat-merged into entries alongside canonical kebab-case fields. This means entries
-contain a mix of canonical names (e.g., `type`, `content`, `timestamp`) and native names
-(e.g., `parentUuid`, `stop_reason`, `isSidechain`).
+**No-drop policy**: Parsers now preserve ALL native fields with non-null values. Fields not
+consumed for canonical mapping are flat-merged into entries alongside canonical kebab-case
+fields. This means entries contain a mix of canonical names (e.g., `type`, `content`,
+`timestamp`) and native names (e.g., `isSidechain`, `requestId`). Null-valued native fields
+are filtered out to prevent noise and avoid overwriting canonical fields.
 
 **Token-usage extraction**: 4/5 agents now have canonical `token-usage` on assistant entries.
 
@@ -39,7 +40,7 @@ Each file contains the transformation rules and a native JSON schema example.
 | Category | Claude | Gemini | Codex | OpenCode | Cursor |
 |---|---|---|---|---|---|
 | Direct matches | 1 field | 4 fields | 1 field | 1 field | 0 fields |
-| Renames | 3 | 2 | 9 | 10 | 2 |
+| Renames | 4 | 2 | 9 | 11 | 2 |
 | Un-nest | 2 | 0 | 9 (payload.\*) | 6 (state.\*) | 1 |
 | Type value map | 4 values | 4 values | 9 values | 6 values | 1 value |
 | Structural split/merge | content[] → children | toolCalls/thoughts → children | 2-level envelope unwrap | tool → call+result SPLIT; text→user/assistant via messageID | none |
@@ -57,14 +58,18 @@ Each file contains the transformation rules and a native JSON schema example.
 ## v3 Passthrough Details
 
 ### Claude Code
-- **Line-level passthrough**: `parentUuid`, `isSidechain`, `userType`, `requestId`,
+- **Line-level passthrough**: `isSidechain`, `userType`, `requestId`,
   `permissionMode`, `slug`, `sourceToolAssistantUUID`, `toolUseResult`
-- **Message-level passthrough**: `stop_reason`, `stop_sequence` (after `type`, `id`, `usage`
-  consumed for canonical mapping)
+- **Canonical renames**: `parentUuid` → `parent-id`
+- **Message-level passthrough**: non-null fields after consumed set
+  (e.g., non-null `stop_reason`, `stop_sequence` if present)
+- **Filtered (null)**: `stop_reason` (always null in current data),
+  `stop_sequence` (always null in current data)
 - **Token-usage source**: `message.usage` → `{input, output, cached}` + native extras
   (`cache_creation_input_tokens`, `service_tier`, `inference_geo`)
 - **Consumed (not passed through)**: Line: `timestamp`, `sessionId`, `version`, `cwd`,
-  `gitBranch`, `uuid`, `type`, `message`. Msg: `role`, `content`, `model`, `type`, `id`, `usage`.
+  `gitBranch`, `uuid`, `type`, `message`, `parentUuid`. Msg: `role`, `content`, `model`,
+  `type`, `id`, `usage`.
 
 ### Gemini CLI
 - **Message-level passthrough**: native fields not in consumed set
@@ -79,7 +84,8 @@ Each file contains the transformation rules and a native JSON schema example.
   `{input, output, total}` on system-event entries
 
 ### OpenCode
-- **Role-message passthrough**: fields not in `{role, content, id}`
+- **Canonical renames**: `parentID` → `parent-id`
+- **Role-message passthrough**: fields not in `{role, content, id, parentID}`
 - **Text/tool passthrough**: remaining metadata and state fields
 - **Token-usage source**: `role-message.tokens` + `role-message.cost` →
   `{input, output, cost}` on user/assistant entries

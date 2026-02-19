@@ -21,11 +21,11 @@ The draft is authored using the [martinthomson/i-d-template](https://github.com/
 Two companion files track the state of the schema and translation layer. **Always read these
 at the start of relevant work, and update them when making changes.**
 
-- **`.claude/CHANGELOG.md`** — Design decision log. When making interactive decisions about
+- **`docs/CHANGELOG.md`** — Design decision log. When making interactive decisions about
   schema design, spec tradeoffs, or tooling choices, record the question, answer, and
   rationale here. Organized by date and topic.
 
-- **`.claude/BREAKDOWN.md`** — Translation layer breakdown. Documents the exact per-agent
+- **`docs/BREAKDOWN.md`** — Translation layer breakdown. Documents the exact per-agent
   transformations that `validate-sessions.py` performs (direct matches, renames, un-nesting,
   type mapping, structural extraction, dropped fields, fabricated fields). **Update this file
   whenever parsers or the CDDL schema change** — it must reflect the actual current state.
@@ -47,7 +47,7 @@ The project uses a Nix flake for reproducible dev environments. Entering the she
 
 - The draft uses **kramdown-rfc** Markdown format — YAML front matter defines metadata, references, and authors; the body uses RFC-specific markup like `{{-rats-arch}}` for reference citations and `{::include ...}` for file inclusion.
 - The CDDL schema in `agent-conversation.cddl` is the canonical data model definition. Changes to the data model should be made there; the draft includes it automatically.
-- The data model centers on `verifiable-agent-record` which contains: version, id, optional session-trace (with entries array), optional file-attribution, optional VCS context, and open extensibility via `* tstr => any`. Four entry types: message-entry (type: "user"/"assistant"), tool-entry (type: "tool-call"/"tool-result"), reasoning-entry (type: "reasoning"), event-entry (type: "system-event"). Entries support `children` for nested structures and `* tstr => any` for native agent field passthrough.
+- The data model centers on `verifiable-agent-record` which contains: version, id, required session-trace (with entries array), optional file-attribution, optional VCS context, and open extensibility via `* tstr => any`. Five entry types: message-entry (type: "user"/"assistant"), tool-call-entry (type: "tool-call"), tool-result-entry (type: "tool-result"), reasoning-entry (type: "reasoning"), event-entry (type: "system-event"). Entries support `children` for nested structures and `* tstr => any` for native agent field passthrough.
 - CI uses `martinthomson/i-d-template@v1` GitHub Actions to build, lint, publish to GitHub Pages, and upload tagged versions to the IETF Datatracker.
 
 ## Validation Script
@@ -55,7 +55,8 @@ The project uses a Nix flake for reproducible dev environments. Entering the she
 ```sh
 python3 scripts/validate-sessions.py              # validate all sessions
 python3 scripts/validate-sessions.py --report      # detailed analysis with data coverage
-python3 scripts/validate-sessions.py --dump-dir /tmp/vac-produced  # write produced records
+python3 scripts/validate-sessions.py --dump-dir /tmp/vac-produced  # write produced JSON records
+python3 scripts/validate-sessions.py --dump-dir /tmp/vac-produced --cbor  # also write CBOR records
 ```
 
 - Uses `ruff` for formatting (line-length 121, config in `ruff.toml`)
