@@ -1,15 +1,11 @@
 # Compliance Requirements for AI Agent Conversation Records
 
-This section identifies the intersection of logging, traceability, and record-keeping
-requirements across major compliance frameworks applicable to AI systems. The
-verifiable agent conversation format defined in this document addresses these
-requirements by providing a standardized, cryptographically verifiable record of
-AI agent interactions.
+This section identifies the intersection of logging, traceability, and record-keeping requirements across major compliance frameworks applicable to AI systems.
+The verifiable agent conversation format defined in this document addresses these requirements by providing a standardized, cryptographically verifiable record of AI agent interactions.
 
 ## Applicable Frameworks Analyzed
 
-The following frameworks were analyzed for their requirements on AI agent
-traceability and session logging:
+The following frameworks were analyzed for their requirements on AI agent traceability and session logging:
 
 | Framework | Jurisdiction | Sector | Status |
 |-----------|-------------|--------|--------|
@@ -27,14 +23,12 @@ traceability and session logging:
 
 ## Common Requirements Intersection
 
-Analysis of the above frameworks reveals eleven (11) categories of requirements
-that appear across ALL or MOST frameworks. These represent the minimum
-baseline that verifiable agent conversation records MUST support.
+Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
+These represent the minimum baseline that verifiable agent conversation records MUST support.
 
 ### REQ-1: Automatic Event Logging
 
-All frameworks require automatic, system-generated logging of events without
-reliance on manual recording.
+All frameworks require automatic, system-generated logging of events without reliance on manual recording.
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -45,9 +39,9 @@ reliance on manual recording.
 | PCI DSS 4.0 Req 10 | "Audit logs implemented to support detection of anomalies" |
 | ISO 42001 A.6.2.8 | "AI system recording of event logs" |
 
-**Mapping to this specification**: The `entries` array in `session-trace` captures
-all events automatically. Each `entry` represents a discrete, system-recorded event
-with structured metadata.
+**Mapping to this specification:**
+The `entries` array in `session-trace` captures all events automatically.
+Each `entry` represents a discrete, system-recorded event with structured metadata.
 
 ### REQ-2: Timestamp Requirements
 
@@ -60,9 +54,8 @@ All frameworks require precise temporal information for each logged event.
 | SOC 2 | "When the activity was performed via timestamp" |
 | NIS2 | "Precise logging of when an incident was first detected" |
 
-**Mapping to this specification**: The `timestamp` field in `base-entry` uses
-`abstract-timestamp` which accepts both RFC 3339 strings and epoch milliseconds,
-ensuring interoperability across implementations.
+**Mapping to this specification:**
+The `timestamp` field in each entry uses `abstract-timestamp` which accepts both RFC 3339 strings and epoch milliseconds, ensuring interoperability across implementations.
 
 ### REQ-3: Actor Identification
 
@@ -75,9 +68,9 @@ All frameworks require attribution of actions to identifiable actors (human or s
 | PCI DSS 4.0 | Attribution to "Who" performed each action |
 | FedRAMP AC-2 | Account management and identification |
 
-**Mapping to this specification**: The `contributor` type captures actor attribution
-with `type` (human/ai/mixed/unknown) and optional `model_id`. Session-level
-`agent-meta` identifies the AI system.
+**Mapping to this specification:**
+The `contributor` type captures actor attribution with `type` (human/ai/mixed/unknown) and optional `model_id`.
+Session-level `agent-meta` identifies the AI system.
 
 ### REQ-4: Action/Event Type Recording
 
@@ -90,8 +83,8 @@ All frameworks require recording of what action or event occurred.
 | SOC 2 | "The action they performed such as file transferred, created, or deleted (What)" |
 | PCI DSS 4.0 | "What" component of audit trail |
 
-**Mapping to this specification**: The `type` field in each entry discriminates
-event types: `user`, `assistant`, `tool-call`, `tool-result`, `reasoning`, `system-event`.
+**Mapping to this specification:**
+The `type` field in each entry discriminates event types: `user`, `assistant`, `tool-call`, `tool-result`, `reasoning`, `system-event`.
 
 ### REQ-5: Input/Output Recording (AI-Specific)
 
@@ -104,11 +97,12 @@ AI-specific frameworks require recording of inputs (prompts) and outputs (respon
 | ETSI TS 104223 5.1.2-3 | "Operation, and lifecycle management of models, datasets and prompts" |
 | FFIEC VII.D | "Lack of explainability...unclear how inputs are translated into outputs" |
 
-**Mapping to this specification**:
-- `user-entry.content`: User/system input (prompt)
-- `assistant-entry.content`: Model response
-- `tool-call-entry.input`: Tool invocation parameters
-- `tool-result-entry.output`: Tool execution results
+**Mapping to this specification:**
+
+- `message-entry` (type: "user"): User/system input (prompt)
+- `message-entry` (type: "assistant"): Model response
+- `tool-entry.input`: Tool invocation parameters
+- `tool-entry.output`: Tool execution results
 - `reasoning-entry.content`: Chain-of-thought (where available)
 
 ### REQ-6: Retention Period Requirements
@@ -122,8 +116,8 @@ Most frameworks specify minimum retention periods for audit logs.
 | PCI DSS 4.0 | 12 months total, 3 months immediate access |
 | NIS2 | Per member state law |
 
-**Recommendation**: Implementations SHOULD retain verifiable agent conversation
-records for at least 12 months to satisfy the most common requirement threshold.
+**Recommendation:**
+Implementations SHOULD retain verifiable agent conversation records for at least 12 months to satisfy the most common requirement threshold.
 
 ### REQ-7: Tamper-Evidence and Integrity Protection
 
@@ -136,9 +130,9 @@ All frameworks require protection against unauthorized modification of logs.
 | SOC 2 | Log integrity as security control |
 | CRA | "Tamper-proof SBOMs and vulnerability disclosures" |
 
-**Mapping to this specification**: The `signed-agent-record` type (COSE_Sign1 envelope)
-provides cryptographic integrity protection. The `content-hash` field in `trace-metadata`
-enables verification of payload integrity.
+**Mapping to this specification:**
+The `signed-agent-record` type (COSE_Sign1 envelope) provides cryptographic integrity protection.
+The `content-hash` field in `trace-metadata` enables verification of payload integrity.
 
 ### REQ-8: Incident Response Support
 
@@ -151,9 +145,8 @@ All frameworks require logs to support incident investigation and response.
 | ETSI TS 104223 5.4.2-1 | Logs for "incident investigations, and vulnerability remediation" |
 | FedRAMP | Incident reporting and continuous monitoring |
 
-**Mapping to this specification**: The structured format enables rapid extraction
-of relevant entries by timestamp range, event type, or tool invocation for
-incident reconstruction.
+**Mapping to this specification:**
+The structured format enables rapid extraction of relevant entries by timestamp range, event type, or tool invocation for incident reconstruction.
 
 ### REQ-9: Anomaly and Risk Detection Support
 
@@ -166,8 +159,9 @@ Frameworks require logs to enable detection of anomalous or risky behavior.
 | FedRAMP SI-4 | "Anomaly detection" |
 | SOC 2 | "Anomaly detection" for security monitoring |
 
-**Mapping to this specification**: The standardized entry types and structured
-`tool-call`/`tool-result` pairs enable automated analysis for detecting:
+**Mapping to this specification:**
+The standardized entry types and structured `tool-call`/`tool-result` pairs enable automated analysis for detecting:
+
 - Unusual tool invocation patterns
 - Failed operations (via `status` and `is-error` fields)
 - Unexpected reasoning patterns
@@ -184,9 +178,9 @@ AI-specific frameworks require logs to support human review and oversight.
 | ISO 42001 | Human responsibility and accountability |
 | FFIEC VII.D | "Dynamic updating...challenges to monitoring and independently reviewing AI" |
 
-**Mapping to this specification**: The `reasoning-entry` type captures chain-of-thought
-content (where available), enabling human reviewers to understand AI decision-making
-processes. The hierarchical `children` field preserves conversation structure.
+**Mapping to this specification:**
+The `reasoning-entry` type captures chain-of-thought content (where available), enabling human reviewers to understand AI decision-making processes.
+The hierarchical `children` field preserves conversation structure.
 
 ### REQ-11: Traceability and Reproducibility
 
@@ -199,7 +193,8 @@ All frameworks require the ability to trace system behavior and reconstruct even
 | CRA | "Traceability in the software supply chain" |
 | ETSI TS 104223 5.2.1-2 | "Track, authenticate, manage version control" |
 
-**Mapping to this specification**:
+**Mapping to this specification:**
+
 - `session-id`: Links entries to sessions
 - `entry-id` and `parent-id`: Enables conversation tree reconstruction
 - `vcs-context`: Git commit/branch for code state
@@ -218,22 +213,19 @@ For AI systems classified as high-risk under Annex III, additional requirements 
    - Input data leading to matches
    - Natural persons involved in result verification
 
-2. **Log retention**: Minimum 6 months; financial services may require longer
-   per sector-specific regulation.
+2. **Log retention**: Minimum 6 months; financial services may require longer per sector-specific regulation.
 
-3. **Authority access**: Art. 19 requires provision of logs to competent authorities
-   upon reasoned request.
+3. **Authority access**: Art. 19 requires provision of logs to competent authorities upon reasoned request.
 
 ### ETSI TS 104 223 Session Logging Requirements
 
-ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging
-requirements:
+ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging requirements:
 
 | Provision | Requirement | This Spec Mapping |
 |-----------|-------------|-------------------|
 | 5.1.2-3 | Audit trail for "operation, and lifecycle management of models, datasets and prompts" | `session-trace`, `agent-meta` |
-| 5.2.4-1 | "Document and maintain a clear audit trail of their system design" | `recording-agent`, `vendor-extension` |
-| 5.2.4-3 | "Audit log of changes to system prompts or other model configuration" | `system-event-entry` with prompt changes |
+| 5.2.4-1 | "Document and maintain a clear audit trail of their system design" | `recording-agent`, open maps |
+| 5.2.4-3 | "Audit log of changes to system prompts or other model configuration" | `event-entry` with prompt changes |
 | 5.4.2-1 | "Log system and user actions to support security compliance, incident investigations" | `entries` array |
 | 5.4.2-2 | "Analyse their logs to ensure...desired outputs and to detect anomalies" | Structured format enables analysis |
 | 5.4.2-3 | "Monitor internal states of their AI systems" | `reasoning-entry`, `token-usage` |
@@ -242,14 +234,14 @@ requirements:
 
 The PCI Security Standards Council has published guidance on AI in payment environments:
 
-> "Where possible, logging should be sufficient to audit the prompt inputs and
-> reasoning process used by the AI system that led to the output provided."
+> "Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."
 
 This specification directly addresses this requirement through:
-- `user-entry`: Captures prompt inputs
+
+- `message-entry` (type: "user"): Captures prompt inputs
 - `reasoning-entry`: Captures chain-of-thought (where available)
-- `assistant-entry`: Captures model outputs
-- `tool-call-entry`/`tool-result-entry`: Captures agentic actions
+- `message-entry` (type: "assistant"): Captures model outputs
+- `tool-entry`: Captures agentic actions
 
 ### Financial Sector Requirements (FFIEC, BSI)
 
@@ -271,10 +263,9 @@ The following table maps this specification's data elements to compliance requir
 | `session-id` | Art. 12 | 5.2.4-1 | CC7.2 | AU-3 | 10.2 | A.6.2.8 | - |
 | `entry.type` | Art. 12(2) | 5.4.2-1 | CC7.2 | AU-3 | 10.2 | A.6.2.8 | - |
 | `contributor` | Art. 12(3)(d) | 5.1.4 | CC6.1 | AC-2 | 10.2 | A.6.2.8 | - |
-| `user-entry.content` | Art. 12(3)(c) | 5.1.2-3 | - | - | AI Guide | - | - |
-| `assistant-entry.content` | Art. 12 | 5.4.2-2 | - | - | AI Guide | - | - |
+| `message-entry.content` | Art. 12(3)(c) | 5.1.2-3 | - | - | AI Guide | - | - |
 | `reasoning-entry` | Art. 12 | 5.4.2-3 | - | - | AI Guide | A.7.1 | - |
-| `tool-call-entry` | Art. 12 | 5.4.2-1 | CC7.2 | AU-12 | 10.2 | A.6.2.8 | - |
+| `tool-entry` | Art. 12 | 5.4.2-1 | CC7.2 | AU-12 | 10.2 | A.6.2.8 | - |
 | `signed-agent-record` | Art. 19 | 5.2.4-1.2 | CC6.1 | AU-9 | 10.5 | - | - |
 | `vcs-context` | - | 5.2.1-2 | - | CM-3 | - | A.6.2.8 | - |
 | `token-usage` | - | 5.4.2-4 | - | - | - | - | - |
@@ -302,8 +293,8 @@ Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs MUST be controlled:
 
 Logs may contain personal data subject to GDPR/privacy regulations:
 
-1. `user-entry.content` may contain PII
-2. `tool-result-entry.output` may contain query results with PII
+1. `message-entry.content` may contain PII
+2. `tool-entry.output` may contain query results with PII
 3. Retention periods must balance compliance requirements with data minimization
 
 ## Normative References for Compliance
