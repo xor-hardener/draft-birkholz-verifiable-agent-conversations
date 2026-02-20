@@ -1,28 +1,10 @@
-; =============================================================================
-; Verifiable Agent Conversations — CDDL Schema
-; =============================================================================
-;
-; draft-birkholz-verifiable-agent-conversations
-; Authors: Henk Birkholz, Tobias Heldt
-; Version: 3.0.0-draft
-; Date: 2026-02-18
-;
-; Detailed type descriptions: docs/type-descriptions.md
-
-; TODO: Consider whether signed-agent-record should be the sole start rule,
-; requiring all records to carry a COSE_Sign1 envelope. Currently both are
-; accepted to support unsigned development workflows.
 start = verifiable-agent-record / signed-agent-record
 
-; =============================================================================
-; SECTION 1: COMMON TYPES
-; =============================================================================
-
 ; RFC 3339 string OR epoch milliseconds (for interop).
-abstract-timestamp = tstr .regexp date-time-regexp / number
+abstract-timestamp = tstr .regexp date-time-regexp / uint 
 
-; Opaque string: UUID, SHA-256 hash, etc.
-session-id = tstr
+; Opaque string: UUID, SHA-256 hash in base64url, etc.
+session-id = tstr / bstr
 
 ; Per-entry unique reference within a session.
 entry-id = tstr
@@ -32,10 +14,6 @@ date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-
 
 ; URI pattern (RFC 3986)
 uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
-
-; =============================================================================
-; SECTION 2: ROOT TYPE
-; =============================================================================
 
 verifiable-agent-record = {
     version: tstr                       ; Schema version (semver)
@@ -48,10 +26,6 @@ verifiable-agent-record = {
     * tstr => any
 }
 
-; =============================================================================
-; SECTION 3: SESSION TRACE
-; =============================================================================
-
 session-trace = {
     ? format: tstr                      ; "interactive" / "autonomous" / vendor
     session-id: session-id
@@ -63,14 +37,10 @@ session-trace = {
     * tstr => any
 }
 
-; =============================================================================
-; SECTION 4: AGENT METADATA
-; =============================================================================
-
 agent-meta = {
     model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
     model-provider: tstr                ; e.g., "anthropic", "google"
-    ? models: [* tstr]                  ; All models (multi-model sessions)
+    ? models: [ * tstr ]                  ; All models (multi-model sessions)
     ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
     ? cli-version: tstr
     * tstr => any
@@ -82,14 +52,10 @@ recording-agent = {
     * tstr => any
 }
 
-; =============================================================================
-; SECTION 5: ENVIRONMENT
-; =============================================================================
-
 environment = {
     working-dir: tstr
     ? vcs: vcs-context
-    ? sandboxes: [* tstr]               ; Sandbox mount paths
+    ? sandboxes: [ * tstr ]               ; Sandbox mount paths
     * tstr => any
 }
 
@@ -101,18 +67,12 @@ vcs-context = {
     * tstr => any
 }
 
-; =============================================================================
-; SECTION 6: ENTRY TYPES
-; =============================================================================
-
 entry = message-entry
       / tool-call-entry
       / tool-result-entry
       / reasoning-entry
       / event-entry
 
-; --- Message Entry ---
-; Human input ("user") or agent response ("assistant").
 message-entry = {
     type: "user" / "assistant"
     ? content: any                      ; Text string or structured content blocks
@@ -121,12 +81,10 @@ message-entry = {
     ? model-id: tstr                    ; Model (assistant only)
     ? parent-id: entry-id              ; Parent message reference
     ? token-usage: token-usage
-    ? children: [* entry]
+    ? children: [ * entry ]
     * tstr => any
 }
 
-; --- Tool Call Entry ---
-; Tool invocation: which tool was called and with what arguments.
 tool-call-entry = {
     type: "tool-call"
     name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
@@ -134,12 +92,10 @@ tool-call-entry = {
     ? call-id: tstr                     ; Links call ↔ result
     ? timestamp: abstract-timestamp
     ? id: entry-id
-    ? children: [* entry]
+    ? children: [ * entry ]
     * tstr => any
 }
 
-; --- Tool Result Entry ---
-; Tool output: what the tool returned.
 tool-result-entry = {
     type: "tool-result"
     output: any                         ; Tool output
@@ -148,12 +104,10 @@ tool-result-entry = {
     ? is-error: bool
     ? timestamp: abstract-timestamp
     ? id: entry-id
-    ? children: [* entry]
+    ? children: [ * entry ]
     * tstr => any
 }
 
-; --- Reasoning Entry ---
-; Chain-of-thought or thinking content.
 reasoning-entry = {
     type: "reasoning"
     content: any                        ; Plaintext reasoning or structured
@@ -161,25 +115,19 @@ reasoning-entry = {
     ? subject: tstr                     ; Topic label
     ? timestamp: abstract-timestamp
     ? id: entry-id
-    ? children: [* entry]
+    ? children: [ * entry ]
     * tstr => any
 }
 
-; --- Event Entry ---
-; System lifecycle events (session-start, token-count, etc.).
 event-entry = {
     type: "system-event"
     event-type: tstr                    ; Event classifier
     ? data: { * tstr => any }           ; Event-specific payload
     ? timestamp: abstract-timestamp
     ? id: entry-id
-    ? children: [* entry]
+    ? children: [ * entry ]
     * tstr => any
 }
-
-; =============================================================================
-; SECTION 7: TOKEN USAGE
-; =============================================================================
 
 token-usage = {
     ? input: uint                       ; Input tokens
@@ -190,13 +138,6 @@ token-usage = {
     ? cost: number                      ; Dollar cost
     * tstr => any
 }
-
-; =============================================================================
-; SECTION 8: FILE ATTRIBUTION
-; =============================================================================
-; NOTE: Specified but not yet validated against real session data.
-; Derivability analysis (4/5 agents) in docs/reviews/2026-02-18/
-; file-attribution-investigation.md. Implementation pending.
 
 file-attribution-record = {
     files: [* file]
@@ -232,11 +173,8 @@ resource = {
     url: tstr .regexp uri-regexp
 }
 
-; =============================================================================
-; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
-; =============================================================================
-
-signed-agent-record = #6.18([          ; COSE_Sign1 tag
+; SCITT-compliant COSE Envelope
+signed-agent-record = #6.18([           ; COSE_Sign1 tag
     protected: bstr,                    ; {alg, content-type}
     unprotected: {                      ; Trace metadata
         ? trace-metadata-key => trace-metadata
@@ -245,8 +183,7 @@ signed-agent-record = #6.18([          ; COSE_Sign1 tag
     signature: bstr
 ])
 
-; Label 100 is provisional (private-use range per RFC 9052 §3.1).
-; IANA registration required before RFC publication.
+; Label 100 is a placeholder, not intended for production use
 trace-metadata-key = 100
 
 trace-metadata = {
