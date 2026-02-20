@@ -69,7 +69,7 @@ While the responsible parties for agent actions ultimately are humans--whether a
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
 These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
 
-Verifiable records of agent conversations enable operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
+The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
 
 For example:
 
