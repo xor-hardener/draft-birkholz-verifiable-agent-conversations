@@ -113,7 +113,7 @@ The following frameworks were analyzed for their requirements on AI agent tracea
 
 ## Common Requirements Intersection
 
-Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
+Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across all or most frameworks.
 These represent the minimum baseline that verifiable agent conversation records MUST support.
 
 ### REQ-1: Automatic Event Logging
