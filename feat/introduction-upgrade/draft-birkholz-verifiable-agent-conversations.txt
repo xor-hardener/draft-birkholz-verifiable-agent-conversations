@@ -90,7 +90,8 @@ Table of Contents
    understand decision making and the chain of thoughts of autonomous
    agents, retroactively.
 
-   Verifiable records of agent conversations enable operators to detect
+   The verifiable records of agent conversations that are specified in
+   this document provide an essential basis for operators to detect
    divergences between intended and actual agent behavior after the
    interaction has concluded.
 
