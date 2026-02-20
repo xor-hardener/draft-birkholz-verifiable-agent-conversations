@@ -171,7 +171,7 @@ All frameworks require attribution of actions to identifiable actors (human or s
 | FedRAMP AC-2 | Account management and identification |
 
 Mapping to this specification:
-The `contributor` type captures actor attribution with `type` (human/ai/mixed/unknown) and optional `model_id`.
+The `contributor` type captures actor attribution with `type` (human/ai/mixed/unknown) and optional `model-id`.
 Session-level `agent-meta` identifies the AI system.
 
 ### REQ-4: Action/Event Type Recording
