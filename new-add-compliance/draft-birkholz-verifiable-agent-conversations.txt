@@ -332,7 +332,7 @@ Table of Contents
                                  Table 4
 
    Mapping to this specification: The contributor type captures actor
-   attribution with type (human/ai/mixed/unknown) and optional model_id.
+   attribution with type (human/ai/mixed/unknown) and optional model-id.
    Session-level agent-meta identifies the AI system.
 
 2.2.4.  REQ-4: Action/Event Type Recording
