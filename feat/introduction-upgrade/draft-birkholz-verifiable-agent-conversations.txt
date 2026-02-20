@@ -1,0 +1,516 @@
+
+
+
+
+Network Working Group                                        H. Birkholz
+Internet-Draft                                                          
+Intended status: Standards Track                                T. Heldt
+Expires: 24 August 2026                                 20 February 2026
+
+
+                     Verifiable Agent Conversations
+          draft-birkholz-verifiable-agent-conversations-latest
+
+Abstract
+
+   Abstract
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/xor-hardener/draft-birkholz-verifiable-agent-
+   conversations.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 24 August 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Conventions and Definitions
+   2.  Agent Conversations
+   3.  References
+     3.1.  Normative References
+     3.2.  Informative References
+   Authors' Addresses
+
+1.  Introduction
+
+   The question of whether the recorded output of an autonomous agent
+   faithfully represents the agent's actual behavior has found new
+   urgency as agents are delegated consequential tasks.  Autonomous
+   Agents--typically workload instances of agentic artificial
+   intelligence (AI) based on large language models (LLM)--interact with
+   other actors by design.  The two main types of actors interacting
+   with autonomous agents are humans and machines (e.g., other
+   autonomous agents), or a mix of them.  In agentic AI systems, machine
+   actors interact with other machine actors.  While the responsible
+   parties for agent actions ultimately are humans--whether a natural
+   legal entity or an organization--agents act on behalf of humans and
+   on behalf of other agents.  The responsible human party requires
+   records of agent behavior to demonstrate due diligence over the
+   agents acting under their authority.  These increasingly complex
+   interactions between multiple actors that can also be triggered by
+   machines (recursively) increase the need to understand decision
+   making and the chain of thoughts of autonomous agents, retroactively.
+
+   Verifiable records of agent conversations enable operators to detect
+   divergences between intended and actual agent behavior after the
+   interaction has concluded.
+
+   For example:
+
+   *  An agent authorized to read files might invoke tools to modify
+      production systems or exfiltrate sensitive data beyond its
+      authorization scope.
+
+   *  An agent's visible chain-of-thought output might diverge from the
+      reasoning that actually produced its actions.
+
+   *  An agent might deliberately underperform during capability
+      evaluations while performing at full capacity during deployment.
+
+   This document defines conversation records representing activities of
+   autonomous agents such that long-term preservation of the evidentiary
+   value of these records across chains of custody is possible.  The
+   first goal is to assure that the recording of an agent conversation
+   (a distinct segment of the interaction with an autonomous agent)
+   being proffered is the same as the agent conversation that actually
+   occurred.  The second goal is to provide a general structure of agent
+   conversations that can represent most common types of agent
+   conversation frames, is extensible, and allows for future evolution
+   of agent conversation complexity and corresponding actor interaction.
+   The third goal is to use existing IETF building blocks to present
+   believable evidence about how an agent conversation is recorded
+   utilizing Evidence generation as laid out in the Remote ATtestation
+   ProcedureS architecture [RFC9334].  The fourth goal is to use
+   existing IETF building blocks to render conversation records
+   auditable after the fact and enable non-repudiation as laid out in
+   the Supply Chain Integrity, Transparency, and Trust architecture
+   [I-D.ietf-scitt-architecture].  The fifth goal is to enable detection
+   of behavioral anomalies in agent interactions--including unauthorized
+   tool invocations, inconsistencies between reasoning traces and
+   actions, and performance modulation across evaluation and deployment
+   contexts--through structured, comparable conversation records.  The
+   sixth goal is to enable cross-vendor interoperability by defining a
+   common representation for agent conversations that can be translated
+   from multiple existing agent implementations with distinct native
+   formats.  The seventh goal is to produce records suitable for
+   demonstrating compliance with emerging regulatory requirements for AI
+   system documentation, traceability, and human oversight.
+
+   Most agent conversations today are represented in "human-readable"
+   text formats.  For example, [STD90] is considered to be "human-
+   readable" as it can be presented to humans in human-computer-
+   interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
+   editors that allow such data to be consumed or modified by humans.
+   The Concise Binary Object Representation (CBOR [STD94]) is used as
+   the primary representation next to the established representation
+   that is JSON.
+
+1.1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   In this document, CDDL [RFC8610] is used to describe the data
+   formats.
+
+   The reader is assumed to be familiar with the vocabulary and concepts
+   defined in [RFC9334] and [I-D.ietf-scitt-architecture].
+
+2.  Agent Conversations
+
+   Content
+
+; =============================================================================
+; Verifiable Agent Conversations — CDDL Schema
+; =============================================================================
+;
+; draft-birkholz-verifiable-agent-conversations
+; Authors: Henk Birkholz, Tobias Heldt
+; Version: 3.0.0-draft
+; Date: 2026-02-18
+;
+; Detailed type descriptions: docs/type-descriptions.md
+
+; TODO: Consider whether signed-agent-record should be the sole start rule,
+; requiring all records to carry a COSE_Sign1 envelope. Currently both are
+; accepted to support unsigned development workflows.
+start = verifiable-agent-record / signed-agent-record
+
+; =============================================================================
+; SECTION 1: COMMON TYPES
+; =============================================================================
+
+; RFC 3339 string OR epoch milliseconds (for interop).
+abstract-timestamp = tstr .regexp date-time-regexp / number
+
+; Opaque string: UUID, SHA-256 hash, etc.
+session-id = tstr
+
+; Per-entry unique reference within a session.
+entry-id = tstr
+
+; RFC 3339 date-time pattern
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+; URI pattern (RFC 3986)
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+
+; =============================================================================
+; SECTION 2: ROOT TYPE
+; =============================================================================
+
+verifiable-agent-record = {
+    version: tstr                       ; Schema version (semver)
+    id: tstr                            ; Record identifier
+    session: session-trace              ; Conversation trace (required)
+    ? created: abstract-timestamp       ; Record creation time
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context                  ; Record-level VCS context
+    ? recording-agent: recording-agent  ; Tool that generated this record
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 3: SESSION TRACE
+; =============================================================================
+
+session-trace = {
+    ? format: tstr                      ; "interactive" / "autonomous" / vendor
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 4: AGENT METADATA
+; =============================================================================
+
+agent-meta = {
+    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+    model-provider: tstr                ; e.g., "anthropic", "google"
+    ? models: [* tstr]                  ; All models (multi-model sessions)
+    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+    ? cli-version: tstr
+    * tstr => any
+}
+
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 5: ENVIRONMENT
+; =============================================================================
+
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]               ; Sandbox mount paths
+    * tstr => any
+}
+
+vcs-context = {
+    type: tstr                          ; "git" / "jj" / "hg" / "svn"
+    ? revision: tstr                    ; Commit SHA or change ID
+    ? branch: tstr
+    ? repository: tstr                  ; Repository URL
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 6: ENTRY TYPES
+; =============================================================================
+
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+
+; --- Message Entry ---
+; Human input ("user") or agent response ("assistant").
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any                      ; Text string or structured content blocks
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr                    ; Model (assistant only)
+    ? parent-id: entry-id              ; Parent message reference
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Tool Call Entry ---
+; Tool invocation: which tool was called and with what arguments.
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+    input: any                          ; Tool arguments
+    ? call-id: tstr                     ; Links call ↔ result
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Tool Result Entry ---
+; Tool output: what the tool returned.
+tool-result-entry = {
+    type: "tool-result"
+    output: any                         ; Tool output
+    ? call-id: tstr                     ; Links call ↔ result
+    ? status: tstr                      ; "success" / "error" / "completed"
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Reasoning Entry ---
+; Chain-of-thought or thinking content.
+reasoning-entry = {
+    type: "reasoning"
+    content: any                        ; Plaintext reasoning or structured
+    ? encrypted: tstr                   ; Encrypted content (provider-protected)
+    ? subject: tstr                     ; Topic label
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Event Entry ---
+; System lifecycle events (session-start, token-count, etc.).
+event-entry = {
+    type: "system-event"
+    event-type: tstr                    ; Event classifier
+    ? data: { * tstr => any }           ; Event-specific payload
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 7: TOKEN USAGE
+; =============================================================================
+
+token-usage = {
+    ? input: uint                       ; Input tokens
+    ? output: uint                      ; Output tokens
+    ? cached: uint                      ; Cached input tokens
+    ? reasoning: uint                   ; Reasoning/thinking tokens
+    ? total: uint                       ; Total tokens
+    ? cost: number                      ; Dollar cost
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 8: FILE ATTRIBUTION
+; =============================================================================
+; NOTE: Specified but not yet validated against real session data.
+; Derivability analysis (4/5 agents) in docs/reviews/2026-02-18/
+; file-attribution-investigation.md. Implementation pending.
+
+file-attribution-record = {
+    files: [* file]
+}
+
+file = {
+    path: tstr                          ; Relative path from repo root
+    conversations: [* conversation]
+}
+
+conversation = {
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor          ; Default contributor for ranges
+    ranges: [* range]
+    ? related: [* resource]
+}
+
+range = {
+    start-line: uint                    ; 1-indexed
+    end-line: uint                      ; 1-indexed, inclusive
+    ? content-hash: tstr
+    ? content-hash-alg: tstr            ; Default: "sha-256"
+    ? contributor: contributor          ; Override for this range
+}
+
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+
+; =============================================================================
+; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
+; =============================================================================
+
+signed-agent-record = #6.18([          ; COSE_Sign1 tag
+    protected: bstr,                    ; {alg, content-type}
+    unprotected: {                      ; Trace metadata
+        ? trace-metadata-key => trace-metadata
+    },
+    payload: bstr / null,               ; Detached if null
+    signature: bstr
+])
+
+; Label 100 is provisional (private-use range per RFC 9052 §3.1).
+; IANA registration required before RFC publication.
+trace-metadata-key = 100
+
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr                ; SHA-256 hex digest of payload
+    ? content-hash-alg: tstr
+}
+
+; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+trace-format-id = tstr
+
+          Figure 1: CDDL definition of an Agent Conversation
+
+3.  References
+
+3.1.  Normative References
+
+   [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
+              <https://www.iana.org/assignments/cwt>.
+
+   [IANA.jwt] IANA, "JSON Web Token (JWT)",
+              <https://www.iana.org/assignments/jwt>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
+
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7519>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [STD90]    Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/rfc/rfc8259>.
+
+   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+3.2.  Informative References
+
+   [I-D.ietf-scitt-architecture]
+              Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
+              Y., and S. Lasker, "An Architecture for Trustworthy and
+              Transparent Digital Supply Chains", Work in Progress,
+              Internet-Draft, draft-ietf-scitt-architecture-22, 10
+              October 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-scitt-architecture-22>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Authors' Addresses
+
+   Henk Birkholz
+   Email: henk.birkholz@ietf.contact
+
+
+   Tobias Heldt
+   Email: tobias@xor.tech
