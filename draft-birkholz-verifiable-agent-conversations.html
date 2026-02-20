@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz &amp; Heldt</td>
-<td class="center">Expires 23 August 2026</td>
+<td class="center">Expires 24 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-birkholz-verifiable-agent-conversations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-19" class="published">19 February 2026</time>
+<time datetime="2026-02-20" class="published">20 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-23">23 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-24">24 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1154,21 +1154,223 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-agent-conversations" class="internal xref">Agent Conversations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-compliance-requirements-for" class="internal xref">Compliance Requirements for AI Agent Conversation Records</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-applicable-frameworks-analy" class="internal xref">Applicable Frameworks Analyzed</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-common-requirements-interse" class="internal xref">Common Requirements Intersection</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-req-1-automatic-event-loggi" class="internal xref">REQ-1: Automatic Event Logging</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-req-2-timestamp-requirement" class="internal xref">REQ-2: Timestamp Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-req-3-actor-identification" class="internal xref">REQ-3: Actor Identification</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.4">
+                    <p id="section-toc.1-1.2.2.2.2.4.1"><a href="#section-2.2.4" class="auto internal xref">2.2.4</a>.  <a href="#name-req-4-action-event-type-rec" class="internal xref">REQ-4: Action/Event Type Recording</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.5">
+                    <p id="section-toc.1-1.2.2.2.2.5.1"><a href="#section-2.2.5" class="auto internal xref">2.2.5</a>.  <a href="#name-req-5-input-output-recordin" class="internal xref">REQ-5: Input/Output Recording (AI-Specific)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.6">
+                    <p id="section-toc.1-1.2.2.2.2.6.1"><a href="#section-2.2.6" class="auto internal xref">2.2.6</a>.  <a href="#name-req-6-retention-period-requ" class="internal xref">REQ-6: Retention Period Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.7">
+                    <p id="section-toc.1-1.2.2.2.2.7.1"><a href="#section-2.2.7" class="auto internal xref">2.2.7</a>.  <a href="#name-req-7-tamper-evidence-and-i" class="internal xref">REQ-7: Tamper-Evidence and Integrity Protection</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.8">
+                    <p id="section-toc.1-1.2.2.2.2.8.1"><a href="#section-2.2.8" class="auto internal xref">2.2.8</a>.  <a href="#name-req-8-incident-response-sup" class="internal xref">REQ-8: Incident Response Support</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.9">
+                    <p id="section-toc.1-1.2.2.2.2.9.1"><a href="#section-2.2.9" class="auto internal xref">2.2.9</a>.  <a href="#name-req-9-anomaly-and-risk-dete" class="internal xref">REQ-9: Anomaly and Risk Detection Support</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.10">
+                    <p id="section-toc.1-1.2.2.2.2.10.1"><a href="#section-2.2.10" class="auto internal xref">2.2.10</a>. <a href="#name-req-10-human-oversight-enab" class="internal xref">REQ-10: Human Oversight Enablement</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.11">
+                    <p id="section-toc.1-1.2.2.2.2.11.1"><a href="#section-2.2.11" class="auto internal xref">2.2.11</a>. <a href="#name-req-11-traceability-and-rep" class="internal xref">REQ-11: Traceability and Reproducibility</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-framework-specific-requirem" class="internal xref">Framework-Specific Requirements</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.1">
+                    <p id="section-toc.1-1.2.2.3.2.1.1"><a href="#section-2.3.1" class="auto internal xref">2.3.1</a>.  <a href="#name-eu-ai-act-high-risk-systems" class="internal xref">EU AI Act (High-Risk Systems)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.2">
+                    <p id="section-toc.1-1.2.2.3.2.2.1"><a href="#section-2.3.2" class="auto internal xref">2.3.2</a>.  <a href="#name-etsi-ts-104-223-session-log" class="internal xref">ETSI TS 104 223 Session Logging Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.3">
+                    <p id="section-toc.1-1.2.2.3.2.3.1"><a href="#section-2.3.3" class="auto internal xref">2.3.3</a>.  <a href="#name-pci-dss-v40-ai-specific-gui" class="internal xref">PCI DSS v4.0 AI-Specific Guidance</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.4">
+                    <p id="section-toc.1-1.2.2.3.2.4.1"><a href="#section-2.3.4" class="auto internal xref">2.3.4</a>.  <a href="#name-financial-sector-requiremen" class="internal xref">Financial Sector Requirements (FFIEC, BSI)</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-compliance-mapping-table" class="internal xref">Compliance Mapping Table</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-security-considerations-for" class="internal xref">Security Considerations for Compliance</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+                    <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-log-integrity" class="internal xref">Log Integrity</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.2">
+                    <p id="section-toc.1-1.2.2.5.2.2.1"><a href="#section-2.5.2" class="auto internal xref">2.5.2</a>.  <a href="#name-access-control" class="internal xref">Access Control</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.3">
+                    <p id="section-toc.1-1.2.2.5.2.3.1"><a href="#section-2.5.3" class="auto internal xref">2.5.3</a>.  <a href="#name-data-protection" class="internal xref">Data Protection</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
+                <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="auto internal xref">2.6</a>.  <a href="#name-normative-references-for-co" class="internal xref">Normative References for Compliance Bucket (TBD)</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.7">
+                <p id="section-toc.1-1.2.2.7.1"><a href="#section-2.7" class="auto internal xref">2.7</a>.  <a href="#name-informative-references-buck" class="internal xref">Informative References Bucket (TBD)</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-data-model-overview" class="internal xref">Data Model Overview</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-verifiable-agent-record" class="internal xref">The verifiable-agent-record Type</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-session-types" class="internal xref">Session Types</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-the-session-trace-map" class="internal xref">The session-trace Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-the-agent-meta-map" class="internal xref">The agent-meta Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-the-recording-agent-map" class="internal xref">The recording-agent Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-environment-types" class="internal xref">Environment Types</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-the-environment-map" class="internal xref">The environment Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-the-vcs-context-map" class="internal xref">The vcs-context Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-entry-types" class="internal xref">Entry Types</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-the-entry-union" class="internal xref">The entry Union</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-the-message-entry-map" class="internal xref">The message-entry Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-the-tool-call-entry-map" class="internal xref">The tool-call-entry Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-the-tool-result-entry-map" class="internal xref">The tool-result-entry Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-the-reasoning-entry-map" class="internal xref">The reasoning-entry Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-the-event-entry-map" class="internal xref">The event-entry Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-token-usage" class="internal xref">Token Usage</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-the-token-usage-map" class="internal xref">The token-usage Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-file-attribution" class="internal xref">File Attribution</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-the-file-attribution-record" class="internal xref">The file-attribution-record Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-the-file-map" class="internal xref">The file Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-the-conversation-map" class="internal xref">The conversation Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-the-range-map" class="internal xref">The range Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.5">
+                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-the-contributor-map" class="internal xref">The contributor Map</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.6">
+                <p id="section-toc.1-1.9.2.6.1"><a href="#section-9.6" class="auto internal xref">9.6</a>.  <a href="#name-the-resource-map" class="internal xref">The resource Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-signing-and-verification" class="internal xref">Signing and Verification</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-the-signed-agent-record-typ" class="internal xref">The signed-agent-record Type</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-the-trace-metadata-map" class="internal xref">The trace-metadata Map</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-common-types" class="internal xref">Common Types</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-the-abstract-timestamp-type" class="internal xref">The abstract-timestamp Type</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-the-session-id-type" class="internal xref">The session-id Type</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
+                <p id="section-toc.1-1.11.2.3.1"><a href="#section-11.3" class="auto internal xref">11.3</a>.  <a href="#name-the-entry-id-type" class="internal xref">The entry-id Type</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-full-cddl-schema" class="internal xref">Full CDDL Schema</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="auto internal xref">13</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#section-14" class="auto internal xref">14</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#section-15" class="auto internal xref">15</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.1">
+                <p id="section-toc.1-1.15.2.1.1"><a href="#section-15.1" class="auto internal xref">15.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.2">
+                <p id="section-toc.1-1.15.2.2.1"><a href="#section-15.2" class="auto internal xref">15.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1203,19 +1405,1949 @@ described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</s
 appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">In this document, CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> is used to describe the data formats.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">The reader is assumed to be familiar with the vocabulary and concepts defined in <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> and <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">Fields in a verifiable agent record follow two naming conventions.
+Canonical fields defined in the CDDL schema use kebab-case naming (e.g., <code>call-id</code>, <code>model-id</code>, <code>token-usage</code>).
+Native passthrough fields retained from the source agent use the agent's original naming convention (e.g., camelCase or snake_case) and are preserved via the <code>* tstr =&gt; any</code> extensibility mechanism on each map type.
+Consumers <span class="bcp14">SHOULD</span> process canonical fields for interoperability and <span class="bcp14">MAY</span> ignore native passthrough fields.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="agent-conversations">
+<div id="compliance-requirements-for-ai-agent-conversation-records">
 <section id="section-2">
-      <h2 id="name-agent-conversations">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-agent-conversations" class="section-name selfRef">Agent Conversations</a>
+      <h2 id="name-compliance-requirements-for">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-compliance-requirements-for" class="section-name selfRef">Compliance Requirements for AI Agent Conversation Records</a>
       </h2>
-<p id="section-2-1">Content<a href="#section-2-1" class="pilcrow">¶</a></p>
-<span id="name-cddl-definition-of-an-agent"></span><div id="fig-cddl-record">
+<p id="section-2-1">This section identifies the intersection of logging, traceability, and record-keeping requirements across major compliance frameworks applicable to AI systems.
+The verifiable agent conversation format defined in this document addresses these requirements by providing a standardized, cryptographically verifiable record of AI agent interactions.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="applicable-frameworks-analyzed">
+<section id="section-2.1">
+        <h3 id="name-applicable-frameworks-analy">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-applicable-frameworks-analy" class="section-name selfRef">Applicable Frameworks Analyzed</a>
+        </h3>
+<p id="section-2.1-1">The following frameworks were analyzed for their requirements on AI agent traceability and session logging:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Framework</th>
+              <th class="text-left" rowspan="1" colspan="1">Jurisdiction</th>
+              <th class="text-left" rowspan="1" colspan="1">Sector</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">EU AI Act (Regulation 2024/1689)</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Cross-sector</td>
+              <td class="text-left" rowspan="1" colspan="1">In force Aug 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Cyber Resilience Act (CRA)</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Products with digital elements</td>
+              <td class="text-left" rowspan="1" colspan="1">In force Dec 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">NIS2 Directive</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Essential/important entities</td>
+              <td class="text-left" rowspan="1" colspan="1">Transposed Oct 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ETSI TS 104 223</td>
+              <td class="text-left" rowspan="1" colspan="1">EU/International</td>
+              <td class="text-left" rowspan="1" colspan="1">AI systems</td>
+              <td class="text-left" rowspan="1" colspan="1">Published Apr 2025</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SOC 2 Trust Services Criteria</td>
+              <td class="text-left" rowspan="1" colspan="1">US/International</td>
+              <td class="text-left" rowspan="1" colspan="1">Service organizations</td>
+              <td class="text-left" rowspan="1" colspan="1">Active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FedRAMP Rev. 5</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Federal cloud services</td>
+              <td class="text-left" rowspan="1" colspan="1">Active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PCI DSS v4.0</td>
+              <td class="text-left" rowspan="1" colspan="1">International</td>
+              <td class="text-left" rowspan="1" colspan="1">Payment card industry</td>
+              <td class="text-left" rowspan="1" colspan="1">Mandatory Mar 2025</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ISO/IEC 42001:2023</td>
+              <td class="text-left" rowspan="1" colspan="1">International</td>
+              <td class="text-left" rowspan="1" colspan="1">AI management systems</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2023</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FFIEC IT Handbook</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Financial institutions</td>
+              <td class="text-left" rowspan="1" colspan="1">Updated 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">BSI AI Finance Test Criteria</td>
+              <td class="text-left" rowspan="1" colspan="1">Germany</td>
+              <td class="text-left" rowspan="1" colspan="1">Financial sector AI</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">NIST AI 100-2</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Cross-sector</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2025</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="common-requirements-intersection">
+<section id="section-2.2">
+        <h3 id="name-common-requirements-interse">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-common-requirements-interse" class="section-name selfRef">Common Requirements Intersection</a>
+        </h3>
+<p id="section-2.2-1">Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across all or most frameworks.
+These represent the minimum baseline that verifiable agent conversation records <span class="bcp14">MUST</span> support.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<div id="req-1-automatic-event-logging">
+<section id="section-2.2.1">
+          <h4 id="name-req-1-automatic-event-loggi">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-req-1-automatic-event-loggi" class="section-name selfRef">REQ-1: Automatic Event Logging</a>
+          </h4>
+<p id="section-2.2.1-1">All frameworks require automatic, system-generated logging of events without reliance on manual recording.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"High-risk AI systems shall technically allow for the automatic recording of events (logs)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"System Operators shall log system and user actions"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2 CC7.2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Complete and chronological record of all user actions and system responses"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP AU-12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit Record Generation" control requirement</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit logs implemented to support detection of anomalies"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001 A.6.2.8</td>
+                <td class="text-left" rowspan="1" colspan="1">"AI system recording of event logs"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.1-3">Mapping to this specification:
+The <code>entries</code> array in <code>session-trace</code> captures all events automatically.
+Each <code>entry</code> represents a discrete, system-recorded event with structured metadata.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-2-timestamp-requirements">
+<section id="section-2.2.2">
+          <h4 id="name-req-2-timestamp-requirement">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-req-2-timestamp-requirement" class="section-name selfRef">REQ-2: Timestamp Requirements</a>
+          </h4>
+<p id="section-2.2.2-1">All frameworks require precise temporal information for each logged event.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-3">
+            <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(2)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Precise timestamps for each usage session" (biometric systems)</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10.6</td>
+                <td class="text-left" rowspan="1" colspan="1">"Time-synchronization mechanisms support consistent time settings"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"When the activity was performed via timestamp"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Precise logging of when an incident was first detected"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.2-3">Mapping to this specification:
+The <code>timestamp</code> field in each entry uses <code>abstract-timestamp</code> which accepts both RFC 3339 strings and epoch milliseconds, ensuring interoperability across implementations.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-3-actor-identification">
+<section id="section-2.2.3">
+          <h4 id="name-req-3-actor-identification">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-req-3-actor-identification" class="section-name selfRef">REQ-3: Actor Identification</a>
+          </h4>
+<p id="section-2.2.3-1">All frameworks require attribution of actions to identifiable actors (human or system).<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-4">
+            <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(3)(d)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Identification of the natural persons involved in the verification of results"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"The process or user who initiated the activity (Who)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">Attribution to "Who" performed each action</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP AC-2</td>
+                <td class="text-left" rowspan="1" colspan="1">Account management and identification</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.3-3">Mapping to this specification:
+The <code>contributor</code> type captures actor attribution with <code>type</code> (human/ai/mixed/unknown) and optional <code>model-id</code>.
+Session-level <code>agent-meta</code> identifies the AI system.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-4-actionevent-type-recording">
+<section id="section-2.2.4">
+          <h4 id="name-req-4-action-event-type-rec">
+<a href="#section-2.2.4" class="section-number selfRef">2.2.4. </a><a href="#name-req-4-action-event-type-rec" class="section-name selfRef">REQ-4: Action/Event Type Recording</a>
+          </h4>
+<p id="section-2.2.4-1">All frameworks require recording of what action or event occurred.<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-5">
+            <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Events relevant for identifying situations that may result in...risk"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.2.4-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit log of changes to system prompts or other model configuration"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"The action they performed such as file transferred, created, or deleted (What)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">"What" component of audit trail</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.4-3">Mapping to this specification:
+The <code>type</code> field in each entry discriminates event types: <code>user</code>, <code>assistant</code>, <code>tool-call</code>, <code>tool-result</code>, <code>reasoning</code>, <code>system-event</code>.<a href="#section-2.2.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-5-inputoutput-recording-ai-specific">
+<section id="section-2.2.5">
+          <h4 id="name-req-5-input-output-recordin">
+<a href="#section-2.2.5" class="section-number selfRef">2.2.5. </a><a href="#name-req-5-input-output-recordin" class="section-name selfRef">REQ-5: Input/Output Recording (AI-Specific)</a>
+          </h4>
+<p id="section-2.2.5-1">AI-specific frameworks require recording of inputs (prompts) and outputs (responses).<a href="#section-2.2.5-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-6">
+            <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(3)(c)</td>
+                <td class="text-left" rowspan="1" colspan="1">"The input data for which the search has led to a match"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS AI Guidance</td>
+                <td class="text-left" rowspan="1" colspan="1">"Logging should be sufficient to audit the prompt inputs and reasoning process"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.1.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Operation, and lifecycle management of models, datasets and prompts"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FFIEC VII.D</td>
+                <td class="text-left" rowspan="1" colspan="1">"Lack of explainability...unclear how inputs are translated into outputs"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.5-3">Mapping to this specification:<a href="#section-2.2.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.5-4.1">
+              <p id="section-2.2.5-4.1.1"><code>message-entry</code> (type: "user"): User/system input (prompt)<a href="#section-2.2.5-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.2">
+              <p id="section-2.2.5-4.2.1"><code>message-entry</code> (type: "assistant"): Model response<a href="#section-2.2.5-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.3">
+              <p id="section-2.2.5-4.3.1"><code>tool-call-entry.input</code>: Tool invocation parameters<a href="#section-2.2.5-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.4">
+              <p id="section-2.2.5-4.4.1"><code>tool-result-entry.output</code>: Tool execution results<a href="#section-2.2.5-4.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.5">
+              <p id="section-2.2.5-4.5.1"><code>reasoning-entry.content</code>: Chain-of-thought (where available)<a href="#section-2.2.5-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="req-6-retention-period-requirements">
+<section id="section-2.2.6">
+          <h4 id="name-req-6-retention-period-requ">
+<a href="#section-2.2.6" class="section-number selfRef">2.2.6. </a><a href="#name-req-6-retention-period-requ" class="section-name selfRef">REQ-6: Retention Period Requirements</a>
+          </h4>
+<p id="section-2.2.6-1">Most frameworks specify minimum retention periods for audit logs.<a href="#section-2.2.6-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-7">
+            <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Minimum Retention</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 19</td>
+                <td class="text-left" rowspan="1" colspan="1">6 months (longer for financial services)</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP (M-21-31)</td>
+                <td class="text-left" rowspan="1" colspan="1">12 months active + 18 months cold storage</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">12 months total, 3 months immediate access</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2</td>
+                <td class="text-left" rowspan="1" colspan="1">Per member state law</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.6-3">Recommendation:
+Implementations <span class="bcp14">SHOULD</span> retain verifiable agent conversation records for at least 12 months to satisfy the most common requirement threshold.<a href="#section-2.2.6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-7-tamper-evidence-and-integrity-protection">
+<section id="section-2.2.7">
+          <h4 id="name-req-7-tamper-evidence-and-i">
+<a href="#section-2.2.7" class="section-number selfRef">2.2.7. </a><a href="#name-req-7-tamper-evidence-and-i" class="section-name selfRef">REQ-7: Tamper-Evidence and Integrity Protection</a>
+          </h4>
+<p id="section-2.2.7-1">All frameworks require protection against unauthorized modification of logs.<a href="#section-2.2.7-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-8">
+            <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10.5</td>
+                <td class="text-left" rowspan="1" colspan="1">"Tamper-proof audit trails...logs cannot be altered retroactively"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP</td>
+                <td class="text-left" rowspan="1" colspan="1">"Effective chain of evidence to ensure integrity"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">Log integrity as security control</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">"Tamper-proof SBOMs and vulnerability disclosures"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.7-3">Mapping to this specification:
+The <code>signed-agent-record</code> type (COSE_Sign1 envelope) provides cryptographic integrity protection.
+The <code>content-hash</code> field in <code>trace-metadata</code> enables verification of payload integrity.<a href="#section-2.2.7-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-8-incident-response-support">
+<section id="section-2.2.8">
+          <h4 id="name-req-8-incident-response-sup">
+<a href="#section-2.2.8" class="section-number selfRef">2.2.8. </a><a href="#name-req-8-incident-response-sup" class="section-name selfRef">REQ-8: Incident Response Support</a>
+          </h4>
+<p id="section-2.2.8-1">All frameworks require logs to support incident investigation and response.<a href="#section-2.2.8-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-9">
+            <caption><a href="#table-9" class="selfRef">Table 9</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2 Art. 23</td>
+                <td class="text-left" rowspan="1" colspan="1">24-hour initial notification, 72-hour assessment</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">24-hour vulnerability notification to ENISA</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">Logs for "incident investigations, and vulnerability remediation"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP</td>
+                <td class="text-left" rowspan="1" colspan="1">Incident reporting and continuous monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.8-3">Mapping to this specification:
+The structured format enables rapid extraction of relevant entries by timestamp range, event type, or tool invocation for incident reconstruction.<a href="#section-2.2.8-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-9-anomaly-and-risk-detection-support">
+<section id="section-2.2.9">
+          <h4 id="name-req-9-anomaly-and-risk-dete">
+<a href="#section-2.2.9" class="section-number selfRef">2.2.9. </a><a href="#name-req-9-anomaly-and-risk-dete" class="section-name selfRef">REQ-9: Anomaly and Risk Detection Support</a>
+          </h4>
+<p id="section-2.2.9-1">Frameworks require logs to enable detection of anomalous or risky behavior.<a href="#section-2.2.9-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-10">
+            <caption><a href="#table-10" class="selfRef">Table 10</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(2)(a)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Identifying situations that may result in...risk"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Detect anomalies, security breaches, or unexpected behaviour"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP SI-4</td>
+                <td class="text-left" rowspan="1" colspan="1">"Anomaly detection"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Anomaly detection" for security monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.9-3">Mapping to this specification:
+The standardized entry types and structured <code>tool-call</code>/<code>tool-result</code> pairs enable automated analysis for detecting:<a href="#section-2.2.9-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.9-4.1">
+              <p id="section-2.2.9-4.1.1">Unusual tool invocation patterns<a href="#section-2.2.9-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.2">
+              <p id="section-2.2.9-4.2.1">Failed operations (via <code>status</code> and <code>is-error</code> fields)<a href="#section-2.2.9-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.3">
+              <p id="section-2.2.9-4.3.1">Unexpected reasoning patterns<a href="#section-2.2.9-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.4">
+              <p id="section-2.2.9-4.4.1">Token usage anomalies<a href="#section-2.2.9-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="req-10-human-oversight-enablement">
+<section id="section-2.2.10">
+          <h4 id="name-req-10-human-oversight-enab">
+<a href="#section-2.2.10" class="section-number selfRef">2.2.10. </a><a href="#name-req-10-human-oversight-enab" class="section-name selfRef">REQ-10: Human Oversight Enablement</a>
+          </h4>
+<p id="section-2.2.10-1">AI-specific frameworks require logs to support human review and oversight.<a href="#section-2.2.10-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-11">
+            <caption><a href="#table-11" class="selfRef">Table 11</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 26(5)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Monitoring the operation of high-risk AI systems"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.1.4-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Capabilities to enable human oversight"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001</td>
+                <td class="text-left" rowspan="1" colspan="1">Human responsibility and accountability</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FFIEC VII.D</td>
+                <td class="text-left" rowspan="1" colspan="1">"Dynamic updating...challenges to monitoring and independently reviewing AI"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.10-3">Mapping to this specification:
+The <code>reasoning-entry</code> type captures chain-of-thought content (where available), enabling human reviewers to understand AI decision-making processes.
+The hierarchical <code>children</code> field preserves conversation structure.<a href="#section-2.2.10-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-11-traceability-and-reproducibility">
+<section id="section-2.2.11">
+          <h4 id="name-req-11-traceability-and-rep">
+<a href="#section-2.2.11" class="section-number selfRef">2.2.11. </a><a href="#name-req-11-traceability-and-rep" class="section-name selfRef">REQ-11: Traceability and Reproducibility</a>
+          </h4>
+<p id="section-2.2.11-1">All frameworks require the ability to trace system behavior and reconstruct events.<a href="#section-2.2.11-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-12">
+            <caption><a href="#table-12" class="selfRef">Table 12</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Level of traceability of the functioning...appropriate to the intended purpose"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001</td>
+                <td class="text-left" rowspan="1" colspan="1">"Traceability" as key factor including "data provenance, model traceability"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">"Traceability in the software supply chain"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.2.1-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Track, authenticate, manage version control"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.11-3">Mapping to this specification:<a href="#section-2.2.11-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.11-4.1">
+              <p id="section-2.2.11-4.1.1"><code>session-id</code>: Links entries to sessions<a href="#section-2.2.11-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.2">
+              <p id="section-2.2.11-4.2.1"><code>entry-id</code> and <code>parent-id</code>: Enables conversation tree reconstruction<a href="#section-2.2.11-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.3">
+              <p id="section-2.2.11-4.3.1"><code>vcs-context</code>: Git commit/branch for code state<a href="#section-2.2.11-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.4">
+              <p id="section-2.2.11-4.4.1"><code>agent-meta</code>: Model version and CLI version<a href="#section-2.2.11-4.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.5">
+              <p id="section-2.2.11-4.5.1"><code>file-attribution</code>: Code provenance tracking<a href="#section-2.2.11-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="framework-specific-requirements">
+<section id="section-2.3">
+        <h3 id="name-framework-specific-requirem">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-framework-specific-requirem" class="section-name selfRef">Framework-Specific Requirements</a>
+        </h3>
+<div id="eu-ai-act-high-risk-systems">
+<section id="section-2.3.1">
+          <h4 id="name-eu-ai-act-high-risk-systems">
+<a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-eu-ai-act-high-risk-systems" class="section-name selfRef">EU AI Act (High-Risk Systems)</a>
+          </h4>
+<p id="section-2.3.1-1">For AI systems classified as high-risk under Annex III, additional requirements apply:<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.3.1-2">
+<li id="section-2.3.1-2.1">
+              <p id="section-2.3.1-2.1.1"><strong>Biometric identification systems</strong> (Annex III, 1(a)) require logging of:<a href="#section-2.3.1-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.1-2.1.2.1">
+                  <p id="section-2.3.1-2.1.2.1.1">Precise timestamps for start/end of each usage session<a href="#section-2.3.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.2">
+                  <p id="section-2.3.1-2.1.2.2.1">Reference database used during input data validation<a href="#section-2.3.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.3">
+                  <p id="section-2.3.1-2.1.2.3.1">Input data leading to matches<a href="#section-2.3.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.4">
+                  <p id="section-2.3.1-2.1.2.4.1">Natural persons involved in result verification<a href="#section-2.3.1-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li id="section-2.3.1-2.2">
+              <p id="section-2.3.1-2.2.1"><strong>Log retention</strong>: Minimum 6 months; financial services may require longer per sector-specific regulation.<a href="#section-2.3.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.3.1-2.3">
+              <p id="section-2.3.1-2.3.1"><strong>Authority access</strong>: Art. 19 requires provision of logs to competent authorities upon reasoned request.<a href="#section-2.3.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="etsi-ts-104-223-session-logging-requirements">
+<section id="section-2.3.2">
+          <h4 id="name-etsi-ts-104-223-session-log">
+<a href="#section-2.3.2" class="section-number selfRef">2.3.2. </a><a href="#name-etsi-ts-104-223-session-log" class="section-name selfRef">ETSI TS 104 223 Session Logging Requirements</a>
+          </h4>
+<p id="section-2.3.2-1">ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging requirements:<a href="#section-2.3.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-13">
+            <caption><a href="#table-13" class="selfRef">Table 13</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Provision</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+                <th class="text-left" rowspan="1" colspan="1">This Spec Mapping</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.1.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">Audit trail for "operation, and lifecycle management of models, datasets and prompts"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>session-trace</code>, <code>agent-meta</code>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.2.4-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Document and maintain a clear audit trail of their system design"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>recording-agent</code>, open maps</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.2.4-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit log of changes to system prompts or other model configuration"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>event-entry</code> with prompt changes</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Log system and user actions to support security compliance, incident investigations"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>entries</code> array</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Analyse their logs to ensure...desired outputs and to detect anomalies"</td>
+                <td class="text-left" rowspan="1" colspan="1">Structured format enables analysis</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Monitor internal states of their AI systems"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>reasoning-entry</code>, <code>token-usage</code>
+</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+<div id="pci-dss-v40-ai-specific-guidance">
+<section id="section-2.3.3">
+          <h4 id="name-pci-dss-v40-ai-specific-gui">
+<a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-pci-dss-v40-ai-specific-gui" class="section-name selfRef">PCI DSS v4.0 AI-Specific Guidance</a>
+          </h4>
+<p id="section-2.3.3-1">The PCI Security Standards Council has published guidance on AI in payment environments:<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.3-2.1">
+              <p id="section-2.3.3-2.1.1">"Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."<a href="#section-2.3.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.3.3-3">This specification directly addresses this requirement through:<a href="#section-2.3.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.3-4.1">
+              <p id="section-2.3.3-4.1.1"><code>message-entry</code> (type: "user"): Captures prompt inputs<a href="#section-2.3.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.2">
+              <p id="section-2.3.3-4.2.1"><code>reasoning-entry</code>: Captures chain-of-thought (where available)<a href="#section-2.3.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.3">
+              <p id="section-2.3.3-4.3.1"><code>message-entry</code> (type: "assistant"): Captures model outputs<a href="#section-2.3.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.4">
+              <p id="section-2.3.3-4.4.1"><code>tool-call-entry</code> / <code>tool-result-entry</code>: Captures agentic actions<a href="#section-2.3.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="financial-sector-requirements-ffiec-bsi">
+<section id="section-2.3.4">
+          <h4 id="name-financial-sector-requiremen">
+<a href="#section-2.3.4" class="section-number selfRef">2.3.4. </a><a href="#name-financial-sector-requiremen" class="section-name selfRef">Financial Sector Requirements (FFIEC, BSI)</a>
+          </h4>
+<p id="section-2.3.4-1">Financial institutions face additional scrutiny for AI systems:<a href="#section-2.3.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-14">
+            <caption><a href="#table-14" class="selfRef">Table 14</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Requirement Area</th>
+                <th class="text-left" rowspan="1" colspan="1">FFIEC</th>
+                <th class="text-left" rowspan="1" colspan="1">BSI AI Finance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Explainability</td>
+                <td class="text-left" rowspan="1" colspan="1">"Lack of transparency or explainability" risk</td>
+                <td class="text-left" rowspan="1" colspan="1">Test criteria for explainability</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Dynamic updating</td>
+                <td class="text-left" rowspan="1" colspan="1">"Challenges to monitoring and independently reviewing AI"</td>
+                <td class="text-left" rowspan="1" colspan="1">Continuous validation</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Audit trail</td>
+                <td class="text-left" rowspan="1" colspan="1">Log management (VI.B.7)</td>
+                <td class="text-left" rowspan="1" colspan="1">Complete audit trail</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+</section>
+</div>
+<div id="compliance-mapping-table">
+<section id="section-2.4">
+        <h3 id="name-compliance-mapping-table">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-compliance-mapping-table" class="section-name selfRef">Compliance Mapping Table</a>
+        </h3>
+<p id="section-2.4-1">The following table maps this specification's data elements to compliance requirements:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-15">
+          <caption><a href="#table-15" class="selfRef">Table 15</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Data Element</th>
+              <th class="text-left" rowspan="1" colspan="1">EU AI Act</th>
+              <th class="text-left" rowspan="1" colspan="1">ETSI 104223</th>
+              <th class="text-left" rowspan="1" colspan="1">SOC 2</th>
+              <th class="text-left" rowspan="1" colspan="1">FedRAMP</th>
+              <th class="text-left" rowspan="1" colspan="1">PCI DSS</th>
+              <th class="text-left" rowspan="1" colspan="1">ISO 42001</th>
+              <th class="text-left" rowspan="1" colspan="1">NIS2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>timestamp</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(2)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-8</td>
+              <td class="text-left" rowspan="1" colspan="1">10.6</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 23</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>session-id</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.4-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-3</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>entry.type</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(2)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-3</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>contributor</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(3)(d)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.1.4</td>
+              <td class="text-left" rowspan="1" colspan="1">CC6.1</td>
+              <td class="text-left" rowspan="1" colspan="1">AC-2</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>message-entry.content</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(3)(c)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.1.2-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">AI Guide</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>reasoning-entry</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">AI Guide</td>
+              <td class="text-left" rowspan="1" colspan="1">A.7.1</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>tool-call-entry</code> / <code>tool-result-entry</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-12</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>signed-agent-record</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 19</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.4-1.2</td>
+              <td class="text-left" rowspan="1" colspan="1">CC6.1</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-9</td>
+              <td class="text-left" rowspan="1" colspan="1">10.5</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>vcs-context</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.1-2</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">CM-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>token-usage</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-4</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="security-considerations-for-compliance">
+<section id="section-2.5">
+        <h3 id="name-security-considerations-for">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-security-considerations-for" class="section-name selfRef">Security Considerations for Compliance</a>
+        </h3>
+<div id="log-integrity">
+<section id="section-2.5.1">
+          <h4 id="name-log-integrity">
+<a href="#section-2.5.1" class="section-number selfRef">2.5.1. </a><a href="#name-log-integrity" class="section-name selfRef">Log Integrity</a>
+          </h4>
+<p id="section-2.5.1-1">Per PCI DSS 4.0 Req 10.5 and FedRAMP AU-9, logs <span class="bcp14">MUST</span> be protected against modification.
+Implementations <span class="bcp14">SHOULD</span>:<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.1-2">
+<li id="section-2.5.1-2.1">
+              <p id="section-2.5.1-2.1.1">Use the <code>signed-agent-record</code> envelope for cryptographic integrity<a href="#section-2.5.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-2.2">
+              <p id="section-2.5.1-2.2.1">Store the <code>content-hash</code> for offline verification<a href="#section-2.5.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-2.3">
+              <p id="section-2.5.1-2.3.1">Implement write-once storage for log archives<a href="#section-2.5.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="access-control">
+<section id="section-2.5.2">
+          <h4 id="name-access-control">
+<a href="#section-2.5.2" class="section-number selfRef">2.5.2. </a><a href="#name-access-control" class="section-name selfRef">Access Control</a>
+          </h4>
+<p id="section-2.5.2-1">Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs <span class="bcp14">MUST</span> be controlled:<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.2-2">
+<li id="section-2.5.2-2.1">
+              <p id="section-2.5.2-2.1.1">Logs containing sensitive prompts or outputs require access control<a href="#section-2.5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.2-2.2">
+              <p id="section-2.5.2-2.2.1">Reasoning content may contain confidential information<a href="#section-2.5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.2-2.3">
+              <p id="section-2.5.2-2.3.1">Authority access (EU AI Act Art. 19) requires audit of log access itself<a href="#section-2.5.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="data-protection">
+<section id="section-2.5.3">
+          <h4 id="name-data-protection">
+<a href="#section-2.5.3" class="section-number selfRef">2.5.3. </a><a href="#name-data-protection" class="section-name selfRef">Data Protection</a>
+          </h4>
+<p id="section-2.5.3-1">Logs may contain personal data subject to GDPR/privacy regulations:<a href="#section-2.5.3-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.3-2">
+<li id="section-2.5.3-2.1">
+              <p id="section-2.5.3-2.1.1"><code>message-entry.content</code> may contain PII<a href="#section-2.5.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.3-2.2">
+              <p id="section-2.5.3-2.2.1"><code>tool-result-entry.output</code> may contain query results with PII<a href="#section-2.5.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.3-2.3">
+              <p id="section-2.5.3-2.3.1">Retention periods must balance compliance requirements with data minimization<a href="#section-2.5.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+</section>
+</div>
+<div id="normative-references-for-compliance-bucket-tbd">
+<section id="section-2.6">
+        <h3 id="name-normative-references-for-co">
+<a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-normative-references-for-co" class="section-name selfRef">Normative References for Compliance Bucket (TBD)</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-2.6-1.1">
+            <p id="section-2.6-1.1.1">EU AI Act: Regulation (EU) 2024/1689 (Artificial Intelligence Act)<a href="#section-2.6-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.2">
+            <p id="section-2.6-1.2.1">CRA: Regulation (EU) 2024/2847 (Cyber Resilience Act)<a href="#section-2.6-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.3">
+            <p id="section-2.6-1.3.1">NIS2: Directive (EU) 2022/2555<a href="#section-2.6-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.4">
+            <p id="section-2.6-1.4.1">ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)<a href="#section-2.6-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.5">
+            <p id="section-2.6-1.5.1">SOC 2: AICPA Trust Services Criteria (2017)<a href="#section-2.6-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.6">
+            <p id="section-2.6-1.6.1">FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31<a href="#section-2.6-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.7">
+            <p id="section-2.6-1.7.1">PCI DSS: PCI DSS v4.0.1 (March 2024)<a href="#section-2.6-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.8">
+            <p id="section-2.6-1.8.1">ISO 42001: ISO/IEC 42001:2023<a href="#section-2.6-1.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.9">
+            <p id="section-2.6-1.9.1">FFIEC: FFIEC IT Examination Handbook (2024)<a href="#section-2.6-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.10">
+            <p id="section-2.6-1.10.1">BSI: BSI AI Finance Test Criteria (2024)<a href="#section-2.6-1.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.11">
+            <p id="section-2.6-1.11.1">NIST AI: NIST AI 100-2 E2025<a href="#section-2.6-1.11.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="informative-references-bucket-tbd">
+<section id="section-2.7">
+        <h3 id="name-informative-references-buck">
+<a href="#section-2.7" class="section-number selfRef">2.7. </a><a href="#name-informative-references-buck" class="section-name selfRef">Informative References Bucket (TBD)</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-2.7-1.1">
+            <p id="section-2.7-1.1.1">Anthropic: "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs" (2025)<a href="#section-2.7-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-1.2">
+            <p id="section-2.7-1.2.1">ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)<a href="#section-2.7-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="data-model-overview">
+<section id="section-3">
+      <h2 id="name-data-model-overview">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-data-model-overview" class="section-name selfRef">Data Model Overview</a>
+      </h2>
+<p id="section-3-1">The verifiable agent conversation format is organized around four complementary perspectives on agent activity:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2"><strong>Session Trace</strong> captures HOW code was produced -- the full chronological conversation between user and agent, including messages, tool invocations, reasoning steps, and system events.
+<strong>File Attribution</strong> captures WHAT code was produced -- which files were modified and which line ranges were authored by the agent versus the human operator.
+<strong>Environment Context</strong> captures WHERE the agent operated -- working directory, version control state, and sandbox configuration.
+<strong>Signing Envelope</strong> provides cryptographic PROOF -- a COSE_Sign1 wrapper that delivers integrity protection, non-repudiation, and compatibility with transparency log infrastructure such as SCITT <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">These perspectives are composed into a single <code>verifiable-agent-record</code> root type.
+The session trace is required; all other perspectives are optional.
+The schema is defined in CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> and validates both JSON <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> and CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span> serializations.
+All map types include a <code>* tstr =&gt; any</code> extensibility mechanism following the pattern established in COSE <span>[<a href="#STD96" class="cite xref">STD96</a>]</span>, allowing agent implementations to preserve native metadata alongside canonical fields without schema changes.<a href="#section-3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="the-verifiable-agent-record-type">
+<section id="section-4">
+      <h2 id="name-the-verifiable-agent-record">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-verifiable-agent-record" class="section-name selfRef">The verifiable-agent-record Type</a>
+      </h2>
+<p id="section-4-1">The <code>verifiable-agent-record</code> is the top-level container for all data produced by or about an agent conversation.
+It unifies the session trace (HOW) and file attribution (WHAT) perspectives into a single record.
+The root type also carries version metadata for schema evolution and an optional reference to the recording tool for provenance.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-4-2">
+<pre>
+verifiable-agent-record = {
+    version: tstr
+    id: tstr
+    session: session-trace
+    ? created: abstract-timestamp
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context
+    ? recording-agent: recording-agent
+    * tstr =&gt; any
+}
+</pre><a href="#section-4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4-3">The following describes each member of the verifiable-agent-record map.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-4.1">
+          <p id="section-4-4.1.1"><strong>version</strong> (tstr, required): The schema version string following semantic versioning (e.g., "3.0.0-draft"). Consumers use this field to select the appropriate parser or validation logic.<a href="#section-4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.2">
+          <p id="section-4-4.2.1"><strong>id</strong> (tstr, required): A unique identifier for this record, typically a UUID v4 or v7. Distinguishes records when multiple are stored or transmitted together.<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.3">
+          <p id="section-4-4.3.1"><strong>session</strong> (session-trace, required): The full conversation trace including all entries, tool calls, reasoning steps, and system events. This is the primary content of the record.<a href="#section-4-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.4">
+          <p id="section-4-4.4.1"><strong>created</strong> (abstract-timestamp, optional): The timestamp when this record was generated. Distinct from session timestamps, which record when the conversation occurred.<a href="#section-4-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.5">
+          <p id="section-4-4.5.1"><strong>file-attribution</strong> (file-attribution-record, optional): Structured data about which files were modified and which line ranges were written by the agent. Can be partially derived from the session trace by analyzing file-modifying tool calls.<a href="#section-4-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.6">
+          <p id="section-4-4.6.1"><strong>vcs</strong> (vcs-context, optional): Version control metadata at the record level (repository, branch, revision). Provides reproducibility context independent of the session environment.<a href="#section-4-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-4.7">
+          <p id="section-4-4.7.1"><strong>recording-agent</strong> (recording-agent, optional): Identifies the tool or agent that generated this record, as opposed to the agent that conducted the conversation.<a href="#section-4-4.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="session-types">
+<section id="section-5">
+      <h2 id="name-session-types">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-session-types" class="section-name selfRef">Session Types</a>
+      </h2>
+<p id="section-5-1">This section defines the types that describe a conversation session and the agent that conducted it.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="the-session-trace-map">
+<section id="section-5.1">
+        <h3 id="name-the-session-trace-map">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-the-session-trace-map" class="section-name selfRef">The session-trace Map</a>
+        </h3>
+<p id="section-5.1-1">A <code>session-trace</code> captures the full conversation between a user and an autonomous agent.
+It contains an ordered array of entries representing messages, tool invocations, reasoning steps, and system events.
+The trace preserves the complete interaction history including all native agent metadata, enabling both replay and audit of the conversation.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.1-2">
+<pre>
+session-trace = {
+    ? format: tstr
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-3">The following describes each member of the session-trace map.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-4.1">
+            <p id="section-5.1-4.1.1"><strong>format</strong> (tstr, optional): Classifies the session style, such as "interactive" (human-in-the-loop) or "autonomous" (fully automated). Informative only; does not change the structure.<a href="#section-5.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.2">
+            <p id="section-5.1-4.2.1"><strong>session-id</strong> (session-id, required): Unique identifier for this session. Different agent implementations use different ID schemes (UUID v4, UUID v7, SHA-256 hashes).<a href="#section-5.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.3">
+            <p id="section-5.1-4.3.1"><strong>session-start</strong> (abstract-timestamp, optional): When the session began.<a href="#section-5.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.4">
+            <p id="section-5.1-4.4.1"><strong>session-end</strong> (abstract-timestamp, optional): When the session ended.<a href="#section-5.1-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.5">
+            <p id="section-5.1-4.5.1"><strong>agent-meta</strong> (agent-meta, required): Metadata about the agent and model that conducted this conversation. Required because agent identification is fundamental to provenance.<a href="#section-5.1-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.6">
+            <p id="section-5.1-4.6.1"><strong>environment</strong> (environment, optional): Execution environment context such as working directory and version control state.<a href="#section-5.1-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-4.7">
+            <p id="section-5.1-4.7.1"><strong>entries</strong> ([* entry], required): The ordered array of conversation entries. This is the core content of the session trace.<a href="#section-5.1-4.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-agent-meta-map">
+<section id="section-5.2">
+        <h3 id="name-the-agent-meta-map">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-the-agent-meta-map" class="section-name selfRef">The agent-meta Map</a>
+        </h3>
+<p id="section-5.2-1">The <code>agent-meta</code> type identifies the coding agent and language model used during a conversation session.
+Agent identification is essential for provenance tracking: knowing which model produced which output enables auditing, capability assessment, and compliance verification.
+For multi-model sessions where different entries may use different models, the <code>models</code> array lists all models used while <code>model-id</code> identifies the primary model.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-2">
+<pre>
+agent-meta = {
+    model-id: tstr
+    model-provider: tstr
+    ? models: [* tstr]
+    ? cli-name: tstr
+    ? cli-version: tstr
+    * tstr =&gt; any
+}
+</pre><a href="#section-5.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-3">The following describes each member of the agent-meta map.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-4.1">
+            <p id="section-5.2-4.1.1"><strong>model-id</strong> (tstr, required): The primary language model identifier, using the naming convention of the provider (e.g., "claude-opus-4-5-20251101", "gemini-2.0-flash"). Required even when the model is unknown.<a href="#section-5.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-4.2">
+            <p id="section-5.2-4.2.1"><strong>model-provider</strong> (tstr, required): The provider of the primary model (e.g., "anthropic", "google", "openai"). Together with <code>model-id</code>, this uniquely identifies the model.<a href="#section-5.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-4.3">
+            <p id="section-5.2-4.3.1"><strong>models</strong> ([* tstr], optional): List of all model identifiers used during the session. Relevant for multi-model sessions where the agent switches between models.<a href="#section-5.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-4.4">
+            <p id="section-5.2-4.4.1"><strong>cli-name</strong> (tstr, optional): The name of the CLI tool or agent framework (e.g., "claude-code", "gemini-cli", "codex-cli").<a href="#section-5.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-4.5">
+            <p id="section-5.2-4.5.1"><strong>cli-version</strong> (tstr, optional): The version of the CLI tool.<a href="#section-5.2-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-recording-agent-map">
+<section id="section-5.3">
+        <h3 id="name-the-recording-agent-map">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-the-recording-agent-map" class="section-name selfRef">The recording-agent Map</a>
+        </h3>
+<p id="section-5.3-1">The <code>recording-agent</code> identifies the tool that generated this verifiable agent record, as distinct from the agent that conducted the conversation.
+For example, the conversation may have been conducted by Claude Code, but the record was generated by a separate validation tool.
+This distinction matters for provenance chains: the recording tool's version affects how native data is translated into the canonical schema.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.3-2">
+<pre>
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr =&gt; any
+}
+</pre><a href="#section-5.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.3-3">The following describes each member of the recording-agent map.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3-4.1">
+            <p id="section-5.3-4.1.1"><strong>name</strong> (tstr, required): The name of the recording tool or agent.<a href="#section-5.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.3-4.2">
+            <p id="section-5.3-4.2.1"><strong>version</strong> (tstr, optional): The version of the recording tool.<a href="#section-5.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="environment-types">
+<section id="section-6">
+      <h2 id="name-environment-types">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-environment-types" class="section-name selfRef">Environment Types</a>
+      </h2>
+<p id="section-6-1">This section defines the types that capture execution environment context for a conversation.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div id="the-environment-map">
+<section id="section-6.1">
+        <h3 id="name-the-environment-map">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-the-environment-map" class="section-name selfRef">The environment Map</a>
+        </h3>
+<p id="section-6.1-1">The <code>environment</code> type captures execution context for the conversation: where the agent was running, what version control state was active, and whether sandboxing was in effect.
+This context is important for reproducibility and for understanding the scope of file modifications.
+The working directory in particular is essential for resolving relative file paths that appear in tool calls throughout the session.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-6.1-2">
+<pre>
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]
+    * tstr =&gt; any
+}
+</pre><a href="#section-6.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1-3">The following describes each member of the environment map.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.1-4.1">
+            <p id="section-6.1-4.1.1"><strong>working-dir</strong> (tstr, required): The primary working directory path. File paths in tool calls are typically relative to this directory.<a href="#section-6.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-4.2">
+            <p id="section-6.1-4.2.1"><strong>vcs</strong> (vcs-context, optional): Version control state at the time of the session (branch, revision, etc.).<a href="#section-6.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.1-4.3">
+            <p id="section-6.1-4.3.1"><strong>sandboxes</strong> ([* tstr], optional): Paths to sandbox mount points. Some agents run in sandboxed environments where the working directory is a temporary mount.<a href="#section-6.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-vcs-context-map">
+<section id="section-6.2">
+        <h3 id="name-the-vcs-context-map">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-the-vcs-context-map" class="section-name selfRef">The vcs-context Map</a>
+        </h3>
+<p id="section-6.2-1">The <code>vcs-context</code> type captures version control metadata for reproducibility.
+Knowing the exact repository, branch, and commit at the time of a conversation enables consumers to reconstruct the codebase state and verify file attributions.
+This type appears both at the environment level (session context) and at the record level (record-time context).<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-6.2-2">
+<pre>
+vcs-context = {
+    type: tstr
+    ? revision: tstr
+    ? branch: tstr
+    ? repository: tstr
+    * tstr =&gt; any
+}
+</pre><a href="#section-6.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.2-3">The following describes each member of the vcs-context map.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-4.1">
+            <p id="section-6.2-4.1.1"><strong>type</strong> (tstr, required): The version control system type (e.g., "git", "jj", "hg", "svn").<a href="#section-6.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-4.2">
+            <p id="section-6.2-4.2.1"><strong>revision</strong> (tstr, optional): The commit SHA or change identifier at session time.<a href="#section-6.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-4.3">
+            <p id="section-6.2-4.3.1"><strong>branch</strong> (tstr, optional): The active branch name.<a href="#section-6.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-4.4">
+            <p id="section-6.2-4.4.1"><strong>repository</strong> (tstr, optional): The repository URL.<a href="#section-6.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="entry-types">
+<section id="section-7">
+      <h2 id="name-entry-types">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-entry-types" class="section-name selfRef">Entry Types</a>
+      </h2>
+<p id="section-7-1">The schema defines five entry types that represent the discrete events within a conversation.
+Each type uses a <code>type</code> field as the discriminator.
+All entry types support optional <code>children</code> for hierarchical nesting and <code>* tstr =&gt; any</code> for preserving native agent fields that do not map to canonical fields.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div id="the-entry-union">
+<section id="section-7.1">
+        <h3 id="name-the-entry-union">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-the-entry-union" class="section-name selfRef">The entry Union</a>
+        </h3>
+<p id="section-7.1-1">An <code>entry</code> is the union of all five entry types.
+The <code>type</code> field value determines which variant applies: "user" or "assistant" for message entries, "tool-call" for tool invocations, "tool-result" for tool outputs, "reasoning" for chain-of-thought content, and "system-event" for lifecycle events.
+This union type is used in the <code>entries</code> array of <code>session-trace</code> and in the <code>children</code> array of any entry, enabling recursive nesting.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.1-2">
+<pre>
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+</pre><a href="#section-7.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-message-entry-map">
+<section id="section-7.2">
+        <h3 id="name-the-message-entry-map">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-the-message-entry-map" class="section-name selfRef">The message-entry Map</a>
+        </h3>
+<p id="section-7.2-1">A <code>message-entry</code> represents a conversational turn: either human input (type: "user") or agent response (type: "assistant").
+This is the most common entry type, carrying the primary dialogue content of a session.
+For assistant messages, additional metadata may be present including the model that generated the response and token usage statistics.
+These fields are absent on user messages, which is why they are marked optional.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.2-2">
+<pre>
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr
+    ? parent-id: entry-id
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-7.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.2-3">The following describes each member of the message-entry map.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.2-4.1">
+            <p id="section-7.2-4.1.1"><strong>type</strong> ("user" / "assistant", required): The message direction. "user" indicates human or upstream agent input; "assistant" indicates the agent's response.<a href="#section-7.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.2">
+            <p id="section-7.2-4.2.1"><strong>content</strong> (any, optional): The message body. The shape varies by agent implementation: plain text strings, arrays of typed content blocks, or absent when the agent places content exclusively in child entries. The schema intentionally allows <code>any</code> to preserve native fidelity. Consumers <span class="bcp14">SHOULD</span> handle at minimum <code>tstr</code> and <code>[* any]</code> (array of content blocks).<a href="#section-7.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.3">
+            <p id="section-7.2-4.3.1"><strong>timestamp</strong> (abstract-timestamp, optional): When this message was produced.<a href="#section-7.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.4">
+            <p id="section-7.2-4.4.1"><strong>id</strong> (entry-id, optional): Unique identifier for this entry within the session. Enables parent-child references.<a href="#section-7.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.5">
+            <p id="section-7.2-4.5.1"><strong>model-id</strong> (tstr, optional): The model that generated this response. Present on assistant entries; absent on user entries.<a href="#section-7.2-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.6">
+            <p id="section-7.2-4.6.1"><strong>parent-id</strong> (entry-id, optional): References the parent entry, enabling tree-structured conversations and branching support.<a href="#section-7.2-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.7">
+            <p id="section-7.2-4.7.1"><strong>token-usage</strong> (token-usage, optional): Token consumption metrics for this response.<a href="#section-7.2-4.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-4.8">
+            <p id="section-7.2-4.8.1"><strong>children</strong> ([* entry], optional): Nested entries within this message. Used when the native format embeds tool calls or reasoning blocks inside an assistant message.<a href="#section-7.2-4.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-tool-call-entry-map">
+<section id="section-7.3">
+        <h3 id="name-the-tool-call-entry-map">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-the-tool-call-entry-map" class="section-name selfRef">The tool-call-entry Map</a>
+        </h3>
+<p id="section-7.3-1">A <code>tool-call-entry</code> represents a tool invocation: which tool was called and with what arguments.
+Tool calls are central to agent conversation records because tool use is the primary mechanism by which agents interact with the external environment -- reading files, executing commands, searching codebases, and modifying source code.
+Each tool call is correlated with a <code>tool-result-entry</code> via the <code>call-id</code> field, forming a request-response pair.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.3-2">
+<pre>
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr
+    input: any
+    ? call-id: tstr
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-7.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.3-3">The following describes each member of the tool-call-entry map.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.3-4.1">
+            <p id="section-7.3-4.1.1"><strong>type</strong> ("tool-call", required): Fixed discriminator value.<a href="#section-7.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.2">
+            <p id="section-7.3-4.2.1"><strong>name</strong> (tstr, required): The tool name (e.g., "Bash", "Edit", "Read", "apply_patch"). Tool names are preserved from the agent's native vocabulary.<a href="#section-7.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.3">
+            <p id="section-7.3-4.3.1"><strong>input</strong> (any, required): The arguments passed to the tool, preserved in their native structure (typically a JSON object).<a href="#section-7.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.4">
+            <p id="section-7.3-4.4.1"><strong>call-id</strong> (tstr, optional): Links this call to its corresponding <code>tool-result-entry</code>. When absent, positional correlation is used.<a href="#section-7.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.5">
+            <p id="section-7.3-4.5.1"><strong>timestamp</strong> (abstract-timestamp, optional): When this tool call occurred.<a href="#section-7.3-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.6">
+            <p id="section-7.3-4.6.1"><strong>id</strong> (entry-id, optional): Unique identifier for this entry.<a href="#section-7.3-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.3-4.7">
+            <p id="section-7.3-4.7.1"><strong>children</strong> ([* entry], optional): Nested entries within this tool call.<a href="#section-7.3-4.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-tool-result-entry-map">
+<section id="section-7.4">
+        <h3 id="name-the-tool-result-entry-map">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-the-tool-result-entry-map" class="section-name selfRef">The tool-result-entry Map</a>
+        </h3>
+<p id="section-7.4-1">A <code>tool-result-entry</code> represents the output returned by a tool after execution.
+It is linked to its corresponding <code>tool-call-entry</code> via the <code>call-id</code> field.
+The result carries the tool's response data and optional status metadata indicating success or failure.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.4-2">
+<pre>
+tool-result-entry = {
+    type: "tool-result"
+    output: any
+    ? call-id: tstr
+    ? status: tstr
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-7.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.4-3">The following describes each member of the tool-result-entry map.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.4-4.1">
+            <p id="section-7.4-4.1.1"><strong>type</strong> ("tool-result", required): Fixed discriminator value.<a href="#section-7.4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.2">
+            <p id="section-7.4-4.2.1"><strong>output</strong> (any, required): The tool's response, preserved in its native structure.<a href="#section-7.4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.3">
+            <p id="section-7.4-4.3.1"><strong>call-id</strong> (tstr, optional): Links this result to its corresponding <code>tool-call-entry</code>.<a href="#section-7.4-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.4">
+            <p id="section-7.4-4.4.1"><strong>status</strong> (tstr, optional): Outcome status of the tool execution, such as "success", "error", or "completed".<a href="#section-7.4-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.5">
+            <p id="section-7.4-4.5.1"><strong>is-error</strong> (bool, optional): Boolean error flag, present when the tool execution failed.<a href="#section-7.4-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.6">
+            <p id="section-7.4-4.6.1"><strong>timestamp</strong> (abstract-timestamp, optional): When this tool result was returned.<a href="#section-7.4-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.7">
+            <p id="section-7.4-4.7.1"><strong>id</strong> (entry-id, optional): Unique identifier for this entry.<a href="#section-7.4-4.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.4-4.8">
+            <p id="section-7.4-4.8.1"><strong>children</strong> ([* entry], optional): Nested entries within this tool result.<a href="#section-7.4-4.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-reasoning-entry-map">
+<section id="section-7.5">
+        <h3 id="name-the-reasoning-entry-map">
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-the-reasoning-entry-map" class="section-name selfRef">The reasoning-entry Map</a>
+        </h3>
+<p id="section-7.5-1">A <code>reasoning-entry</code> captures chain-of-thought, thinking, or internal reasoning content from the agent.
+Not all agents expose reasoning traces; when they do, the content may be plaintext, structured blocks, or encrypted.
+Reasoning entries are valuable for auditing decision-making processes and understanding why an agent took particular actions.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.5-2">
+<pre>
+reasoning-entry = {
+    type: "reasoning"
+    content: any
+    ? encrypted: tstr
+    ? subject: tstr
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-7.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.5-3">The following describes each member of the reasoning-entry map.<a href="#section-7.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.5-4.1">
+            <p id="section-7.5-4.1.1"><strong>type</strong> ("reasoning", required): Fixed discriminator value.<a href="#section-7.5-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.2">
+            <p id="section-7.5-4.2.1"><strong>content</strong> (any, required): The reasoning text or structured content. May be an empty string when only encrypted content is available.<a href="#section-7.5-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.3">
+            <p id="section-7.5-4.3.1"><strong>encrypted</strong> (tstr, optional): Encrypted reasoning content, used when the model provider protects chain-of-thought output.<a href="#section-7.5-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.4">
+            <p id="section-7.5-4.4.1"><strong>subject</strong> (tstr, optional): A topic label for the reasoning block.<a href="#section-7.5-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.5">
+            <p id="section-7.5-4.5.1"><strong>timestamp</strong> (abstract-timestamp, optional): When this reasoning was produced.<a href="#section-7.5-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.6">
+            <p id="section-7.5-4.6.1"><strong>id</strong> (entry-id, optional): Unique identifier for this entry.<a href="#section-7.5-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.5-4.7">
+            <p id="section-7.5-4.7.1"><strong>children</strong> ([* entry], optional): Nested entries within the reasoning block.<a href="#section-7.5-4.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-event-entry-map">
+<section id="section-7.6">
+        <h3 id="name-the-event-entry-map">
+<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-the-event-entry-map" class="section-name selfRef">The event-entry Map</a>
+        </h3>
+<p id="section-7.6-1">An <code>event-entry</code> records system lifecycle events that are not part of the conversation dialogue but are relevant for understanding the session context.
+Examples include session start/end markers, token usage summaries, permission changes, and configuration events.
+These events provide the operational metadata that surrounds the conversation, enabling analysis of session structure, resource consumption, and agent behavior patterns.<a href="#section-7.6-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-7.6-2">
+<pre>
+event-entry = {
+    type: "system-event"
+    event-type: tstr
+    ? data: { * tstr =&gt; any }
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+</pre><a href="#section-7.6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.6-3">The following describes each member of the event-entry map.<a href="#section-7.6-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.6-4.1">
+            <p id="section-7.6-4.1.1"><strong>type</strong> ("system-event", required): Fixed discriminator value.<a href="#section-7.6-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-4.2">
+            <p id="section-7.6-4.2.1"><strong>event-type</strong> (tstr, required): Classifies the event, such as "session-start", "session-end", "token-count", or "permission-change". The values are not enumerated in the schema to accommodate vendor-specific event types.<a href="#section-7.6-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-4.3">
+            <p id="section-7.6-4.3.1"><strong>data</strong> ({ * tstr =&gt; any }, optional): Event-specific payload. The structure varies by event type.<a href="#section-7.6-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-4.4">
+            <p id="section-7.6-4.4.1"><strong>timestamp</strong> (abstract-timestamp, optional): When this event occurred.<a href="#section-7.6-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-4.5">
+            <p id="section-7.6-4.5.1"><strong>id</strong> (entry-id, optional): Unique identifier for this entry.<a href="#section-7.6-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.6-4.6">
+            <p id="section-7.6-4.6.1"><strong>children</strong> ([* entry], optional): Nested entries within this event.<a href="#section-7.6-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="token-usage">
+<section id="section-8">
+      <h2 id="name-token-usage">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-token-usage" class="section-name selfRef">Token Usage</a>
+      </h2>
+<p id="section-8-1">This section defines the type used to report token consumption metrics for model responses.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<div id="the-token-usage-map">
+<section id="section-8.1">
+        <h3 id="name-the-token-usage-map">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-the-token-usage-map" class="section-name selfRef">The token-usage Map</a>
+        </h3>
+<p id="section-8.1-1">The <code>token-usage</code> type captures token consumption metrics for a model response.
+Token usage data is essential for cost tracking, quota management, and understanding model behavior.
+All fields are optional because different agent implementations report different subsets of token metrics.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-8.1-2">
+<pre>
+token-usage = {
+    ? input: uint
+    ? output: uint
+    ? cached: uint
+    ? reasoning: uint
+    ? total: uint
+    ? cost: number
+    * tstr =&gt; any
+}
+</pre><a href="#section-8.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-8.1-3">The following describes each member of the token-usage map.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-4.1">
+            <p id="section-8.1-4.1.1"><strong>input</strong> (uint, optional): The number of input tokens consumed by this response.<a href="#section-8.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-4.2">
+            <p id="section-8.1-4.2.1"><strong>output</strong> (uint, optional): The number of output tokens generated.<a href="#section-8.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-4.3">
+            <p id="section-8.1-4.3.1"><strong>cached</strong> (uint, optional): The number of input tokens served from cache rather than reprocessed.<a href="#section-8.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-4.4">
+            <p id="section-8.1-4.4.1"><strong>reasoning</strong> (uint, optional): Tokens consumed by chain-of-thought or reasoning computation.<a href="#section-8.1-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-4.5">
+            <p id="section-8.1-4.5.1"><strong>total</strong> (uint, optional): The total token count. May differ from input + output when reasoning or cached tokens are counted separately.<a href="#section-8.1-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-8.1-4.6">
+            <p id="section-8.1-4.6.1"><strong>cost</strong> (number, optional): The monetary cost in US dollars for this response.<a href="#section-8.1-4.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="file-attribution">
+<section id="section-9">
+      <h2 id="name-file-attribution">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-file-attribution" class="section-name selfRef">File Attribution</a>
+      </h2>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-9-1.1">
+          <p id="section-9-1.1.1">NOTE: This section is specified but not yet validated against real session data. Implementation is pending.<a href="#section-9-1.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-9-2">File attribution captures WHAT code was produced: which files were modified, which line ranges were changed, and who (human or AI) authored them.
+This data can exist alongside a session trace, providing complementary perspectives, or independently when only the attribution is needed.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<div id="the-file-attribution-record-map">
+<section id="section-9.1">
+        <h3 id="name-the-file-attribution-record">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-the-file-attribution-record" class="section-name selfRef">The file-attribution-record Map</a>
+        </h3>
+<p id="section-9.1-1">The <code>file-attribution-record</code> is the top-level container for file attribution data.
+It holds an array of files, each with their attributed line ranges and contributor information.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.1-2">
+<pre>
+file-attribution-record = {
+    files: [* file]
+}
+</pre><a href="#section-9.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.1-3">The following describes each member of the file-attribution-record map.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.1-4.1">
+            <p id="section-9.1-4.1.1"><strong>files</strong> ([* file], required): Array of files with attributed ranges.<a href="#section-9.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-file-map">
+<section id="section-9.2">
+        <h3 id="name-the-file-map">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-the-file-map" class="section-name selfRef">The file Map</a>
+        </h3>
+<p id="section-9.2-1">A <code>file</code> represents a single source file that was modified during a conversation.
+It groups all conversations that contributed changes to this file, enabling multi-session attribution tracking.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.2-2">
+<pre>
+file = {
+    path: tstr
+    conversations: [* conversation]
+}
+</pre><a href="#section-9.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.2-3">The following describes each member of the file map.<a href="#section-9.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.2-4.1">
+            <p id="section-9.2-4.1.1"><strong>path</strong> (tstr, required): The file path relative to the repository root.<a href="#section-9.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.2-4.2">
+            <p id="section-9.2-4.2.1"><strong>conversations</strong> ([* conversation], required): The conversations that contributed modifications to this file.<a href="#section-9.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-conversation-map">
+<section id="section-9.3">
+        <h3 id="name-the-conversation-map">
+<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-the-conversation-map" class="section-name selfRef">The conversation Map</a>
+        </h3>
+<p id="section-9.3-1">A <code>conversation</code> links a specific session to the line ranges it produced in a file.
+This enables tracing from a line of code back to the conversation that generated it, supporting audit and provenance workflows.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.3-2">
+<pre>
+conversation = {
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor
+    ranges: [* range]
+    ? related: [* resource]
+}
+</pre><a href="#section-9.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.3-3">The following describes each member of the conversation map.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.3-4.1">
+            <p id="section-9.3-4.1.1"><strong>url</strong> (tstr, optional): A URL pointing to the conversation source (e.g., a web UI permalink). Validated against URI syntax per RFC 3986.<a href="#section-9.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.3-4.2">
+            <p id="section-9.3-4.2.1"><strong>contributor</strong> (contributor, optional): The default contributor for all ranges in this conversation. Can be overridden per-range.<a href="#section-9.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.3-4.3">
+            <p id="section-9.3-4.3.1"><strong>ranges</strong> ([* range], required): The line ranges in the file that were produced by this conversation.<a href="#section-9.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.3-4.4">
+            <p id="section-9.3-4.4.1"><strong>related</strong> ([* resource], optional): External resources related to this conversation (e.g., issue trackers, documentation).<a href="#section-9.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-range-map">
+<section id="section-9.4">
+        <h3 id="name-the-range-map">
+<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-the-range-map" class="section-name selfRef">The range Map</a>
+        </h3>
+<p id="section-9.4-1">A <code>range</code> identifies a contiguous block of lines in a file that were produced by a specific conversation.
+Line numbers are 1-indexed and inclusive.
+The optional content hash enables position-independent tracking: if lines move due to later edits, the hash can re-locate the content.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.4-2">
+<pre>
+range = {
+    start-line: uint
+    end-line: uint
+    ? content-hash: tstr
+    ? content-hash-alg: tstr
+    ? contributor: contributor
+}
+</pre><a href="#section-9.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.4-3">The following describes each member of the range map.<a href="#section-9.4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.4-4.1">
+            <p id="section-9.4-4.1.1"><strong>start-line</strong> (uint, required): The first line of the range (1-indexed).<a href="#section-9.4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.4-4.2">
+            <p id="section-9.4-4.2.1"><strong>end-line</strong> (uint, required): The last line of the range (1-indexed, inclusive).<a href="#section-9.4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.4-4.3">
+            <p id="section-9.4-4.3.1"><strong>content-hash</strong> (tstr, optional): A hash of the range content for position-independent identification.<a href="#section-9.4-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.4-4.4">
+            <p id="section-9.4-4.4.1"><strong>content-hash-alg</strong> (tstr, optional): The hash algorithm used (default: "sha-256").<a href="#section-9.4-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.4-4.5">
+            <p id="section-9.4-4.5.1"><strong>contributor</strong> (contributor, optional): Overrides the conversation-level contributor for this specific range.<a href="#section-9.4-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-contributor-map">
+<section id="section-9.5">
+        <h3 id="name-the-contributor-map">
+<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-the-contributor-map" class="section-name selfRef">The contributor Map</a>
+        </h3>
+<p id="section-9.5-1">A <code>contributor</code> identifies who authored a range of code.
+The <code>type</code> field distinguishes between human-authored, AI-generated, mixed, and unknown authorship.
+For AI-generated code, the <code>model-id</code> field identifies the specific model, enabling per-model attribution.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.5-2">
+<pre>
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+</pre><a href="#section-9.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.5-3">The following describes each member of the contributor map.<a href="#section-9.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.5-4.1">
+            <p id="section-9.5-4.1.1"><strong>type</strong> ("human" / "ai" / "mixed" / "unknown", required): The authorship category.<a href="#section-9.5-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.5-4.2">
+            <p id="section-9.5-4.2.1"><strong>model-id</strong> (tstr, optional): The model identifier for AI-authored ranges.<a href="#section-9.5-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-resource-map">
+<section id="section-9.6">
+        <h3 id="name-the-resource-map">
+<a href="#section-9.6" class="section-number selfRef">9.6. </a><a href="#name-the-resource-map" class="section-name selfRef">The resource Map</a>
+        </h3>
+<p id="section-9.6-1">A <code>resource</code> represents an external reference related to a conversation, such as an issue tracker entry, a pull request, or a documentation page.
+Resources enable cross-referencing between conversation records and the broader development workflow.
+The <code>type</code> field classifies the resource while the <code>url</code> provides the dereferenceable link.<a href="#section-9.6-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-9.6-2">
+<pre>
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+</pre><a href="#section-9.6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-9.6-3">The following describes each member of the resource map.<a href="#section-9.6-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.6-4.1">
+            <p id="section-9.6-4.1.1"><strong>type</strong> (tstr, required): The resource type (e.g., "issue", "pr", "documentation").<a href="#section-9.6-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.6-4.2">
+            <p id="section-9.6-4.2.1"><strong>url</strong> (tstr, required): The URL of the resource. Validated against URI syntax per RFC 3986.<a href="#section-9.6-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="signing-and-verification">
+<section id="section-10">
+      <h2 id="name-signing-and-verification">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-signing-and-verification" class="section-name selfRef">Signing and Verification</a>
+      </h2>
+<p id="section-10-1">This section defines the COSE_Sign1 envelope and metadata types that provide cryptographic integrity protection for verifiable agent records.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<div id="the-signed-agent-record-type">
+<section id="section-10.1">
+        <h3 id="name-the-signed-agent-record-typ">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-the-signed-agent-record-typ" class="section-name selfRef">The signed-agent-record Type</a>
+        </h3>
+<p id="section-10.1-1">The <code>signed-agent-record</code> is a COSE_Sign1 envelope (<span>[<a href="#STD96" class="cite xref">STD96</a>]</span>, CBOR Tag 18) that wraps a verifiable agent record with a cryptographic signature.
+Signing provides non-repudiation and tamper evidence, satisfying the RATS evidence generation <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> and SCITT auditability <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span> requirements.
+The signing envelope is independent of schema compliance: a record can be signed regardless of whether it conforms to the canonical schema.<a href="#section-10.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-10.1-2">
+<pre>
+signed-agent-record = #6.18([
+    protected: bstr,
+    unprotected: {
+        ? trace-metadata-key =&gt; trace-metadata
+    },
+    payload: bstr / null,
+    signature: bstr
+])
+
+trace-metadata-key = 100
+</pre><a href="#section-10.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-10.1-3">The following describes each element of the signed-agent-record COSE_Sign1 array.<a href="#section-10.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-10.1-4.1">
+            <p id="section-10.1-4.1.1"><strong>protected</strong> (bstr, required): The serialized protected header containing the algorithm identifier and content type.<a href="#section-10.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.1-4.2">
+            <p id="section-10.1-4.2.1"><strong>unprotected</strong> ({ ? 100 =&gt; trace-metadata }, required): The unprotected header carrying trace metadata at label 100. Label 100 is provisional (private-use range per <span>[<a href="#STD96" class="cite xref">STD96</a>]</span> Section 3.1); IANA registration is required before RFC publication.<a href="#section-10.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.1-4.3">
+            <p id="section-10.1-4.3.1"><strong>payload</strong> (bstr / null, required): The serialized record bytes, or <code>null</code> for detached payloads. In detached mode, the payload is supplied separately during verification.<a href="#section-10.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.1-4.4">
+            <p id="section-10.1-4.4.1"><strong>signature</strong> (bstr, required): The cryptographic signature over the protected header and payload.<a href="#section-10.1-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="the-trace-metadata-map">
+<section id="section-10.2">
+        <h3 id="name-the-trace-metadata-map">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-the-trace-metadata-map" class="section-name selfRef">The trace-metadata Map</a>
+        </h3>
+<p id="section-10.2-1">The <code>trace-metadata</code> type carries summary information about the signed record in the COSE_Sign1 unprotected header.
+This enables consumers to inspect key properties of a signed record (session ID, agent, timestamps) without deserializing the full payload.
+This is particularly useful for indexing and routing in transparency log systems such as SCITT <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-10.2-2">
+<pre>
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr
+    ? content-hash-alg: tstr
+}
+
+trace-format-id = tstr
+</pre><a href="#section-10.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-10.2-3">The following describes each member of the trace-metadata map.<a href="#section-10.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-10.2-4.1">
+            <p id="section-10.2-4.1.1"><strong>session-id</strong> (session-id, required): The session identifier from the signed record.<a href="#section-10.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.2">
+            <p id="section-10.2-4.2.1"><strong>agent-vendor</strong> (tstr, required): The agent provider name (e.g., "anthropic", "google").<a href="#section-10.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.3">
+            <p id="section-10.2-4.3.1"><strong>trace-format</strong> (trace-format-id, required): Identifies the format of the signed payload. The <code>trace-format-id</code> type is <code>tstr</code>; known values include "ietf-vac-v3.0" (canonical schema), "claude-jsonl", "gemini-json", "codex-jsonl", "opencode-json", and "cursor-jsonl" (native formats).<a href="#section-10.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.4">
+            <p id="section-10.2-4.4.1"><strong>timestamp-start</strong> (abstract-timestamp, required): When the session began.<a href="#section-10.2-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.5">
+            <p id="section-10.2-4.5.1"><strong>timestamp-end</strong> (abstract-timestamp, optional): When the session ended.<a href="#section-10.2-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.6">
+            <p id="section-10.2-4.6.1"><strong>content-hash</strong> (tstr, optional): SHA-256 hex digest of the payload bytes, enabling integrity checking independent of the COSE signature.<a href="#section-10.2-4.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-10.2-4.7">
+            <p id="section-10.2-4.7.1"><strong>content-hash-alg</strong> (tstr, optional): The hash algorithm used (default: "sha-256").<a href="#section-10.2-4.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="common-types">
+<section id="section-11">
+      <h2 id="name-common-types">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-common-types" class="section-name selfRef">Common Types</a>
+      </h2>
+<p id="section-11-1">The following types are used throughout the schema as building blocks for timestamps, identifiers, and cross-references.<a href="#section-11-1" class="pilcrow">¶</a></p>
+<div id="the-abstract-timestamp-type">
+<section id="section-11.1">
+        <h3 id="name-the-abstract-timestamp-type">
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-the-abstract-timestamp-type" class="section-name selfRef">The abstract-timestamp Type</a>
+        </h3>
+<p id="section-11.1-1">Timestamps appear throughout the schema to record when events occurred.
+The schema accepts two representations to accommodate the diversity of agent implementations: RFC 3339 date-time strings (e.g., "2026-02-10T17:27:14Z") and numeric epoch milliseconds (e.g., 1739205834496).
+The <code>tstr</code> form is constrained by <code>date-time-regexp</code> which enforces RFC 3339 syntax.
+New implementations <span class="bcp14">SHOULD</span> use RFC 3339 strings; consumers <span class="bcp14">MUST</span> accept both forms.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-11.1-2">
+<pre>
+abstract-timestamp = tstr .regexp date-time-regexp / number
+</pre><a href="#section-11.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-session-id-type">
+<section id="section-11.2">
+        <h3 id="name-the-session-id-type">
+<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-the-session-id-type" class="section-name selfRef">The session-id Type</a>
+        </h3>
+<p id="section-11.2-1">A session identifier is an opaque string that uniquely identifies a conversation session.
+Different agent implementations use different ID schemes including UUID v4, UUID v7, and SHA-256 hashes.
+New implementations <span class="bcp14">SHOULD</span> use UUID v7 (RFC 9562) for built-in temporal ordering.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-11.2-2">
+<pre>
+session-id = tstr
+</pre><a href="#section-11.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-entry-id-type">
+<section id="section-11.3">
+        <h3 id="name-the-entry-id-type">
+<a href="#section-11.3" class="section-number selfRef">11.3. </a><a href="#name-the-entry-id-type" class="section-name selfRef">The entry-id Type</a>
+        </h3>
+<p id="section-11.3-1">An entry identifier is a per-entry unique reference within a session.
+Entry IDs enable parent-child linking (via <code>parent-id</code>) and tool call-result correlation (via <code>call-id</code>).<a href="#section-11.3-1" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-11.3-2">
+<pre>
+entry-id = tstr
+</pre><a href="#section-11.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="full-cddl-schema">
+<section id="section-12">
+      <h2 id="name-full-cddl-schema">
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-full-cddl-schema" class="section-name selfRef">Full CDDL Schema</a>
+      </h2>
+<p id="section-12-1">The complete CDDL schema for verifiable agent conversations is provided below for reference.
+The individual type definitions in the preceding sections are authoritative; this section collects them into a single validatable schema.<a href="#section-12-1" class="pilcrow">¶</a></p>
+<span id="name-cddl-definition-of-a-verifi"></span><div id="fig-cddl-record">
 <figure id="figure-1">
-        <div class="alignLeft art-cddl art-text artwork" id="section-2-2.1">
+        <div class="alignLeft art-cddl art-text artwork" id="section-12-2.1">
 <pre>
 ; =============================================================================
 ; Verifiable Agent Conversations — CDDL Schema
@@ -1484,20 +3616,61 @@ trace-format-id = tstr
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-cddl-definition-of-an-agent" class="selfRef">CDDL definition of an Agent Conversation</a>
+<a href="#name-cddl-definition-of-a-verifi" class="selfRef">CDDL definition of a Verifiable Agent Record</a>
         </figcaption></figure>
 </div>
 </section>
 </div>
+<div id="security-considerations">
+<section id="section-13">
+      <h2 id="name-security-considerations">
+<a href="#section-13" class="section-number selfRef">13. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-13-1">TODO: This section will address the following topics before publication:<a href="#section-13-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-13-2.1">
+          <p id="section-13-2.1.1">Signing threat model and key management for COSE_Sign1 envelopes<a href="#section-13-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-13-2.2">
+          <p id="section-13-2.2.1">Detached payload risks and content-hash integrity verification<a href="#section-13-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-13-2.3">
+          <p id="section-13-2.3.1">No confidentiality guarantee (conversation records are not encrypted)<a href="#section-13-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-13-2.4">
+          <p id="section-13-2.4.1">Trust anchor bootstrapping for signature verification<a href="#section-13-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-13-2.5">
+          <p id="section-13-2.5.1">Privacy considerations for conversation content containing PII<a href="#section-13-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-14">
+      <h2 id="name-iana-considerations">
+<a href="#section-14" class="section-number selfRef">14. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-14-1">TODO: This section will request the following registrations:<a href="#section-14-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-14-2.1">
+          <p id="section-14-2.1.1">CBOR tag for <code>verifiable-agent-record</code> (root type identification)<a href="#section-14-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-14-2.2">
+          <p id="section-14-2.2.1">COSE header label for <code>trace-metadata-key</code> (currently using provisional label 100 from the private-use range)<a href="#section-14-2.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
 <div id="sec-combined-references">
-<section id="section-3">
+<section id="section-15">
       <h2 id="name-references">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-15" class="section-number selfRef">15. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-3.1">
+<section id="section-15.1">
         <h3 id="name-normative-references">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-15.1" class="section-number selfRef">15.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="BCP26">[BCP26]</dt>
@@ -1556,9 +3729,9 @@ trace-format-id = tstr
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-3.2">
+<section id="section-15.2">
         <h3 id="name-informative-references">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-15.2" class="section-number selfRef">15.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="I-D.ietf-scitt-architecture">[I-D.ietf-scitt-architecture]</dt>
