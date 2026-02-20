@@ -80,10 +80,24 @@ python3 scripts/sign-record.py verify \
   --record /tmp/vac-produced/claude-opus-4-6.spec.json
 ```
 
-- Produces `signed-agent-record` per CDDL Section 11 (COSE_Sign1, Tag 18)
+- Produces `signed-agent-record` per CDDL Section 9 (COSE_Sign1, Tag 18)
 - Algorithm: Ed25519 (EdDSA), detached payload mode
+- CWT_Claims (label 15) in protected header: `iss` (model-provider), `sub` (session-id)
 - Trace-metadata in unprotected header at label 100
+- Optional `--issuer` / `--subject` args override CWT_Claims defaults
 - Dependencies: `pycose`, `cbor2` (see `requirements.txt`)
+
+## Signing Validation Script
+
+```sh
+python3 scripts/validate-signing.py              # end-to-end sign + CDDL-validate + verify
+python3 scripts/validate-signing.py --verbose     # detailed per-step output
+```
+
+- End-to-end pipeline: parse → sign → CDDL-validate → verify for all 5 agent formats
+- Uses ephemeral Ed25519 keypair (in-memory, no secrets)
+- Imports `PARSERS` and `wrap_record` from `validate-sessions.py`
+- Exits non-zero on any failure (CI-ready)
 
 ## Conventions
 
