@@ -76,8 +76,7 @@ For example:
 
 *  An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.
 
-*  An agent might deliberately underperform during capability evaluations while
-   performing at full capacity during deployment.
+*  An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.
 
 This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
 The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
