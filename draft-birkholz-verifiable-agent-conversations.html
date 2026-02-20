@@ -2561,18 +2561,39 @@ resource = {
 ; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
 ; =============================================================================
 
-signed-agent-record = #6.18([          ; COSE_Sign1 tag
-    protected: bstr,                    ; {alg, content-type}
-    unprotected: {                      ; Trace metadata
-        ? trace-metadata-key =&gt; trace-metadata
-    },
-    payload: bstr / null,               ; Detached if null
+; SCITT-interoperable COSE Envelope
+; including from draft-ietf-cose-merkle-tree-proofs and
+; draft-ietf-scitt-architecture for validation
+
+signed-agent-record = #6.18([           ; COSE_Sign1 tag
+    protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
+    unprotected: unprotected-header     ; Trace metadata
+    payload: bstr / null                ; Detached if null
     signature: bstr
 ])
 
-; Label 100 is provisional (private-use range per RFC 9052 §3.1).
-; IANA registration required before RFC publication.
-trace-metadata-key = 100
+protected-header = {
+  &amp;(CWT_Claims: 15) =&gt; CWT_Claims
+  ? &amp;(alg: 1) =&gt; int
+  ? &amp;(content_type: 3) =&gt; tstr / uint
+  ? &amp;(kid: 4) =&gt; bstr
+  ? &amp;(x5t: 34) =&gt; COSE_CertHash
+  ? &amp;(x5chain: 33) =&gt; COSE_X509
+  * label =&gt; any
+}
+
+CWT_Claims = {
+  &amp;(iss: 1) =&gt; tstr
+  &amp;(sub: 2) =&gt; tstr
+  * label =&gt; any
+}
+
+unprotected-header = {
+  ? &amp;(trace-metadata-key: 100) =&gt; trace-metadata ; 100 is placeholder
+  ? &amp;(x5chain: 33) =&gt; COSE_X509
+  ? &amp;(receipts: 394)  =&gt; [ + Receipt ]
+  * label =&gt; any
+}
 
 trace-metadata = {
     session-id: session-id
@@ -2587,6 +2608,35 @@ trace-metadata = {
 ; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
 ; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
 trace-format-id = tstr
+
+COSE_X509 = bstr / [ 2*certs: bstr ]
+COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
+label = int / tstr
+
+; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
+
+Receipt = #6.18(COSE_Sign1)
+
+cose-label = int / tstr
+cose-value = any
+
+Protected_Header = {
+  * cose-label =&gt; cose-value
+}
+
+Unprotected_Header = {
+  &amp;(receipts: 394)  =&gt; [+ bstr .cbor Receipt]
+  * cose-label =&gt; cose-value
+}
+
+COSE_Sign1 = [
+  protected   : bstr .cbor Protected_Header,
+  unprotected : Unprotected_Header,
+  payload     : bstr / null,
+  signature   : bstr
+]
+
+
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
