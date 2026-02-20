@@ -407,7 +407,7 @@ Logs may contain personal data subject to GDPR/privacy regulations:
 - ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)
 - SOC 2: AICPA Trust Services Criteria (2017)
 - FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31
-- PCI DSS] PCI DSS v4.0.1 (March 2024)
+- PCI DSS: PCI DSS v4.0.1 (March 2024)
 - ISO 42001: ISO/IEC 42001:2023
 - FFIEC: FFIEC IT Examination Handbook (2024)
 - BSI: BSI AI Finance Test Criteria (2024)
