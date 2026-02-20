@@ -396,7 +396,7 @@ Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs MUST be controlled:
 Logs may contain personal data subject to GDPR/privacy regulations:
 
 1. `message-entry.content` may contain PII
-2. `tool-entry.output` may contain query results with PII
+2. `tool-result-entry.output` may contain query results with PII
 3. Retention periods must balance compliance requirements with data minimization
 
 ## Normative References for Compliance Bucket (TBD)
