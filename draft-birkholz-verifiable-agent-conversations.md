@@ -64,6 +64,7 @@ Autonomous Agents--typically workload instances of agentic artificial intelligen
 This creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.
 In essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
+The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 The responsible human party requires records of agent behavior to demonstrate due diligence over the agents acting under their authority.
 These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
