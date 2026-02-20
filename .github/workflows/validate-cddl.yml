@@ -4,12 +4,12 @@ on:
   push:
     paths:
     - agent-conversation.cddl
-    - scripts/validate-sessions.py
+    - scripts/**
     - examples/sessions/**
   pull_request:
     paths:
     - agent-conversation.cddl
-    - scripts/validate-sessions.py
+    - scripts/**
     - examples/sessions/**
 
 jobs:
@@ -33,5 +33,11 @@ jobs:
       with:
         python-version: "3.12"
 
-    - name: "Validate sessions against schema"
+    - name: "Install Python dependencies"
+      run: pip install -r requirements.txt
+
+    - name: "Validate unsigned records against CDDL"
       run: python3 scripts/validate-sessions.py
+
+    - name: "Validate signed records (end-to-end)"
+      run: python3 scripts/validate-signing.py

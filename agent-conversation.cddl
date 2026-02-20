@@ -307,7 +307,7 @@ Unprotected_Header = {
 COSE_Sign1 = [
   protected   : bstr .cbor Protected_Header,
   unprotected : Unprotected_Header,
-  payload     : bstr / nil,
+  payload     : bstr / null,
   signature   : bstr
 ]
 

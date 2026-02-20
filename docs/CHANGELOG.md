@@ -2,6 +2,71 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-20: End-to-End Signing Validation & SCITT Conformance
+
+PR #16 (`scitt-ready` branch) restructured the CDDL signing envelope (Section 9) for SCITT
+interoperability. The new `protected-header` requires `CWT_Claims` (label 15) with `iss` and
+`sub`, but `scripts/sign-record.py` didn't populate these fields. This session fixes the
+structural mismatch and adds CI-integrated end-to-end signing validation.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | How to populate CWT_Claims? | **CLI args `--issuer`/`--subject` with auto-defaults** | `iss` defaults to `model-provider` (e.g. "anthropic"), `sub` defaults to `session-id`. Sensible defaults for automation; overridable for custom deployments. |
+| 2 | SCITT-imported COSE_Sign1 uses `nil` instead of `null` | **Fix `nil` → `null`** | RFC 8610 uses `null`, not `nil`. The `signed-agent-record` at line 246 correctly uses `null`; the imported `COSE_Sign1` type (for Receipt validation) had a typo. |
+| 3 | Signing validation approach? | **New `validate-signing.py` end-to-end script** | Self-contained pipeline: parse → sign → CDDL-validate → verify. Ephemeral keypair per run (no secrets). Covers all 5 agent formats. |
+| 4 | CI integration? | **Add to existing `validate-cddl.yml`** | Extends the CDDL validation workflow with a pip install step and signing validation step. Path triggers widened to `scripts/**`. |
+
+### CDDL Changes
+
+- `agent-conversation.cddl` line 310: `nil` → `null` (SCITT-imported `COSE_Sign1` type)
+
+### Signing Changes (`scripts/sign-record.py`)
+
+- Added `CWT_CLAIMS_LABEL = 15`, `CWT_ISS_LABEL = 1`, `CWT_SUB_LABEL = 2` constants
+- Added `_extract_cwt_claims()` helper: derives `iss` from `model-provider`, `sub` from `session-id`
+- `cmd_sign()`: CWT_Claims map now included in protected header alongside Algorithm and ContentType
+- `cmd_verify()`: extracts and displays CWT Issuer/Subject from protected header
+- New CLI args: `--issuer`, `--subject` on the `sign` subcommand
+
+### New Script (`scripts/validate-signing.py`)
+
+End-to-end signing validation pipeline:
+1. Imports `PARSERS` and `wrap_record` from `validate-sessions.py` via `importlib`
+2. Picks one session per agent (first alphabetically)
+3. Parses + wraps into `verifiable-agent-record`
+4. Generates ephemeral Ed25519 keypair (in-memory, no secrets)
+5. Signs with COSE_Sign1 including CWT_Claims
+6. CDDL-validates the signed CBOR via `cddl` gem
+7. Verifies signature with detached payload reattachment
+8. Reports PASS/FAIL per agent, exits non-zero on any failure
+
+### CI Changes (`.github/workflows/validate-cddl.yml`)
+
+- Path triggers: `scripts/validate-sessions.py` → `scripts/**`
+- Added: `pip install -r requirements.txt` step (pycose, cbor2)
+- Renamed: existing step to "Validate unsigned records against CDDL"
+- Added: "Validate signed records (end-to-end)" step
+
+### Bug Fix: Timestamp Fallback
+
+`_extract_trace_metadata()` in both `sign-record.py` and `validate-signing.py` previously
+fell back to `"unknown"` when no session-start or record-created timestamp was available.
+The `trace-metadata` CDDL type requires `timestamp-start: abstract-timestamp` (RFC 3339 or
+epoch number), so `"unknown"` caused CDDL validation failures for Cursor sessions (which
+lack timestamps entirely). Fixed to fall back to current UTC time at signing.
+
+### Other Fixes
+
+- `sign-record.py`: Updated stale "Section 11" references to "Section 9" (signing envelope
+  was renumbered in the SCITT restructure)
+
+### Validation
+
+All 13 unsigned sessions pass. All 5 agents pass end-to-end signing validation
+(sign + CDDL-validate + verify). CWT Issuer and CWT Subject displayed in verify output.
+
 ## 2026-02-19: Data Quality Review & Cleanup
 
 Second review pass focused on produced record quality, null noise, dead fields, and consumer
