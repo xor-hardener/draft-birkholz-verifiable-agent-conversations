@@ -59,17 +59,35 @@ Abstract
 
 # Introduction
 
+The question of whether the recorded output of an autonomous agent faithfully represents the agent's actual behavior has found new urgency as agents are delegated consequential tasks.
 Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
-The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous), or a mix of them.
+The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
-While the responsible parties ultimately are humans (e.g., a natural legal entity or an organization), agents do not only act on behalf of humans they can also act on behalf of other agents.
-These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increases the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
+While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
+The responsible human party requires records of agent behavior to demonstrate due diligence over the agents acting under their authority.
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
+
+Verifiable records of agent conversations enable operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
+
+For example:
+
+*  An agent authorized to read files might invoke tools to modify production
+   systems or exfiltrate sensitive data beyond its authorization scope.
+
+*  An agent's visible chain-of-thought output might diverge from the reasoning
+   that actually produced its actions.
+
+*  An agent might deliberately underperform during capability evaluations while
+   performing at full capacity during deployment.
 
 This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
 The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
 The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
 The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture {{-rats-arch}}.
 The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture {{-scitt-arch}}.
+The fifth goal is to enable detection of behavioral anomalies in agent interactions--including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts--through structured, comparable conversation records.
+The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
+The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
 
 Most agent conversations today are represented in "human-readable" text formats.
 For example, {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
