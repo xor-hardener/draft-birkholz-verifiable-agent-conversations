@@ -1381,19 +1381,39 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
-The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous), or a mix of them.
+<p id="section-1-1">The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.
+Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
+This creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.
+In essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
-While the responsible parties ultimately are humans (e.g., a natural legal entity or an organization), agents do not only act on behalf of humans they can also act on behalf of other agents.
-These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increases the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
+The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
+While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
+To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">For example:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-4.1">
+          <p id="section-1-4.1.1">An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-4.2">
+          <p id="section-1-4.2.1">An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-4.3">
+          <p id="section-1-4.3.1">An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-5">This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
 The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
 The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
 The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>.
-The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Most agent conversations today are represented in "human-readable" text formats.
+The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.
+The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
+The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
+The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">Most agent conversations today are represented in "human-readable" text formats.
 For example, <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-3" class="pilcrow">¶</a></p>
+The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <div id="conventions-and-definitions">
 <section id="section-1.1">
         <h3 id="name-conventions-and-definitions">
