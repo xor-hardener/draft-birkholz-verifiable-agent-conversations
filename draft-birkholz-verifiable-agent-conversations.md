@@ -203,8 +203,8 @@ Mapping to this specification:
 
 - `message-entry` (type: "user"): User/system input (prompt)
 - `message-entry` (type: "assistant"): Model response
-- `tool-entry.input`: Tool invocation parameters
-- `tool-entry.output`: Tool execution results
+- `tool-call-entry.input`: Tool invocation parameters
+- `tool-result-entry.output`: Tool execution results
 - `reasoning-entry.content`: Chain-of-thought (where available)
 
 ### REQ-6: Retention Period Requirements
