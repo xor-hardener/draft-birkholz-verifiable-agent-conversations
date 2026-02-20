@@ -21,6 +21,8 @@ author:
    email: henk.birkholz@ietf.contact
  - name: Tobias Heldt
    email: tobias@xor.tech
+ - name: Orie Steele
+   email: orie@or13.io
 
 normative:
   RFC4648: base64
