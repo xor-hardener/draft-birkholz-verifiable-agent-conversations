@@ -59,7 +59,7 @@ Abstract
 
 # Introduction
 
-The question of whether the recorded output of an autonomous agent faithfully represents the agent's actual behavior has found new urgency as agents are delegated consequential tasks.
+The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.
 Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
 The two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
