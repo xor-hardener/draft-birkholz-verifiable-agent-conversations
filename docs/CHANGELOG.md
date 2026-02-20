@@ -2,6 +2,87 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-20: RFC 9393-Style Type Documentation in Draft Body
+
+Added per-type documentation to `draft-birkholz-verifiable-agent-conversations.md` following
+the RFC 9393 (CoSWID) pattern: section heading, introductory prose, CDDL snippet, bulleted
+field descriptions. Content sourced from `docs/type-descriptions.md` and reformatted for the
+Internet-Draft body.
+
+### Changes
+
+- **`draft-birkholz-verifiable-agent-conversations.md`**:
+  - Expanded Conventions and Definitions section with field naming convention paragraph
+    (canonical kebab-case vs native passthrough)
+  - Removed empty "Agent Conversations" placeholder heading
+  - Added "Data Model Overview" section (four perspectives: session trace, file attribution,
+    environment context, signing envelope)
+  - Added per-type documentation for all CDDL types organized into sections: Root Type,
+    Session Types, Environment Types, Entry Types, Token Usage, File Attribution, Signing
+    and Verification, Common Types (26 types with dedicated sections or inline coverage;
+    `start`, `date-time-regexp`, and `uri-regexp` appear only in the full schema appendix)
+  - Each type section includes: introductory prose, CDDL snippet extracted from
+    `agent-conversation.cddl`, and bulleted field descriptions with type, cardinality, and
+    semantics
+  - Renamed "CDDL Definition for generic Agent Conversations" to "Full CDDL Schema" with
+    introductory paragraph
+  - Added Security Considerations stub (signing threat model, privacy, key management)
+  - Added IANA Considerations stub (CBOR tag, COSE header label registration)
+
+### Validation
+
+No schema or parser changes; validation unaffected. All CDDL snippets in the draft
+verified against `agent-conversation.cddl` — zero discrepancies.
+
+### Compliance Section Fixes (Henk's PR 8 content)
+
+- `tool-entry` (5 occurrences) → `tool-call-entry` / `tool-result-entry` (the schema has
+  separate types for calls and results)
+- `model_id` → `model-id` (kebab-case per schema convention)
+- Stray `]` in PCI DSS reference → `:` (broken markdown fix)
+
+### Open Questions
+
+1. **Empty abstract**: The `--- abstract` section contains only the placeholder word "Abstract".
+   Needs a substantive summary paragraph before IETF submission (IDNITS will reject it).
+
+2. **8 unused normative references**: The YAML front matter declares `RFC4648` (base64),
+   `RFC5280` (pkix), `RFC7252` (coap), `RFC7515` (jws), `RFC7519` (jwt), `IANA.cwt`,
+   `IANA.jwt`, and `BCP26` (ianacons) — none are cited in the document body. The i-d-template
+   linter will flag these. Either add citations or move to informative / remove.
+
+3. **RFC 3339, RFC 3986, RFC 9562 missing from front matter**: These are referenced by name
+   in the type documentation prose (timestamps, URI validation, UUID v7 recommendation) but
+   have no entries in the `normative:` or `informative:` YAML blocks. Should be added as
+   normative (RFC 3339, RFC 3986) or informative (RFC 9562) references.
+
+4. **ETSI provision inconsistency for `token-usage`**: The ETSI TS 104 223 table (Section 3.8)
+   maps `token-usage` to provision **5.4.2-3**, but the Compliance Mapping Table maps it to
+   **5.4.2-4**. One of these is wrong.
+
+5. **`contributor` mapping scope in REQ-3**: The compliance section's "Actor Identification"
+   mapping references the `contributor` type, but that type only exists in file-attribution
+   (Section 9). Session-level actor identification is via `message-entry.type`,
+   `agent-meta.model-id`, and `message-entry.model-id`. The mapping is technically correct
+   but may mislead readers about where `contributor` applies.
+
+6. **`uri-regexp` undocumented in prose**: The `conversation` and `resource` CDDL snippets
+   reference `.regexp uri-regexp`, but unlike `date-time-regexp` (explained in the
+   abstract-timestamp section), `uri-regexp` is never mentioned in prose. Readers see the
+   constraint without explanation until the full schema include.
+
+7. **`start` rule not discussed**: The CDDL `start = verifiable-agent-record /
+   signed-agent-record` rule is never mentioned in the draft body. A brief note in the
+   Data Model Overview or Full CDDL Schema section would clarify that the schema accepts
+   either form at the top level.
+
+### Context
+
+Henk requested RFC 9393-style structure descriptions for the CDDL schema. Work done on the
+`add-compliance-section` branch to complement Henk's compliance requirements section (PR 8).
+The compliance section addresses WHY the structures exist; the type documentation addresses
+HOW they are defined.
+
 ## 2026-02-19: Data Quality Review & Cleanup
 
 Second review pass focused on produced record quality, null noise, dead fields, and consumer
