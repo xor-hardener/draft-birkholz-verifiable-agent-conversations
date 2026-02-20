@@ -367,7 +367,7 @@ The following table maps this specification's data elements to compliance requir
 | `contributor` | Art. 12(3)(d) | 5.1.4 | CC6.1 | AC-2 | 10.2 | A.6.2.8 | - |
 | `message-entry.content` | Art. 12(3)(c) | 5.1.2-3 | - | - | AI Guide | - | - |
 | `reasoning-entry` | Art. 12 | 5.4.2-3 | - | - | AI Guide | A.7.1 | - |
-| `tool-entry` | Art. 12 | 5.4.2-1 | CC7.2 | AU-12 | 10.2 | A.6.2.8 | - |
+| `tool-call-entry` / `tool-result-entry` | Art. 12 | 5.4.2-1 | CC7.2 | AU-12 | 10.2 | A.6.2.8 | - |
 | `signed-agent-record` | Art. 19 | 5.2.4-1.2 | CC6.1 | AU-9 | 10.5 | - | - |
 | `vcs-context` | - | 5.2.1-2 | - | CM-3 | - | A.6.2.8 | - |
 | `token-usage` | - | 5.4.2-4 | - | - | - | - | - |
