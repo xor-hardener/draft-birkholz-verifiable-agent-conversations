@@ -66,7 +66,7 @@ In essence, the two main types of actors interacting with autonomous agents are 
 In agentic AI systems, machine actors interact with other machine actors.
 The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
-The responsible human party requires records of agent behavior to demonstrate due diligence over the agents acting under their authority.
+To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
 These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively.
 
 Verifiable records of agent conversations enable operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
