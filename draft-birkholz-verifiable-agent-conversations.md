@@ -343,7 +343,7 @@ This specification directly addresses this requirement through:
 - `message-entry` (type: "user"): Captures prompt inputs
 - `reasoning-entry`: Captures chain-of-thought (where available)
 - `message-entry` (type: "assistant"): Captures model outputs
-- `tool-entry`: Captures agentic actions
+- `tool-call-entry` / `tool-result-entry`: Captures agentic actions
 
 ### Financial Sector Requirements (FFIEC, BSI)
 
