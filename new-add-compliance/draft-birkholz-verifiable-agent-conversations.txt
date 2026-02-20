@@ -643,7 +643,7 @@ Table of Contents
 
    *  message-entry (type: "assistant"): Captures model outputs
 
-   *  tool-entry: Captures agentic actions
+   *  tool-call-entry / tool-result-entry: Captures agentic actions
 
 2.3.4.  Financial Sector Requirements (FFIEC, BSI)
 
