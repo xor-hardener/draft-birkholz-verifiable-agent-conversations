@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Verifiable Agent Conversations</title>
+<meta content="Henk Birkholz" name="author">
+<meta content="Tobias Heldt" name="author">
+<meta content="Orie Steele" name="author">
+<meta content="
+       Abstract 
+    " name="description">
+<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="verifiable" name="keyword">
+<meta content="evidence" name="keyword">
+<meta content="transparency" name="keyword">
+<meta content="compliance" name="keyword">
+<meta content="auditability" name="keyword">
+<meta content="draft-birkholz-verifiable-agent-conversations-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.31.0
+    Python 3.12.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.0.2
+    platformdirs 4.5.1
+    pycountry 24.6.1
+    PyYAML 6.0.3
+    requests 2.32.5
+    wcwidth 0.3.0
+-->
+<link href="draft-birkholz-verifiable-agent-conversations.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow, a.pilcrow:focus {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">RATS CMW</td>
+<td class="right">February 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Birkholz, et al.</td>
+<td class="center">Expires 24 August 2026</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-birkholz-verifiable-agent-conversations-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-02-20" class="published">20 February 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2026-08-24">24 August 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">H. Birkholz</div>
+</div>
+<div class="author">
+      <div class="author-name">T. Heldt</div>
+</div>
+<div class="author">
+      <div class="author-name">O. Steele</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Verifiable Agent Conversations</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Source for this draft and an issue tracker can be found at
+    <span><a href="https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations">https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 24 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-compliance-requirements-for" class="internal xref">Compliance Requirements for AI Agent Conversation Records</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-applicable-frameworks-analy" class="internal xref">Applicable Frameworks Analyzed</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-common-requirements-interse" class="internal xref">Common Requirements Intersection</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-req-1-automatic-event-loggi" class="internal xref">REQ-1: Automatic Event Logging</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-req-2-timestamp-requirement" class="internal xref">REQ-2: Timestamp Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-req-3-actor-identification" class="internal xref">REQ-3: Actor Identification</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.4">
+                    <p id="section-toc.1-1.2.2.2.2.4.1"><a href="#section-2.2.4" class="auto internal xref">2.2.4</a>.  <a href="#name-req-4-action-event-type-rec" class="internal xref">REQ-4: Action/Event Type Recording</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.5">
+                    <p id="section-toc.1-1.2.2.2.2.5.1"><a href="#section-2.2.5" class="auto internal xref">2.2.5</a>.  <a href="#name-req-5-input-output-recordin" class="internal xref">REQ-5: Input/Output Recording (AI-Specific)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.6">
+                    <p id="section-toc.1-1.2.2.2.2.6.1"><a href="#section-2.2.6" class="auto internal xref">2.2.6</a>.  <a href="#name-req-6-retention-period-requ" class="internal xref">REQ-6: Retention Period Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.7">
+                    <p id="section-toc.1-1.2.2.2.2.7.1"><a href="#section-2.2.7" class="auto internal xref">2.2.7</a>.  <a href="#name-req-7-tamper-evidence-and-i" class="internal xref">REQ-7: Tamper-Evidence and Integrity Protection</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.8">
+                    <p id="section-toc.1-1.2.2.2.2.8.1"><a href="#section-2.2.8" class="auto internal xref">2.2.8</a>.  <a href="#name-req-8-incident-response-sup" class="internal xref">REQ-8: Incident Response Support</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.9">
+                    <p id="section-toc.1-1.2.2.2.2.9.1"><a href="#section-2.2.9" class="auto internal xref">2.2.9</a>.  <a href="#name-req-9-anomaly-and-risk-dete" class="internal xref">REQ-9: Anomaly and Risk Detection Support</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.10">
+                    <p id="section-toc.1-1.2.2.2.2.10.1"><a href="#section-2.2.10" class="auto internal xref">2.2.10</a>. <a href="#name-req-10-human-oversight-enab" class="internal xref">REQ-10: Human Oversight Enablement</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.11">
+                    <p id="section-toc.1-1.2.2.2.2.11.1"><a href="#section-2.2.11" class="auto internal xref">2.2.11</a>. <a href="#name-req-11-traceability-and-rep" class="internal xref">REQ-11: Traceability and Reproducibility</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-framework-specific-requirem" class="internal xref">Framework-Specific Requirements</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.1">
+                    <p id="section-toc.1-1.2.2.3.2.1.1"><a href="#section-2.3.1" class="auto internal xref">2.3.1</a>.  <a href="#name-eu-ai-act-high-risk-systems" class="internal xref">EU AI Act (High-Risk Systems)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.2">
+                    <p id="section-toc.1-1.2.2.3.2.2.1"><a href="#section-2.3.2" class="auto internal xref">2.3.2</a>.  <a href="#name-etsi-ts-104-223-session-log" class="internal xref">ETSI TS 104 223 Session Logging Requirements</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.3">
+                    <p id="section-toc.1-1.2.2.3.2.3.1"><a href="#section-2.3.3" class="auto internal xref">2.3.3</a>.  <a href="#name-pci-dss-v40-ai-specific-gui" class="internal xref">PCI DSS v4.0 AI-Specific Guidance</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.4">
+                    <p id="section-toc.1-1.2.2.3.2.4.1"><a href="#section-2.3.4" class="auto internal xref">2.3.4</a>.  <a href="#name-financial-sector-requiremen" class="internal xref">Financial Sector Requirements (FFIEC, BSI)</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-compliance-mapping-table" class="internal xref">Compliance Mapping Table</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-security-considerations-for" class="internal xref">Security Considerations for Compliance</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+                    <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-log-integrity" class="internal xref">Log Integrity</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.2">
+                    <p id="section-toc.1-1.2.2.5.2.2.1"><a href="#section-2.5.2" class="auto internal xref">2.5.2</a>.  <a href="#name-access-control" class="internal xref">Access Control</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.3">
+                    <p id="section-toc.1-1.2.2.5.2.3.1"><a href="#section-2.5.3" class="auto internal xref">2.5.3</a>.  <a href="#name-data-protection" class="internal xref">Data Protection</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
+                <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="auto internal xref">2.6</a>.  <a href="#name-normative-references-for-co" class="internal xref">Normative References for Compliance Bucket (TBD)</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.7">
+                <p id="section-toc.1-1.2.2.7.1"><a href="#section-2.7" class="auto internal xref">2.7</a>.  <a href="#name-informative-references-buck" class="internal xref">Informative References Bucket (TBD)</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cddl-definition-for-generic" class="internal xref">CDDL Definition for generic Agent Conversations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.
+Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
+This creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.
+In essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
+In agentic AI systems, machine actors interact with other machine actors.
+The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
+While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
+To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">For example:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-4.1">
+          <p id="section-1-4.1.1">An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-4.2">
+          <p id="section-1-4.2.1">An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-4.3">
+          <p id="section-1-4.3.1">An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-5">This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
+The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
+The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
+The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>.
+The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.
+The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
+The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
+The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">Most agent conversations today are represented in "human-readable" text formats.
+For example, <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
+The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<div id="conventions-and-definitions">
+<section id="section-1.1">
+        <h3 id="name-conventions-and-definitions">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+        </h3>
+<p id="section-1.1-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">In this document, CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> is used to describe the data formats.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">The reader is assumed to be familiar with the vocabulary and concepts defined in <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> and <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="compliance-requirements-for-ai-agent-conversation-records">
+<section id="section-2">
+      <h2 id="name-compliance-requirements-for">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-compliance-requirements-for" class="section-name selfRef">Compliance Requirements for AI Agent Conversation Records</a>
+      </h2>
+<p id="section-2-1">This section identifies the intersection of logging, traceability, and record-keeping requirements across major compliance frameworks applicable to AI systems.
+The verifiable agent conversation format defined in this document addresses these requirements by providing a standardized, cryptographically verifiable record of AI agent interactions.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="applicable-frameworks-analyzed">
+<section id="section-2.1">
+        <h3 id="name-applicable-frameworks-analy">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-applicable-frameworks-analy" class="section-name selfRef">Applicable Frameworks Analyzed</a>
+        </h3>
+<p id="section-2.1-1">The following frameworks were analyzed for their requirements on AI agent traceability and session logging:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Framework</th>
+              <th class="text-left" rowspan="1" colspan="1">Jurisdiction</th>
+              <th class="text-left" rowspan="1" colspan="1">Sector</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">EU AI Act (Regulation 2024/1689)</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Cross-sector</td>
+              <td class="text-left" rowspan="1" colspan="1">In force Aug 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Cyber Resilience Act (CRA)</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Products with digital elements</td>
+              <td class="text-left" rowspan="1" colspan="1">In force Dec 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">NIS2 Directive</td>
+              <td class="text-left" rowspan="1" colspan="1">EU</td>
+              <td class="text-left" rowspan="1" colspan="1">Essential/important entities</td>
+              <td class="text-left" rowspan="1" colspan="1">Transposed Oct 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ETSI TS 104 223</td>
+              <td class="text-left" rowspan="1" colspan="1">EU/International</td>
+              <td class="text-left" rowspan="1" colspan="1">AI systems</td>
+              <td class="text-left" rowspan="1" colspan="1">Published Apr 2025</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SOC 2 Trust Services Criteria</td>
+              <td class="text-left" rowspan="1" colspan="1">US/International</td>
+              <td class="text-left" rowspan="1" colspan="1">Service organizations</td>
+              <td class="text-left" rowspan="1" colspan="1">Active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FedRAMP Rev. 5</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Federal cloud services</td>
+              <td class="text-left" rowspan="1" colspan="1">Active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PCI DSS v4.0</td>
+              <td class="text-left" rowspan="1" colspan="1">International</td>
+              <td class="text-left" rowspan="1" colspan="1">Payment card industry</td>
+              <td class="text-left" rowspan="1" colspan="1">Mandatory Mar 2025</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ISO/IEC 42001:2023</td>
+              <td class="text-left" rowspan="1" colspan="1">International</td>
+              <td class="text-left" rowspan="1" colspan="1">AI management systems</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2023</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">FFIEC IT Handbook</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Financial institutions</td>
+              <td class="text-left" rowspan="1" colspan="1">Updated 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">BSI AI Finance Test Criteria</td>
+              <td class="text-left" rowspan="1" colspan="1">Germany</td>
+              <td class="text-left" rowspan="1" colspan="1">Financial sector AI</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2024</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">NIST AI 100-2</td>
+              <td class="text-left" rowspan="1" colspan="1">US</td>
+              <td class="text-left" rowspan="1" colspan="1">Cross-sector</td>
+              <td class="text-left" rowspan="1" colspan="1">Published 2025</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="common-requirements-intersection">
+<section id="section-2.2">
+        <h3 id="name-common-requirements-interse">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-common-requirements-interse" class="section-name selfRef">Common Requirements Intersection</a>
+        </h3>
+<p id="section-2.2-1">Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
+These represent the minimum baseline that verifiable agent conversation records <span class="bcp14">MUST</span> support.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<div id="req-1-automatic-event-logging">
+<section id="section-2.2.1">
+          <h4 id="name-req-1-automatic-event-loggi">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-req-1-automatic-event-loggi" class="section-name selfRef">REQ-1: Automatic Event Logging</a>
+          </h4>
+<p id="section-2.2.1-1">All frameworks require automatic, system-generated logging of events without reliance on manual recording.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"High-risk AI systems shall technically allow for the automatic recording of events (logs)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"System Operators shall log system and user actions"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2 CC7.2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Complete and chronological record of all user actions and system responses"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP AU-12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit Record Generation" control requirement</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit logs implemented to support detection of anomalies"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001 A.6.2.8</td>
+                <td class="text-left" rowspan="1" colspan="1">"AI system recording of event logs"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.1-3">Mapping to this specification:
+The <code>entries</code> array in <code>session-trace</code> captures all events automatically.
+Each <code>entry</code> represents a discrete, system-recorded event with structured metadata.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-2-timestamp-requirements">
+<section id="section-2.2.2">
+          <h4 id="name-req-2-timestamp-requirement">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-req-2-timestamp-requirement" class="section-name selfRef">REQ-2: Timestamp Requirements</a>
+          </h4>
+<p id="section-2.2.2-1">All frameworks require precise temporal information for each logged event.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-3">
+            <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(2)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Precise timestamps for each usage session" (biometric systems)</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10.6</td>
+                <td class="text-left" rowspan="1" colspan="1">"Time-synchronization mechanisms support consistent time settings"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"When the activity was performed via timestamp"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Precise logging of when an incident was first detected"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.2-3">Mapping to this specification:
+The <code>timestamp</code> field in each entry uses <code>abstract-timestamp</code> which accepts both RFC 3339 strings and epoch milliseconds, ensuring interoperability across implementations.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-3-actor-identification">
+<section id="section-2.2.3">
+          <h4 id="name-req-3-actor-identification">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-req-3-actor-identification" class="section-name selfRef">REQ-3: Actor Identification</a>
+          </h4>
+<p id="section-2.2.3-1">All frameworks require attribution of actions to identifiable actors (human or system).<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-4">
+            <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(3)(d)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Identification of the natural persons involved in the verification of results"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"The process or user who initiated the activity (Who)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">Attribution to "Who" performed each action</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP AC-2</td>
+                <td class="text-left" rowspan="1" colspan="1">Account management and identification</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.3-3">Mapping to this specification:
+The <code>contributor</code> type captures actor attribution with <code>type</code> (human/ai/mixed/unknown) and optional <code>model-id</code>.
+Session-level <code>agent-meta</code> identifies the AI system.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-4-actionevent-type-recording">
+<section id="section-2.2.4">
+          <h4 id="name-req-4-action-event-type-rec">
+<a href="#section-2.2.4" class="section-number selfRef">2.2.4. </a><a href="#name-req-4-action-event-type-rec" class="section-name selfRef">REQ-4: Action/Event Type Recording</a>
+          </h4>
+<p id="section-2.2.4-1">All frameworks require recording of what action or event occurred.<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-5">
+            <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Events relevant for identifying situations that may result in...risk"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.2.4-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit log of changes to system prompts or other model configuration"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"The action they performed such as file transferred, created, or deleted (What)"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">"What" component of audit trail</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.4-3">Mapping to this specification:
+The <code>type</code> field in each entry discriminates event types: <code>user</code>, <code>assistant</code>, <code>tool-call</code>, <code>tool-result</code>, <code>reasoning</code>, <code>system-event</code>.<a href="#section-2.2.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-5-inputoutput-recording-ai-specific">
+<section id="section-2.2.5">
+          <h4 id="name-req-5-input-output-recordin">
+<a href="#section-2.2.5" class="section-number selfRef">2.2.5. </a><a href="#name-req-5-input-output-recordin" class="section-name selfRef">REQ-5: Input/Output Recording (AI-Specific)</a>
+          </h4>
+<p id="section-2.2.5-1">AI-specific frameworks require recording of inputs (prompts) and outputs (responses).<a href="#section-2.2.5-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-6">
+            <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(3)(c)</td>
+                <td class="text-left" rowspan="1" colspan="1">"The input data for which the search has led to a match"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS AI Guidance</td>
+                <td class="text-left" rowspan="1" colspan="1">"Logging should be sufficient to audit the prompt inputs and reasoning process"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.1.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Operation, and lifecycle management of models, datasets and prompts"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FFIEC VII.D</td>
+                <td class="text-left" rowspan="1" colspan="1">"Lack of explainability...unclear how inputs are translated into outputs"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.5-3">Mapping to this specification:<a href="#section-2.2.5-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.5-4.1">
+              <p id="section-2.2.5-4.1.1"><code>message-entry</code> (type: "user"): User/system input (prompt)<a href="#section-2.2.5-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.2">
+              <p id="section-2.2.5-4.2.1"><code>message-entry</code> (type: "assistant"): Model response<a href="#section-2.2.5-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.3">
+              <p id="section-2.2.5-4.3.1"><code>tool-call-entry.input</code>: Tool invocation parameters<a href="#section-2.2.5-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.4">
+              <p id="section-2.2.5-4.4.1"><code>tool-result-entry.output</code>: Tool execution results<a href="#section-2.2.5-4.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.5-4.5">
+              <p id="section-2.2.5-4.5.1"><code>reasoning-entry.content</code>: Chain-of-thought (where available)<a href="#section-2.2.5-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="req-6-retention-period-requirements">
+<section id="section-2.2.6">
+          <h4 id="name-req-6-retention-period-requ">
+<a href="#section-2.2.6" class="section-number selfRef">2.2.6. </a><a href="#name-req-6-retention-period-requ" class="section-name selfRef">REQ-6: Retention Period Requirements</a>
+          </h4>
+<p id="section-2.2.6-1">Most frameworks specify minimum retention periods for audit logs.<a href="#section-2.2.6-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-7">
+            <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Minimum Retention</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 19</td>
+                <td class="text-left" rowspan="1" colspan="1">6 months (longer for financial services)</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP (M-21-31)</td>
+                <td class="text-left" rowspan="1" colspan="1">12 months active + 18 months cold storage</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0</td>
+                <td class="text-left" rowspan="1" colspan="1">12 months total, 3 months immediate access</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2</td>
+                <td class="text-left" rowspan="1" colspan="1">Per member state law</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.6-3">Recommendation:
+Implementations <span class="bcp14">SHOULD</span> retain verifiable agent conversation records for at least 12 months to satisfy the most common requirement threshold.<a href="#section-2.2.6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-7-tamper-evidence-and-integrity-protection">
+<section id="section-2.2.7">
+          <h4 id="name-req-7-tamper-evidence-and-i">
+<a href="#section-2.2.7" class="section-number selfRef">2.2.7. </a><a href="#name-req-7-tamper-evidence-and-i" class="section-name selfRef">REQ-7: Tamper-Evidence and Integrity Protection</a>
+          </h4>
+<p id="section-2.2.7-1">All frameworks require protection against unauthorized modification of logs.<a href="#section-2.2.7-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-8">
+            <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PCI DSS 4.0 Req 10.5</td>
+                <td class="text-left" rowspan="1" colspan="1">"Tamper-proof audit trails...logs cannot be altered retroactively"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP</td>
+                <td class="text-left" rowspan="1" colspan="1">"Effective chain of evidence to ensure integrity"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">Log integrity as security control</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">"Tamper-proof SBOMs and vulnerability disclosures"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.7-3">Mapping to this specification:
+The <code>signed-agent-record</code> type (COSE_Sign1 envelope) provides cryptographic integrity protection.
+The <code>content-hash</code> field in <code>trace-metadata</code> enables verification of payload integrity.<a href="#section-2.2.7-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-8-incident-response-support">
+<section id="section-2.2.8">
+          <h4 id="name-req-8-incident-response-sup">
+<a href="#section-2.2.8" class="section-number selfRef">2.2.8. </a><a href="#name-req-8-incident-response-sup" class="section-name selfRef">REQ-8: Incident Response Support</a>
+          </h4>
+<p id="section-2.2.8-1">All frameworks require logs to support incident investigation and response.<a href="#section-2.2.8-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-9">
+            <caption><a href="#table-9" class="selfRef">Table 9</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">NIS2 Art. 23</td>
+                <td class="text-left" rowspan="1" colspan="1">24-hour initial notification, 72-hour assessment</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">24-hour vulnerability notification to ENISA</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">Logs for "incident investigations, and vulnerability remediation"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP</td>
+                <td class="text-left" rowspan="1" colspan="1">Incident reporting and continuous monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.8-3">Mapping to this specification:
+The structured format enables rapid extraction of relevant entries by timestamp range, event type, or tool invocation for incident reconstruction.<a href="#section-2.2.8-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-9-anomaly-and-risk-detection-support">
+<section id="section-2.2.9">
+          <h4 id="name-req-9-anomaly-and-risk-dete">
+<a href="#section-2.2.9" class="section-number selfRef">2.2.9. </a><a href="#name-req-9-anomaly-and-risk-dete" class="section-name selfRef">REQ-9: Anomaly and Risk Detection Support</a>
+          </h4>
+<p id="section-2.2.9-1">Frameworks require logs to enable detection of anomalous or risky behavior.<a href="#section-2.2.9-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-10">
+            <caption><a href="#table-10" class="selfRef">Table 10</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12(2)(a)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Identifying situations that may result in...risk"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.4.2-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Detect anomalies, security breaches, or unexpected behaviour"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FedRAMP SI-4</td>
+                <td class="text-left" rowspan="1" colspan="1">"Anomaly detection"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">SOC 2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Anomaly detection" for security monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.9-3">Mapping to this specification:
+The standardized entry types and structured <code>tool-call</code>/<code>tool-result</code> pairs enable automated analysis for detecting:<a href="#section-2.2.9-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.9-4.1">
+              <p id="section-2.2.9-4.1.1">Unusual tool invocation patterns<a href="#section-2.2.9-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.2">
+              <p id="section-2.2.9-4.2.1">Failed operations (via <code>status</code> and <code>is-error</code> fields)<a href="#section-2.2.9-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.3">
+              <p id="section-2.2.9-4.3.1">Unexpected reasoning patterns<a href="#section-2.2.9-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.9-4.4">
+              <p id="section-2.2.9-4.4.1">Token usage anomalies<a href="#section-2.2.9-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="req-10-human-oversight-enablement">
+<section id="section-2.2.10">
+          <h4 id="name-req-10-human-oversight-enab">
+<a href="#section-2.2.10" class="section-number selfRef">2.2.10. </a><a href="#name-req-10-human-oversight-enab" class="section-name selfRef">REQ-10: Human Oversight Enablement</a>
+          </h4>
+<p id="section-2.2.10-1">AI-specific frameworks require logs to support human review and oversight.<a href="#section-2.2.10-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-11">
+            <caption><a href="#table-11" class="selfRef">Table 11</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 26(5)</td>
+                <td class="text-left" rowspan="1" colspan="1">"Monitoring the operation of high-risk AI systems"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.1.4-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Capabilities to enable human oversight"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001</td>
+                <td class="text-left" rowspan="1" colspan="1">Human responsibility and accountability</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">FFIEC VII.D</td>
+                <td class="text-left" rowspan="1" colspan="1">"Dynamic updating...challenges to monitoring and independently reviewing AI"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.10-3">Mapping to this specification:
+The <code>reasoning-entry</code> type captures chain-of-thought content (where available), enabling human reviewers to understand AI decision-making processes.
+The hierarchical <code>children</code> field preserves conversation structure.<a href="#section-2.2.10-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="req-11-traceability-and-reproducibility">
+<section id="section-2.2.11">
+          <h4 id="name-req-11-traceability-and-rep">
+<a href="#section-2.2.11" class="section-number selfRef">2.2.11. </a><a href="#name-req-11-traceability-and-rep" class="section-name selfRef">REQ-11: Traceability and Reproducibility</a>
+          </h4>
+<p id="section-2.2.11-1">All frameworks require the ability to trace system behavior and reconstruct events.<a href="#section-2.2.11-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-12">
+            <caption><a href="#table-12" class="selfRef">Table 12</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Framework</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EU AI Act Art. 12</td>
+                <td class="text-left" rowspan="1" colspan="1">"Level of traceability of the functioning...appropriate to the intended purpose"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ISO 42001</td>
+                <td class="text-left" rowspan="1" colspan="1">"Traceability" as key factor including "data provenance, model traceability"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">CRA</td>
+                <td class="text-left" rowspan="1" colspan="1">"Traceability in the software supply chain"</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">ETSI TS 104223 5.2.1-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Track, authenticate, manage version control"</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-2.2.11-3">Mapping to this specification:<a href="#section-2.2.11-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.11-4.1">
+              <p id="section-2.2.11-4.1.1"><code>session-id</code>: Links entries to sessions<a href="#section-2.2.11-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.2">
+              <p id="section-2.2.11-4.2.1"><code>entry-id</code> and <code>parent-id</code>: Enables conversation tree reconstruction<a href="#section-2.2.11-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.3">
+              <p id="section-2.2.11-4.3.1"><code>vcs-context</code>: Git commit/branch for code state<a href="#section-2.2.11-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.4">
+              <p id="section-2.2.11-4.4.1"><code>agent-meta</code>: Model version and CLI version<a href="#section-2.2.11-4.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.11-4.5">
+              <p id="section-2.2.11-4.5.1"><code>file-attribution</code>: Code provenance tracking<a href="#section-2.2.11-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="framework-specific-requirements">
+<section id="section-2.3">
+        <h3 id="name-framework-specific-requirem">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-framework-specific-requirem" class="section-name selfRef">Framework-Specific Requirements</a>
+        </h3>
+<div id="eu-ai-act-high-risk-systems">
+<section id="section-2.3.1">
+          <h4 id="name-eu-ai-act-high-risk-systems">
+<a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-eu-ai-act-high-risk-systems" class="section-name selfRef">EU AI Act (High-Risk Systems)</a>
+          </h4>
+<p id="section-2.3.1-1">For AI systems classified as high-risk under Annex III, additional requirements apply:<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.3.1-2">
+<li id="section-2.3.1-2.1">
+              <p id="section-2.3.1-2.1.1"><strong>Biometric identification systems</strong> (Annex III, 1(a)) require logging of:<a href="#section-2.3.1-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.1-2.1.2.1">
+                  <p id="section-2.3.1-2.1.2.1.1">Precise timestamps for start/end of each usage session<a href="#section-2.3.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.2">
+                  <p id="section-2.3.1-2.1.2.2.1">Reference database used during input data validation<a href="#section-2.3.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.3">
+                  <p id="section-2.3.1-2.1.2.3.1">Input data leading to matches<a href="#section-2.3.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.3.1-2.1.2.4">
+                  <p id="section-2.3.1-2.1.2.4.1">Natural persons involved in result verification<a href="#section-2.3.1-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li id="section-2.3.1-2.2">
+              <p id="section-2.3.1-2.2.1"><strong>Log retention</strong>: Minimum 6 months; financial services may require longer per sector-specific regulation.<a href="#section-2.3.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.3.1-2.3">
+              <p id="section-2.3.1-2.3.1"><strong>Authority access</strong>: Art. 19 requires provision of logs to competent authorities upon reasoned request.<a href="#section-2.3.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="etsi-ts-104-223-session-logging-requirements">
+<section id="section-2.3.2">
+          <h4 id="name-etsi-ts-104-223-session-log">
+<a href="#section-2.3.2" class="section-number selfRef">2.3.2. </a><a href="#name-etsi-ts-104-223-session-log" class="section-name selfRef">ETSI TS 104 223 Session Logging Requirements</a>
+          </h4>
+<p id="section-2.3.2-1">ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging requirements:<a href="#section-2.3.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-13">
+            <caption><a href="#table-13" class="selfRef">Table 13</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Provision</th>
+                <th class="text-left" rowspan="1" colspan="1">Requirement</th>
+                <th class="text-left" rowspan="1" colspan="1">This Spec Mapping</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.1.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">Audit trail for "operation, and lifecycle management of models, datasets and prompts"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>session-trace</code>, <code>agent-meta</code>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.2.4-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Document and maintain a clear audit trail of their system design"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>recording-agent</code>, open maps</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.2.4-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Audit log of changes to system prompts or other model configuration"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>event-entry</code> with prompt changes</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+                <td class="text-left" rowspan="1" colspan="1">"Log system and user actions to support security compliance, incident investigations"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>entries</code> array</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-2</td>
+                <td class="text-left" rowspan="1" colspan="1">"Analyse their logs to ensure...desired outputs and to detect anomalies"</td>
+                <td class="text-left" rowspan="1" colspan="1">Structured format enables analysis</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">5.4.2-3</td>
+                <td class="text-left" rowspan="1" colspan="1">"Monitor internal states of their AI systems"</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>reasoning-entry</code>, <code>token-usage</code>
+</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+<div id="pci-dss-v40-ai-specific-guidance">
+<section id="section-2.3.3">
+          <h4 id="name-pci-dss-v40-ai-specific-gui">
+<a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-pci-dss-v40-ai-specific-gui" class="section-name selfRef">PCI DSS v4.0 AI-Specific Guidance</a>
+          </h4>
+<p id="section-2.3.3-1">The PCI Security Standards Council has published guidance on AI in payment environments:<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.3-2.1">
+              <p id="section-2.3.3-2.1.1">"Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."<a href="#section-2.3.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.3.3-3">This specification directly addresses this requirement through:<a href="#section-2.3.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.3-4.1">
+              <p id="section-2.3.3-4.1.1"><code>message-entry</code> (type: "user"): Captures prompt inputs<a href="#section-2.3.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.2">
+              <p id="section-2.3.3-4.2.1"><code>reasoning-entry</code>: Captures chain-of-thought (where available)<a href="#section-2.3.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.3">
+              <p id="section-2.3.3-4.3.1"><code>message-entry</code> (type: "assistant"): Captures model outputs<a href="#section-2.3.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.3-4.4">
+              <p id="section-2.3.3-4.4.1"><code>tool-call-entry</code> / <code>tool-result-entry</code>: Captures agentic actions<a href="#section-2.3.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="financial-sector-requirements-ffiec-bsi">
+<section id="section-2.3.4">
+          <h4 id="name-financial-sector-requiremen">
+<a href="#section-2.3.4" class="section-number selfRef">2.3.4. </a><a href="#name-financial-sector-requiremen" class="section-name selfRef">Financial Sector Requirements (FFIEC, BSI)</a>
+          </h4>
+<p id="section-2.3.4-1">Financial institutions face additional scrutiny for AI systems:<a href="#section-2.3.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-14">
+            <caption><a href="#table-14" class="selfRef">Table 14</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Requirement Area</th>
+                <th class="text-left" rowspan="1" colspan="1">FFIEC</th>
+                <th class="text-left" rowspan="1" colspan="1">BSI AI Finance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Explainability</td>
+                <td class="text-left" rowspan="1" colspan="1">"Lack of transparency or explainability" risk</td>
+                <td class="text-left" rowspan="1" colspan="1">Test criteria for explainability</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Dynamic updating</td>
+                <td class="text-left" rowspan="1" colspan="1">"Challenges to monitoring and independently reviewing AI"</td>
+                <td class="text-left" rowspan="1" colspan="1">Continuous validation</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">Audit trail</td>
+                <td class="text-left" rowspan="1" colspan="1">Log management (VI.B.7)</td>
+                <td class="text-left" rowspan="1" colspan="1">Complete audit trail</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+</section>
+</div>
+<div id="compliance-mapping-table">
+<section id="section-2.4">
+        <h3 id="name-compliance-mapping-table">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-compliance-mapping-table" class="section-name selfRef">Compliance Mapping Table</a>
+        </h3>
+<p id="section-2.4-1">The following table maps this specification's data elements to compliance requirements:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-15">
+          <caption><a href="#table-15" class="selfRef">Table 15</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Data Element</th>
+              <th class="text-left" rowspan="1" colspan="1">EU AI Act</th>
+              <th class="text-left" rowspan="1" colspan="1">ETSI 104223</th>
+              <th class="text-left" rowspan="1" colspan="1">SOC 2</th>
+              <th class="text-left" rowspan="1" colspan="1">FedRAMP</th>
+              <th class="text-left" rowspan="1" colspan="1">PCI DSS</th>
+              <th class="text-left" rowspan="1" colspan="1">ISO 42001</th>
+              <th class="text-left" rowspan="1" colspan="1">NIS2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>timestamp</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(2)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-8</td>
+              <td class="text-left" rowspan="1" colspan="1">10.6</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 23</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>session-id</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.4-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-3</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>entry.type</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(2)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-3</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>contributor</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(3)(d)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.1.4</td>
+              <td class="text-left" rowspan="1" colspan="1">CC6.1</td>
+              <td class="text-left" rowspan="1" colspan="1">AC-2</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>message-entry.content</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12(3)(c)</td>
+              <td class="text-left" rowspan="1" colspan="1">5.1.2-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">AI Guide</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>reasoning-entry</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">AI Guide</td>
+              <td class="text-left" rowspan="1" colspan="1">A.7.1</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>tool-call-entry</code> / <code>tool-result-entry</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 12</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-1</td>
+              <td class="text-left" rowspan="1" colspan="1">CC7.2</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-12</td>
+              <td class="text-left" rowspan="1" colspan="1">10.2</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>signed-agent-record</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">Art. 19</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.4-1.2</td>
+              <td class="text-left" rowspan="1" colspan="1">CC6.1</td>
+              <td class="text-left" rowspan="1" colspan="1">AU-9</td>
+              <td class="text-left" rowspan="1" colspan="1">10.5</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>vcs-context</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">5.2.1-2</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">CM-3</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">A.6.2.8</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>token-usage</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">5.4.2-4</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="security-considerations-for-compliance">
+<section id="section-2.5">
+        <h3 id="name-security-considerations-for">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-security-considerations-for" class="section-name selfRef">Security Considerations for Compliance</a>
+        </h3>
+<div id="log-integrity">
+<section id="section-2.5.1">
+          <h4 id="name-log-integrity">
+<a href="#section-2.5.1" class="section-number selfRef">2.5.1. </a><a href="#name-log-integrity" class="section-name selfRef">Log Integrity</a>
+          </h4>
+<p id="section-2.5.1-1">Per PCI DSS 4.0 Req 10.5 and FedRAMP AU-9, logs <span class="bcp14">MUST</span> be protected against modification.
+Implementations <span class="bcp14">SHOULD</span>:<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.1-2">
+<li id="section-2.5.1-2.1">
+              <p id="section-2.5.1-2.1.1">Use the <code>signed-agent-record</code> envelope for cryptographic integrity<a href="#section-2.5.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-2.2">
+              <p id="section-2.5.1-2.2.1">Store the <code>content-hash</code> for offline verification<a href="#section-2.5.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-2.3">
+              <p id="section-2.5.1-2.3.1">Implement write-once storage for log archives<a href="#section-2.5.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="access-control">
+<section id="section-2.5.2">
+          <h4 id="name-access-control">
+<a href="#section-2.5.2" class="section-number selfRef">2.5.2. </a><a href="#name-access-control" class="section-name selfRef">Access Control</a>
+          </h4>
+<p id="section-2.5.2-1">Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs <span class="bcp14">MUST</span> be controlled:<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.2-2">
+<li id="section-2.5.2-2.1">
+              <p id="section-2.5.2-2.1.1">Logs containing sensitive prompts or outputs require access control<a href="#section-2.5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.2-2.2">
+              <p id="section-2.5.2-2.2.1">Reasoning content may contain confidential information<a href="#section-2.5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.2-2.3">
+              <p id="section-2.5.2-2.3.1">Authority access (EU AI Act Art. 19) requires audit of log access itself<a href="#section-2.5.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+<div id="data-protection">
+<section id="section-2.5.3">
+          <h4 id="name-data-protection">
+<a href="#section-2.5.3" class="section-number selfRef">2.5.3. </a><a href="#name-data-protection" class="section-name selfRef">Data Protection</a>
+          </h4>
+<p id="section-2.5.3-1">Logs may contain personal data subject to GDPR/privacy regulations:<a href="#section-2.5.3-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.3-2">
+<li id="section-2.5.3-2.1">
+              <p id="section-2.5.3-2.1.1"><code>message-entry.content</code> may contain PII<a href="#section-2.5.3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.3-2.2">
+              <p id="section-2.5.3-2.2.1"><code>tool-result-entry.output</code> may contain query results with PII<a href="#section-2.5.3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.3-2.3">
+              <p id="section-2.5.3-2.3.1">Retention periods must balance compliance requirements with data minimization<a href="#section-2.5.3-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+</section>
+</div>
+</section>
+</div>
+<div id="normative-references-for-compliance-bucket-tbd">
+<section id="section-2.6">
+        <h3 id="name-normative-references-for-co">
+<a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-normative-references-for-co" class="section-name selfRef">Normative References for Compliance Bucket (TBD)</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-2.6-1.1">
+            <p id="section-2.6-1.1.1">EU AI Act: Regulation (EU) 2024/1689 (Artificial Intelligence Act)<a href="#section-2.6-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.2">
+            <p id="section-2.6-1.2.1">CRA: Regulation (EU) 2024/2847 (Cyber Resilience Act)<a href="#section-2.6-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.3">
+            <p id="section-2.6-1.3.1">NIS2: Directive (EU) 2022/2555<a href="#section-2.6-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.4">
+            <p id="section-2.6-1.4.1">ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)<a href="#section-2.6-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.5">
+            <p id="section-2.6-1.5.1">SOC 2: AICPA Trust Services Criteria (2017)<a href="#section-2.6-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.6">
+            <p id="section-2.6-1.6.1">FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31<a href="#section-2.6-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.7">
+            <p id="section-2.6-1.7.1">PCI DSS: PCI DSS v4.0.1 (March 2024)<a href="#section-2.6-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.8">
+            <p id="section-2.6-1.8.1">ISO 42001: ISO/IEC 42001:2023<a href="#section-2.6-1.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.9">
+            <p id="section-2.6-1.9.1">FFIEC: FFIEC IT Examination Handbook (2024)<a href="#section-2.6-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.10">
+            <p id="section-2.6-1.10.1">BSI: BSI AI Finance Test Criteria (2024)<a href="#section-2.6-1.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.6-1.11">
+            <p id="section-2.6-1.11.1">NIST AI: NIST AI 100-2 E2025<a href="#section-2.6-1.11.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="informative-references-bucket-tbd">
+<section id="section-2.7">
+        <h3 id="name-informative-references-buck">
+<a href="#section-2.7" class="section-number selfRef">2.7. </a><a href="#name-informative-references-buck" class="section-name selfRef">Informative References Bucket (TBD)</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-2.7-1.1">
+            <p id="section-2.7-1.1.1">Anthropic: "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs" (2025)<a href="#section-2.7-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.7-1.2">
+            <p id="section-2.7-1.2.1">ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)<a href="#section-2.7-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="cddl-definition-for-generic-agent-conversations">
+<section id="section-3">
+      <h2 id="name-cddl-definition-for-generic">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cddl-definition-for-generic" class="section-name selfRef">CDDL Definition for generic Agent Conversations</a>
+      </h2>
+<span id="name-cddl-definition-of-an-agent"></span><div id="fig-cddl-record">
+<figure id="figure-1">
+        <div class="alignLeft art-cddl art-text artwork" id="section-3-1.1">
+<pre>
+; =============================================================================
+; Verifiable Agent Conversations — CDDL Schema
+; =============================================================================
+;
+; draft-birkholz-verifiable-agent-conversations
+; Authors: Henk Birkholz, Tobias Heldt
+; Version: 3.0.0-draft
+; Date: 2026-02-18
+;
+; Detailed type descriptions: docs/type-descriptions.md
+
+; TODO: Consider whether signed-agent-record should be the sole start rule,
+; requiring all records to carry a COSE_Sign1 envelope. Currently both are
+; accepted to support unsigned development workflows.
+start = verifiable-agent-record / signed-agent-record
+
+; =============================================================================
+; SECTION 1: COMMON TYPES
+; =============================================================================
+
+; RFC 3339 string OR epoch milliseconds (for interop).
+abstract-timestamp = tstr .regexp date-time-regexp / number
+
+; Opaque string: UUID, SHA-256 hash, etc.
+session-id = tstr
+
+; Per-entry unique reference within a session.
+entry-id = tstr
+
+; RFC 3339 date-time pattern
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+; URI pattern (RFC 3986)
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+
+; =============================================================================
+; SECTION 2: ROOT TYPE
+; =============================================================================
+
+verifiable-agent-record = {
+    version: tstr                       ; Schema version (semver)
+    id: tstr                            ; Record identifier
+    session: session-trace              ; Conversation trace (required)
+    ? created: abstract-timestamp       ; Record creation time
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context                  ; Record-level VCS context
+    ? recording-agent: recording-agent  ; Tool that generated this record
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 3: SESSION TRACE
+; =============================================================================
+
+session-trace = {
+    ? format: tstr                      ; "interactive" / "autonomous" / vendor
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 4: AGENT METADATA
+; =============================================================================
+
+agent-meta = {
+    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+    model-provider: tstr                ; e.g., "anthropic", "google"
+    ? models: [* tstr]                  ; All models (multi-model sessions)
+    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+    ? cli-version: tstr
+    * tstr =&gt; any
+}
+
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 5: ENVIRONMENT
+; =============================================================================
+
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]               ; Sandbox mount paths
+    * tstr =&gt; any
+}
+
+vcs-context = {
+    type: tstr                          ; "git" / "jj" / "hg" / "svn"
+    ? revision: tstr                    ; Commit SHA or change ID
+    ? branch: tstr
+    ? repository: tstr                  ; Repository URL
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 6: ENTRY TYPES
+; =============================================================================
+
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+
+; --- Message Entry ---
+; Human input ("user") or agent response ("assistant").
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any                      ; Text string or structured content blocks
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr                    ; Model (assistant only)
+    ? parent-id: entry-id              ; Parent message reference
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Tool Call Entry ---
+; Tool invocation: which tool was called and with what arguments.
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+    input: any                          ; Tool arguments
+    ? call-id: tstr                     ; Links call ↔ result
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Tool Result Entry ---
+; Tool output: what the tool returned.
+tool-result-entry = {
+    type: "tool-result"
+    output: any                         ; Tool output
+    ? call-id: tstr                     ; Links call ↔ result
+    ? status: tstr                      ; "success" / "error" / "completed"
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Reasoning Entry ---
+; Chain-of-thought or thinking content.
+reasoning-entry = {
+    type: "reasoning"
+    content: any                        ; Plaintext reasoning or structured
+    ? encrypted: tstr                   ; Encrypted content (provider-protected)
+    ? subject: tstr                     ; Topic label
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; --- Event Entry ---
+; System lifecycle events (session-start, token-count, etc.).
+event-entry = {
+    type: "system-event"
+    event-type: tstr                    ; Event classifier
+    ? data: { * tstr =&gt; any }           ; Event-specific payload
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 7: TOKEN USAGE
+; =============================================================================
+
+token-usage = {
+    ? input: uint                       ; Input tokens
+    ? output: uint                      ; Output tokens
+    ? cached: uint                      ; Cached input tokens
+    ? reasoning: uint                   ; Reasoning/thinking tokens
+    ? total: uint                       ; Total tokens
+    ? cost: number                      ; Dollar cost
+    * tstr =&gt; any
+}
+
+; =============================================================================
+; SECTION 8: FILE ATTRIBUTION
+; =============================================================================
+; NOTE: Specified but not yet validated against real session data.
+; Derivability analysis (4/5 agents) in docs/reviews/2026-02-18/
+; file-attribution-investigation.md. Implementation pending.
+
+file-attribution-record = {
+    files: [* file]
+}
+
+file = {
+    path: tstr                          ; Relative path from repo root
+    conversations: [* conversation]
+}
+
+conversation = {
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor          ; Default contributor for ranges
+    ranges: [* range]
+    ? related: [* resource]
+}
+
+range = {
+    start-line: uint                    ; 1-indexed
+    end-line: uint                      ; 1-indexed, inclusive
+    ? content-hash: tstr
+    ? content-hash-alg: tstr            ; Default: "sha-256"
+    ? contributor: contributor          ; Override for this range
+}
+
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+
+; =============================================================================
+; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
+; =============================================================================
+
+; SCITT-interoperable COSE Envelope
+; including from draft-ietf-cose-merkle-tree-proofs and
+; draft-ietf-scitt-architecture for validation
+
+signed-agent-record = #6.18([           ; COSE_Sign1 tag
+    protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
+    unprotected: unprotected-header     ; Trace metadata
+    payload: bstr / null                ; Detached if null
+    signature: bstr
+])
+
+protected-header = {
+  &amp;(CWT_Claims: 15) =&gt; CWT_Claims
+  ? &amp;(alg: 1) =&gt; int
+  ? &amp;(content_type: 3) =&gt; tstr / uint
+  ? &amp;(kid: 4) =&gt; bstr
+  ? &amp;(x5t: 34) =&gt; COSE_CertHash
+  ? &amp;(x5chain: 33) =&gt; COSE_X509
+  * label =&gt; any
+}
+
+CWT_Claims = {
+  &amp;(iss: 1) =&gt; tstr
+  &amp;(sub: 2) =&gt; tstr
+  * label =&gt; any
+}
+
+unprotected-header = {
+  ? &amp;(trace-metadata-key: 100) =&gt; trace-metadata ; 100 is placeholder
+  ? &amp;(x5chain: 33) =&gt; COSE_X509
+  ? &amp;(receipts: 394)  =&gt; [ + Receipt ]
+  * label =&gt; any
+}
+
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr                ; SHA-256 hex digest of payload
+    ? content-hash-alg: tstr
+}
+
+; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+trace-format-id = tstr
+
+COSE_X509 = bstr / [ 2*certs: bstr ]
+COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
+label = int / tstr
+
+; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
+
+Receipt = #6.18(COSE_Sign1)
+
+cose-label = int / tstr
+cose-value = any
+
+Protected_Header = {
+  * cose-label =&gt; cose-value
+}
+
+Unprotected_Header = {
+  &amp;(receipts: 394)  =&gt; [+ bstr .cbor Receipt]
+  * cose-label =&gt; cose-value
+}
+
+COSE_Sign1 = [
+  protected   : bstr .cbor Protected_Header,
+  unprotected : Unprotected_Header,
+  payload     : bstr / nil,
+  signature   : bstr
+]
+
+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-cddl-definition-of-an-agent" class="selfRef">CDDL definition of an Agent Conversation</a>
+        </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-4">
+      <h2 id="name-references">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-4.1">
+        <h3 id="name-normative-references">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="BCP26">[BCP26]</dt>
+        <dd>
+<span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Leiba, B.</span>, and <span class="refAuthor">T. Narten</span>, <span class="refTitle">"Guidelines for Writing an IANA Considerations Section in RFCs"</span>, <span class="seriesInfo">BCP 26</span>, <span class="seriesInfo">RFC 8126</span>, <span class="seriesInfo">DOI 10.17487/RFC8126</span>, <time datetime="2017-06" class="refDate">June 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8126">https://www.rfc-editor.org/rfc/rfc8126</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.cwt">[IANA.cwt]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Web Token (CWT) Claims"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cwt">https://www.iana.org/assignments/cwt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.jwt">[IANA.jwt]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"JSON Web Token (JWT)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/jwt">https://www.iana.org/assignments/jwt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4648">[RFC4648]</dt>
+        <dd>
+<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5280">[RFC5280]</dt>
+        <dd>
+<span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7252">[RFC7252]</dt>
+        <dd>
+<span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7515">[RFC7515]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Signature (JWS)"</span>, <span class="seriesInfo">RFC 7515</span>, <span class="seriesInfo">DOI 10.17487/RFC7515</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7515">https://www.rfc-editor.org/rfc/rfc7515</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7519">[RFC7519]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Token (JWT)"</span>, <span class="seriesInfo">RFC 7519</span>, <span class="seriesInfo">DOI 10.17487/RFC7519</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8610">[RFC8610]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD90">[STD90]</dt>
+        <dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8259">https://www.rfc-editor.org/rfc/rfc8259</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD94">[STD94]</dt>
+      <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-4.2">
+        <h3 id="name-informative-references">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-scitt-architecture">[I-D.ietf-scitt-architecture]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, <span class="refAuthor">Fournet, C.</span>, <span class="refAuthor">Deshpande, Y.</span>, and <span class="refAuthor">S. Lasker</span>, <span class="refTitle">"An Architecture for Trustworthy and Transparent Digital Supply Chains"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-scitt-architecture-22</span>, <time datetime="2025-10-10" class="refDate">10 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22">https://datatracker.ietf.org/doc/html/draft-ietf-scitt-architecture-22</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9334">[RFC9334]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="seriesInfo">RFC 9334</span>, <span class="seriesInfo">DOI 10.17487/RFC9334</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9334">https://www.rfc-editor.org/rfc/rfc9334</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="STD96">[STD96]</dt>
+      <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-A">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Henk Birkholz</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:henk.birkholz@ietf.contact" class="email">henk.birkholz@ietf.contact</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Tobias Heldt</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:tobias@xor.tech" class="email">tobias@xor.tech</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Orie Steele</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:orie@or13.io" class="email">orie@or13.io</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>

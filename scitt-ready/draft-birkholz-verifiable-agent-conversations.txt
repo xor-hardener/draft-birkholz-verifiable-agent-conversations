@@ -1,0 +1,1189 @@
+
+
+
+
+Network Working Group                                        H. Birkholz
+Internet-Draft                                                          
+Intended status: Standards Track                                T. Heldt
+Expires: 24 August 2026                                                 
+                                                               O. Steele
+                                                        20 February 2026
+
+
+                     Verifiable Agent Conversations
+          draft-birkholz-verifiable-agent-conversations-latest
+
+Abstract
+
+   Abstract
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/xor-hardener/draft-birkholz-verifiable-agent-
+   conversations.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 24 August 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Conventions and Definitions
+   2.  Compliance Requirements for AI Agent Conversation Records
+     2.1.  Applicable Frameworks Analyzed
+     2.2.  Common Requirements Intersection
+       2.2.1.  REQ-1: Automatic Event Logging
+       2.2.2.  REQ-2: Timestamp Requirements
+       2.2.3.  REQ-3: Actor Identification
+       2.2.4.  REQ-4: Action/Event Type Recording
+       2.2.5.  REQ-5: Input/Output Recording (AI-Specific)
+       2.2.6.  REQ-6: Retention Period Requirements
+       2.2.7.  REQ-7: Tamper-Evidence and Integrity Protection
+       2.2.8.  REQ-8: Incident Response Support
+       2.2.9.  REQ-9: Anomaly and Risk Detection Support
+       2.2.10. REQ-10: Human Oversight Enablement
+       2.2.11. REQ-11: Traceability and Reproducibility
+     2.3.  Framework-Specific Requirements
+       2.3.1.  EU AI Act (High-Risk Systems)
+       2.3.2.  ETSI TS 104 223 Session Logging Requirements
+       2.3.3.  PCI DSS v4.0 AI-Specific Guidance
+       2.3.4.  Financial Sector Requirements (FFIEC, BSI)
+     2.4.  Compliance Mapping Table
+     2.5.  Security Considerations for Compliance
+       2.5.1.  Log Integrity
+       2.5.2.  Access Control
+       2.5.3.  Data Protection
+     2.6.  Normative References for Compliance Bucket (TBD)
+     2.7.  Informative References Bucket (TBD)
+   3.  CDDL Definition for generic Agent Conversations
+   4.  References
+     4.1.  Normative References
+     4.2.  Informative References
+   Authors' Addresses
+
+1.  Introduction
+
+   The question of whether the recorded output of an autonomous agent
+   faithfully represents an agent's actual behavior has found new
+   urgency as the number of consequential tasks that are delegated to
+   agent increases rapidly.  Autonomous Agents--typically workload
+   instances of agentic artificial intelligence (AI) based on large
+   language models (LLM)--interact with other actors by design.  This
+   creates an interconnected web of agent interactions and conversations
+   that is currently rarely supervised in a systemic manner.  In
+   essence, the two main types of actors interacting with autonomous
+   agents are humans and machines (e.g., other autonomous agents), or a
+   mix of them.  In agentic AI systems, machine actors interact with
+   other machine actors.  The number of interaction between machine
+   actors grows significantly more than the number of interactions
+   between human actors and machine actors.  While the responsible
+   parties for agent actions ultimately are humans--whether a natural
+   legal entity or an organization--agents act on behalf of humans and
+   on behalf of other agents.  To demonstrate due diligence, responsible
+   human parties require records of agent behavior to demonstrate policy
+   compliant behavior for agents acting under their authority.  These
+   increasingly complex interactions between multiple actors that can
+   also be triggered by machines (recursively) increase the need to
+   understand decision making and the chain of thoughts of autonomous
+   agents, retroactively (auditability after the fact).
+
+   The verifiable records of agent conversations that are specified in
+   this document provide an essential basis for operators to detect
+   divergences between intended and actual agent behavior after the
+   interaction has concluded.
+
+   For example:
+
+   *  An agent authorized to read files might invoke tools to modify
+      production systems or exfiltrate sensitive data beyond its
+      authorization scope.
+
+   *  An agent's visible chain-of-thought output might diverge from the
+      reasoning that actually produced its actions.
+
+   *  An agent might deliberately underperform during capability
+      evaluations while performing at full capacity during deployment.
+
+   This document defines conversation records representing activities of
+   autonomous agents such that long-term preservation of the evidentiary
+   value of these records across chains of custody is possible.  The
+   first goal is to assure that the recording of an agent conversation
+   (a distinct segment of the interaction with an autonomous agent)
+   being proffered is the same as the agent conversation that actually
+   occurred.  The second goal is to provide a general structure of agent
+   conversations that can represent most common types of agent
+   conversation frames, is extensible, and allows for future evolution
+   of agent conversation complexity and corresponding actor interaction.
+   The third goal is to use existing IETF building blocks to present
+   believable evidence about how an agent conversation is recorded
+   utilizing Evidence generation as laid out in the Remote ATtestation
+   ProcedureS architecture [RFC9334].  The fourth goal is to use
+   existing IETF building blocks to render conversation records
+   auditable after the fact and enable non-repudiation as laid out in
+   the Supply Chain Integrity, Transparency, and Trust architecture
+   [I-D.ietf-scitt-architecture].  The fifth goal is to enable detection
+   of behavioral anomalies in agent interactions, including unauthorized
+   tool invocations, inconsistencies between reasoning traces and
+   actions, and performance modulation across evaluation and deployment
+   contexts, through structured, comparable conversation records.  The
+   sixth goal is to enable cross-vendor interoperability by defining a
+   common representation for agent conversations that can be translated
+   from multiple existing agent implementations with distinct native
+   formats.  The seventh goal is to produce records suitable for
+   demonstrating compliance with emerging regulatory requirements for AI
+   system documentation, traceability, and human oversight.
+
+   Most agent conversations today are represented in "human-readable"
+   text formats.  For example, [STD90] is considered to be "human-
+   readable" as it can be presented to humans in human-computer-
+   interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
+   editors that allow such data to be consumed or modified by humans.
+   The Concise Binary Object Representation (CBOR [STD94]) is used as
+   the primary representation next to the established representation
+   that is JSON.
+
+1.1.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   In this document, CDDL [RFC8610] is used to describe the data
+   formats.
+
+   The reader is assumed to be familiar with the vocabulary and concepts
+   defined in [RFC9334] and [I-D.ietf-scitt-architecture].
+
+2.  Compliance Requirements for AI Agent Conversation Records
+
+   This section identifies the intersection of logging, traceability,
+   and record-keeping requirements across major compliance frameworks
+   applicable to AI systems.  The verifiable agent conversation format
+   defined in this document addresses these requirements by providing a
+   standardized, cryptographically verifiable record of AI agent
+   interactions.
+
+2.1.  Applicable Frameworks Analyzed
+
+   The following frameworks were analyzed for their requirements on AI
+   agent traceability and session logging:
+
+       +==============+===============+===============+============+
+       | Framework    | Jurisdiction  | Sector        | Status     |
+       +==============+===============+===============+============+
+       | EU AI Act    | EU            | Cross-sector  | In force   |
+       | (Regulation  |               |               | Aug 2024   |
+       | 2024/1689)   |               |               |            |
+       +--------------+---------------+---------------+------------+
+       | Cyber        | EU            | Products with | In force   |
+       | Resilience   |               | digital       | Dec 2024   |
+       | Act (CRA)    |               | elements      |            |
+       +--------------+---------------+---------------+------------+
+       | NIS2         | EU            | Essential/    | Transposed |
+       | Directive    |               | important     | Oct 2024   |
+       |              |               | entities      |            |
+       +--------------+---------------+---------------+------------+
+       | ETSI TS 104  | EU/           | AI systems    | Published  |
+       | 223          | International |               | Apr 2025   |
+       +--------------+---------------+---------------+------------+
+       | SOC 2 Trust  | US/           | Service       | Active     |
+       | Services     | International | organizations |            |
+       | Criteria     |               |               |            |
+       +--------------+---------------+---------------+------------+
+       | FedRAMP Rev. | US            | Federal cloud | Active     |
+       | 5            |               | services      |            |
+       +--------------+---------------+---------------+------------+
+       | PCI DSS v4.0 | International | Payment card  | Mandatory  |
+       |              |               | industry      | Mar 2025   |
+       +--------------+---------------+---------------+------------+
+       | ISO/IEC      | International | AI management | Published  |
+       | 42001:2023   |               | systems       | 2023       |
+       +--------------+---------------+---------------+------------+
+       | FFIEC IT     | US            | Financial     | Updated    |
+       | Handbook     |               | institutions  | 2024       |
+       +--------------+---------------+---------------+------------+
+       | BSI AI       | Germany       | Financial     | Published  |
+       | Finance Test |               | sector AI     | 2024       |
+       | Criteria     |               |               |            |
+       +--------------+---------------+---------------+------------+
+       | NIST AI      | US            | Cross-sector  | Published  |
+       | 100-2        |               |               | 2025       |
+       +--------------+---------------+---------------+------------+
+
+                                  Table 1
+
+2.2.  Common Requirements Intersection
+
+   Analysis of the above frameworks reveals eleven (11) categories of
+   requirements that appear across ALL or MOST frameworks.  These
+   represent the minimum baseline that verifiable agent conversation
+   records MUST support.
+
+2.2.1.  REQ-1: Automatic Event Logging
+
+   All frameworks require automatic, system-generated logging of events
+   without reliance on manual recording.
+
+   +===================+===============================================+
+   | Framework         | Requirement                                   |
+   +===================+===============================================+
+   | EU AI Act Art.    | "High-risk AI systems shall technically allow |
+   | 12                | for the automatic recording of events (logs)" |
+   +-------------------+-----------------------------------------------+
+   | ETSI TS 104223    | "System Operators shall log system and user   |
+   | 5.4.2-1           | actions"                                      |
+   +-------------------+-----------------------------------------------+
+   | SOC 2 CC7.2       | "Complete and chronological record of all     |
+   |                   | user actions and system responses"            |
+   +-------------------+-----------------------------------------------+
+   | FedRAMP AU-12     | "Audit Record Generation" control requirement |
+   +-------------------+-----------------------------------------------+
+   | PCI DSS 4.0       | "Audit logs implemented to support detection  |
+   | Req 10            | of anomalies"                                 |
+   +-------------------+-----------------------------------------------+
+   | ISO 42001         | "AI system recording of event logs"           |
+   | A.6.2.8           |                                               |
+   +-------------------+-----------------------------------------------+
+
+                                  Table 2
+
+   Mapping to this specification: The entries array in session-trace
+   captures all events automatically.  Each entry represents a discrete,
+   system-recorded event with structured metadata.
+
+2.2.2.  REQ-2: Timestamp Requirements
+
+   All frameworks require precise temporal information for each logged
+   event.
+
+       +======================+====================================+
+       | Framework            | Requirement                        |
+       +======================+====================================+
+       | EU AI Act Art. 12(2) | "Precise timestamps for each usage |
+       |                      | session" (biometric systems)       |
+       +----------------------+------------------------------------+
+       | PCI DSS 4.0 Req 10.6 | "Time-synchronization mechanisms   |
+       |                      | support consistent time settings"  |
+       +----------------------+------------------------------------+
+       | SOC 2                | "When the activity was performed   |
+       |                      | via timestamp"                     |
+       +----------------------+------------------------------------+
+       | NIS2                 | "Precise logging of when an        |
+       |                      | incident was first detected"       |
+       +----------------------+------------------------------------+
+
+                                  Table 3
+
+   Mapping to this specification: The timestamp field in each entry uses
+   abstract-timestamp which accepts both RFC 3339 strings and epoch
+   milliseconds, ensuring interoperability across implementations.
+
+2.2.3.  REQ-3: Actor Identification
+
+   All frameworks require attribution of actions to identifiable actors
+   (human or system).
+
+       +===============+==========================================+
+       | Framework     | Requirement                              |
+       +===============+==========================================+
+       | EU AI Act     | "Identification of the natural persons   |
+       | Art. 12(3)(d) | involved in the verification of results" |
+       +---------------+------------------------------------------+
+       | SOC 2         | "The process or user who initiated the   |
+       |               | activity (Who)"                          |
+       +---------------+------------------------------------------+
+       | PCI DSS 4.0   | Attribution to "Who" performed each      |
+       |               | action                                   |
+       +---------------+------------------------------------------+
+       | FedRAMP AC-2  | Account management and identification    |
+       +---------------+------------------------------------------+
+
+                                 Table 4
+
+   Mapping to this specification: The contributor type captures actor
+   attribution with type (human/ai/mixed/unknown) and optional model-id.
+   Session-level agent-meta identifies the AI system.
+
+2.2.4.  REQ-4: Action/Event Type Recording
+
+   All frameworks require recording of what action or event occurred.
+
+     +===================+==========================================+
+     | Framework         | Requirement                              |
+     +===================+==========================================+
+     | EU AI Act Art. 12 | "Events relevant for identifying         |
+     |                   | situations that may result in...risk"    |
+     +-------------------+------------------------------------------+
+     | ETSI TS 104223    | "Audit log of changes to system prompts  |
+     | 5.2.4-3           | or other model configuration"            |
+     +-------------------+------------------------------------------+
+     | SOC 2             | "The action they performed such as file  |
+     |                   | transferred, created, or deleted (What)" |
+     +-------------------+------------------------------------------+
+     | PCI DSS 4.0       | "What" component of audit trail          |
+     +-------------------+------------------------------------------+
+
+                                 Table 5
+
+   Mapping to this specification: The type field in each entry
+   discriminates event types: user, assistant, tool-call, tool-result,
+   reasoning, system-event.
+
+2.2.5.  REQ-5: Input/Output Recording (AI-Specific)
+
+   AI-specific frameworks require recording of inputs (prompts) and
+   outputs (responses).
+
+       +================+==========================================+
+       | Framework      | Requirement                              |
+       +================+==========================================+
+       | EU AI Act Art. | "The input data for which the search has |
+       | 12(3)(c)       | led to a match"                          |
+       +----------------+------------------------------------------+
+       | PCI DSS AI     | "Logging should be sufficient to audit   |
+       | Guidance       | the prompt inputs and reasoning process" |
+       +----------------+------------------------------------------+
+       | ETSI TS 104223 | "Operation, and lifecycle management of  |
+       | 5.1.2-3        | models, datasets and prompts"            |
+       +----------------+------------------------------------------+
+       | FFIEC VII.D    | "Lack of explainability...unclear how    |
+       |                | inputs are translated into outputs"      |
+       +----------------+------------------------------------------+
+
+                                  Table 6
+
+   Mapping to this specification:
+
+   *  message-entry (type: "user"): User/system input (prompt)
+
+   *  message-entry (type: "assistant"): Model response
+
+   *  tool-call-entry.input: Tool invocation parameters
+
+   *  tool-result-entry.output: Tool execution results
+
+   *  reasoning-entry.content: Chain-of-thought (where available)
+
+2.2.6.  REQ-6: Retention Period Requirements
+
+   Most frameworks specify minimum retention periods for audit logs.
+
+    +===================+============================================+
+    | Framework         | Minimum Retention                          |
+    +===================+============================================+
+    | EU AI Act Art. 19 | 6 months (longer for financial services)   |
+    +-------------------+--------------------------------------------+
+    | FedRAMP (M-21-31) | 12 months active + 18 months cold storage  |
+    +-------------------+--------------------------------------------+
+    | PCI DSS 4.0       | 12 months total, 3 months immediate access |
+    +-------------------+--------------------------------------------+
+    | NIS2              | Per member state law                       |
+    +-------------------+--------------------------------------------+
+
+                                 Table 7
+
+   Recommendation: Implementations SHOULD retain verifiable agent
+   conversation records for at least 12 months to satisfy the most
+   common requirement threshold.
+
+2.2.7.  REQ-7: Tamper-Evidence and Integrity Protection
+
+   All frameworks require protection against unauthorized modification
+   of logs.
+
+       +======================+===================================+
+       | Framework            | Requirement                       |
+       +======================+===================================+
+       | PCI DSS 4.0 Req 10.5 | "Tamper-proof audit trails...logs |
+       |                      | cannot be altered retroactively"  |
+       +----------------------+-----------------------------------+
+       | FedRAMP              | "Effective chain of evidence to   |
+       |                      | ensure integrity"                 |
+       +----------------------+-----------------------------------+
+       | SOC 2                | Log integrity as security control |
+       +----------------------+-----------------------------------+
+       | CRA                  | "Tamper-proof SBOMs and           |
+       |                      | vulnerability disclosures"        |
+       +----------------------+-----------------------------------+
+
+                                 Table 8
+
+   Mapping to this specification: The signed-agent-record type
+   (COSE_Sign1 envelope) provides cryptographic integrity protection.
+   The content-hash field in trace-metadata enables verification of
+   payload integrity.
+
+2.2.8.  REQ-8: Incident Response Support
+
+   All frameworks require logs to support incident investigation and
+   response.
+
+   +================+==================================================+
+   | Framework      | Requirement                                      |
+   +================+==================================================+
+   | NIS2 Art. 23   | 24-hour initial notification,                    |
+   |                | 72-hour assessment                               |
+   +----------------+--------------------------------------------------+
+   | CRA            | 24-hour vulnerability notification               |
+   |                | to ENISA                                         |
+   +----------------+--------------------------------------------------+
+   | ETSI TS 104223 | Logs for "incident investigations,               |
+   | 5.4.2-1        | and vulnerability remediation"                   |
+   +----------------+--------------------------------------------------+
+   | FedRAMP        | Incident reporting and continuous                |
+   |                | monitoring                                       |
+   +----------------+--------------------------------------------------+
+
+                                  Table 9
+
+   Mapping to this specification: The structured format enables rapid
+   extraction of relevant entries by timestamp range, event type, or
+   tool invocation for incident reconstruction.
+
+2.2.9.  REQ-9: Anomaly and Risk Detection Support
+
+   Frameworks require logs to enable detection of anomalous or risky
+   behavior.
+
+     +=========================+====================================+
+     | Framework               | Requirement                        |
+     +=========================+====================================+
+     | EU AI Act Art. 12(2)(a) | "Identifying situations that may   |
+     |                         | result in...risk"                  |
+     +-------------------------+------------------------------------+
+     | ETSI TS 104223 5.4.2-2  | "Detect anomalies, security        |
+     |                         | breaches, or unexpected behaviour" |
+     +-------------------------+------------------------------------+
+     | FedRAMP SI-4            | "Anomaly detection"                |
+     +-------------------------+------------------------------------+
+     | SOC 2                   | "Anomaly detection" for security   |
+     |                         | monitoring                         |
+     +-------------------------+------------------------------------+
+
+                                 Table 10
+
+   Mapping to this specification: The standardized entry types and
+   structured tool-call/tool-result pairs enable automated analysis for
+   detecting:
+
+   *  Unusual tool invocation patterns
+
+   *  Failed operations (via status and is-error fields)
+
+   *  Unexpected reasoning patterns
+
+   *  Token usage anomalies
+
+2.2.10.  REQ-10: Human Oversight Enablement
+
+   AI-specific frameworks require logs to support human review and
+   oversight.
+
+   +======================+============================================+
+   | Framework            | Requirement                                |
+   +======================+============================================+
+   | EU AI Act Art.       | "Monitoring the operation of high-risk AI  |
+   | 26(5)                | systems"                                   |
+   +----------------------+--------------------------------------------+
+   | ETSI TS 104223       | "Capabilities to enable human oversight"   |
+   | 5.1.4-1              |                                            |
+   +----------------------+--------------------------------------------+
+   | ISO 42001            | Human responsibility and accountability    |
+   +----------------------+--------------------------------------------+
+   | FFIEC VII.D          | "Dynamic updating...challenges to          |
+   |                      | monitoring and independently reviewing AI" |
+   +----------------------+--------------------------------------------+
+
+                                  Table 11
+
+   Mapping to this specification: The reasoning-entry type captures
+   chain-of-thought content (where available), enabling human reviewers
+   to understand AI decision-making processes.  The hierarchical
+   children field preserves conversation structure.
+
+2.2.11.  REQ-11: Traceability and Reproducibility
+
+   All frameworks require the ability to trace system behavior and
+   reconstruct events.
+
+    +===========+====================================================+
+    | Framework | Requirement                                        |
+    +===========+====================================================+
+    | EU AI Act | "Level of traceability of the                      |
+    | Art. 12   | functioning...appropriate to the intended purpose" |
+    +-----------+----------------------------------------------------+
+    | ISO 42001 | "Traceability" as key factor including "data       |
+    |           | provenance, model traceability"                    |
+    +-----------+----------------------------------------------------+
+    | CRA       | "Traceability in the software supply chain"        |
+    +-----------+----------------------------------------------------+
+    | ETSI TS   | "Track, authenticate, manage version control"      |
+    | 104223    |                                                    |
+    | 5.2.1-2   |                                                    |
+    +-----------+----------------------------------------------------+
+
+                                 Table 12
+
+   Mapping to this specification:
+
+   *  session-id: Links entries to sessions
+
+   *  entry-id and parent-id: Enables conversation tree reconstruction
+
+   *  vcs-context: Git commit/branch for code state
+
+   *  agent-meta: Model version and CLI version
+
+   *  file-attribution: Code provenance tracking
+
+2.3.  Framework-Specific Requirements
+
+2.3.1.  EU AI Act (High-Risk Systems)
+
+   For AI systems classified as high-risk under Annex III, additional
+   requirements apply:
+
+   1.  *Biometric identification systems* (Annex III, 1(a)) require
+       logging of:
+
+       *  Precise timestamps for start/end of each usage session
+
+       *  Reference database used during input data validation
+
+       *  Input data leading to matches
+
+       *  Natural persons involved in result verification
+
+   2.  *Log retention*: Minimum 6 months; financial services may require
+       longer per sector-specific regulation.
+
+   3.  *Authority access*: Art. 19 requires provision of logs to
+       competent authorities upon reasoned request.
+
+2.3.2.  ETSI TS 104 223 Session Logging Requirements
+
+   ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-
+   specific logging requirements:
+
+    +===========+=================================+==================+
+    | Provision | Requirement                     | This Spec        |
+    |           |                                 | Mapping          |
+    +===========+=================================+==================+
+    | 5.1.2-3   | Audit trail for "operation, and | session-trace,   |
+    |           | lifecycle management of models, | agent-meta       |
+    |           | datasets and prompts"           |                  |
+    +-----------+---------------------------------+------------------+
+    | 5.2.4-1   | "Document and maintain a clear  | recording-agent, |
+    |           | audit trail of their system     | open maps        |
+    |           | design"                         |                  |
+    +-----------+---------------------------------+------------------+
+    | 5.2.4-3   | "Audit log of changes to system | event-entry with |
+    |           | prompts or other model          | prompt changes   |
+    |           | configuration"                  |                  |
+    +-----------+---------------------------------+------------------+
+    | 5.4.2-1   | "Log system and user actions to | entries array    |
+    |           | support security compliance,    |                  |
+    |           | incident investigations"        |                  |
+    +-----------+---------------------------------+------------------+
+    | 5.4.2-2   | "Analyse their logs to          | Structured       |
+    |           | ensure...desired outputs and to | format enables   |
+    |           | detect anomalies"               | analysis         |
+    +-----------+---------------------------------+------------------+
+    | 5.4.2-3   | "Monitor internal states of     | reasoning-entry, |
+    |           | their AI systems"               | token-usage      |
+    +-----------+---------------------------------+------------------+
+
+                                 Table 13
+
+2.3.3.  PCI DSS v4.0 AI-Specific Guidance
+
+   The PCI Security Standards Council has published guidance on AI in
+   payment environments:
+
+      "Where possible, logging should be sufficient to audit the prompt
+      inputs and reasoning process used by the AI system that led to the
+      output provided."
+
+   This specification directly addresses this requirement through:
+
+   *  message-entry (type: "user"): Captures prompt inputs
+
+   *  reasoning-entry: Captures chain-of-thought (where available)
+
+   *  message-entry (type: "assistant"): Captures model outputs
+
+   *  tool-call-entry / tool-result-entry: Captures agentic actions
+
+2.3.4.  Financial Sector Requirements (FFIEC, BSI)
+
+   Financial institutions face additional scrutiny for AI systems:
+
+    +================+===========================+===================+
+    | Requirement    | FFIEC                     | BSI AI Finance    |
+    | Area           |                           |                   |
+    +================+===========================+===================+
+    | Explainability | "Lack of transparency or  | Test criteria for |
+    |                | explainability" risk      | explainability    |
+    +----------------+---------------------------+-------------------+
+    | Dynamic        | "Challenges to monitoring | Continuous        |
+    | updating       | and independently         | validation        |
+    |                | reviewing AI"             |                   |
+    +----------------+---------------------------+-------------------+
+    | Audit trail    | Log management (VI.B.7)   | Complete audit    |
+    |                |                           | trail             |
+    +----------------+---------------------------+-------------------+
+
+                                 Table 14
+
+2.4.  Compliance Mapping Table
+
+   The following table maps this specification's data elements to
+   compliance requirements:
+
+    +=============+========+=========+=====+=======+=====+=======+====+
+    |Data Element |EU AI   |ETSI     |SOC 2|FedRAMP|PCI  |ISO    |NIS2|
+    |             |Act     |104223   |     |       |DSS  |42001  |    |
+    +=============+========+=========+=====+=======+=====+=======+====+
+    |timestamp    |Art.    |5.4.2-1  |CC7.2|AU-8   |10.6 |A.6.2.8|Art.|
+    |             |12(2)   |         |     |       |     |       |23  |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |session-id   |Art. 12 |5.2.4-1  |CC7.2|AU-3   |10.2 |A.6.2.8|-   |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |entry.type   |Art.    |5.4.2-1  |CC7.2|AU-3   |10.2 |A.6.2.8|-   |
+    |             |12(2)   |         |     |       |     |       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |contributor  |Art.    |5.1.4    |CC6.1|AC-2   |10.2 |A.6.2.8|-   |
+    |             |12(3)(d)|         |     |       |     |       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |message-     |Art.    |5.1.2-3  |-    |-      |AI   |-      |-   |
+    |entry.content|12(3)(c)|         |     |       |Guide|       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |reasoning-   |Art. 12 |5.4.2-3  |-    |-      |AI   |A.7.1  |-   |
+    |entry        |        |         |     |       |Guide|       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |tool-call-   |Art. 12 |5.4.2-1  |CC7.2|AU-12  |10.2 |A.6.2.8|-   |
+    |entry / tool-|        |         |     |       |     |       |    |
+    |result-entry |        |         |     |       |     |       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |signed-agent-|Art. 19 |5.2.4-1.2|CC6.1|AU-9   |10.5 |-      |-   |
+    |record       |        |         |     |       |     |       |    |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |vcs-context  |-       |5.2.1-2  |-    |CM-3   |-    |A.6.2.8|-   |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+    |token-usage  |-       |5.4.2-4  |-    |-      |-    |-      |-   |
+    +-------------+--------+---------+-----+-------+-----+-------+----+
+
+                                  Table 15
+
+2.5.  Security Considerations for Compliance
+
+2.5.1.  Log Integrity
+
+   Per PCI DSS 4.0 Req 10.5 and FedRAMP AU-9, logs MUST be protected
+   against modification.  Implementations SHOULD:
+
+   1.  Use the signed-agent-record envelope for cryptographic integrity
+
+   2.  Store the content-hash for offline verification
+
+   3.  Implement write-once storage for log archives
+
+2.5.2.  Access Control
+
+   Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs MUST be controlled:
+
+   1.  Logs containing sensitive prompts or outputs require access
+       control
+
+   2.  Reasoning content may contain confidential information
+
+   3.  Authority access (EU AI Act Art. 19) requires audit of log access
+       itself
+
+2.5.3.  Data Protection
+
+   Logs may contain personal data subject to GDPR/privacy regulations:
+
+   1.  message-entry.content may contain PII
+
+   2.  tool-result-entry.output may contain query results with PII
+
+   3.  Retention periods must balance compliance requirements with data
+       minimization
+
+2.6.  Normative References for Compliance Bucket (TBD)
+
+   *  EU AI Act: Regulation (EU) 2024/1689 (Artificial Intelligence Act)
+
+   *  CRA: Regulation (EU) 2024/2847 (Cyber Resilience Act)
+
+   *  NIS2: Directive (EU) 2022/2555
+
+   *  ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)
+
+   *  SOC 2: AICPA Trust Services Criteria (2017)
+
+   *  FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31
+
+   *  PCI DSS: PCI DSS v4.0.1 (March 2024)
+
+   *  ISO 42001: ISO/IEC 42001:2023
+
+   *  FFIEC: FFIEC IT Examination Handbook (2024)
+
+   *  BSI: BSI AI Finance Test Criteria (2024)
+
+   *  NIST AI: NIST AI 100-2 E2025
+
+2.7.  Informative References Bucket (TBD)
+
+   *  Anthropic: "Emergent Misalignment: Narrow finetuning can produce
+      broadly misaligned LLMs" (2025)
+
+   *  ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)
+
+3.  CDDL Definition for generic Agent Conversations
+
+; =============================================================================
+; Verifiable Agent Conversations — CDDL Schema
+; =============================================================================
+;
+; draft-birkholz-verifiable-agent-conversations
+; Authors: Henk Birkholz, Tobias Heldt
+; Version: 3.0.0-draft
+; Date: 2026-02-18
+;
+; Detailed type descriptions: docs/type-descriptions.md
+
+; TODO: Consider whether signed-agent-record should be the sole start rule,
+; requiring all records to carry a COSE_Sign1 envelope. Currently both are
+; accepted to support unsigned development workflows.
+start = verifiable-agent-record / signed-agent-record
+
+; =============================================================================
+; SECTION 1: COMMON TYPES
+; =============================================================================
+
+; RFC 3339 string OR epoch milliseconds (for interop).
+abstract-timestamp = tstr .regexp date-time-regexp / number
+
+; Opaque string: UUID, SHA-256 hash, etc.
+session-id = tstr
+
+; Per-entry unique reference within a session.
+entry-id = tstr
+
+; RFC 3339 date-time pattern
+date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+
+; URI pattern (RFC 3986)
+uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+
+; =============================================================================
+; SECTION 2: ROOT TYPE
+; =============================================================================
+
+verifiable-agent-record = {
+    version: tstr                       ; Schema version (semver)
+    id: tstr                            ; Record identifier
+    session: session-trace              ; Conversation trace (required)
+    ? created: abstract-timestamp       ; Record creation time
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context                  ; Record-level VCS context
+    ? recording-agent: recording-agent  ; Tool that generated this record
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 3: SESSION TRACE
+; =============================================================================
+
+session-trace = {
+    ? format: tstr                      ; "interactive" / "autonomous" / vendor
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 4: AGENT METADATA
+; =============================================================================
+
+agent-meta = {
+    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+    model-provider: tstr                ; e.g., "anthropic", "google"
+    ? models: [* tstr]                  ; All models (multi-model sessions)
+    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+    ? cli-version: tstr
+    * tstr => any
+}
+
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 5: ENVIRONMENT
+; =============================================================================
+
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]               ; Sandbox mount paths
+    * tstr => any
+}
+
+vcs-context = {
+    type: tstr                          ; "git" / "jj" / "hg" / "svn"
+    ? revision: tstr                    ; Commit SHA or change ID
+    ? branch: tstr
+    ? repository: tstr                  ; Repository URL
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 6: ENTRY TYPES
+; =============================================================================
+
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+
+; --- Message Entry ---
+; Human input ("user") or agent response ("assistant").
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any                      ; Text string or structured content blocks
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr                    ; Model (assistant only)
+    ? parent-id: entry-id              ; Parent message reference
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Tool Call Entry ---
+; Tool invocation: which tool was called and with what arguments.
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+    input: any                          ; Tool arguments
+    ? call-id: tstr                     ; Links call ↔ result
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Tool Result Entry ---
+; Tool output: what the tool returned.
+tool-result-entry = {
+    type: "tool-result"
+    output: any                         ; Tool output
+    ? call-id: tstr                     ; Links call ↔ result
+    ? status: tstr                      ; "success" / "error" / "completed"
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Reasoning Entry ---
+; Chain-of-thought or thinking content.
+reasoning-entry = {
+    type: "reasoning"
+    content: any                        ; Plaintext reasoning or structured
+    ? encrypted: tstr                   ; Encrypted content (provider-protected)
+    ? subject: tstr                     ; Topic label
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; --- Event Entry ---
+; System lifecycle events (session-start, token-count, etc.).
+event-entry = {
+    type: "system-event"
+    event-type: tstr                    ; Event classifier
+    ? data: { * tstr => any }           ; Event-specific payload
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 7: TOKEN USAGE
+; =============================================================================
+
+token-usage = {
+    ? input: uint                       ; Input tokens
+    ? output: uint                      ; Output tokens
+    ? cached: uint                      ; Cached input tokens
+    ? reasoning: uint                   ; Reasoning/thinking tokens
+    ? total: uint                       ; Total tokens
+    ? cost: number                      ; Dollar cost
+    * tstr => any
+}
+
+; =============================================================================
+; SECTION 8: FILE ATTRIBUTION
+; =============================================================================
+; NOTE: Specified but not yet validated against real session data.
+; Derivability analysis (4/5 agents) in docs/reviews/2026-02-18/
+; file-attribution-investigation.md. Implementation pending.
+
+file-attribution-record = {
+    files: [* file]
+}
+
+file = {
+    path: tstr                          ; Relative path from repo root
+    conversations: [* conversation]
+}
+
+conversation = {
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor          ; Default contributor for ranges
+    ranges: [* range]
+    ? related: [* resource]
+}
+
+range = {
+    start-line: uint                    ; 1-indexed
+    end-line: uint                      ; 1-indexed, inclusive
+    ? content-hash: tstr
+    ? content-hash-alg: tstr            ; Default: "sha-256"
+    ? contributor: contributor          ; Override for this range
+}
+
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+
+; =============================================================================
+; SECTION 9: SIGNING ENVELOPE (COSE_Sign1)
+; =============================================================================
+
+; SCITT-interoperable COSE Envelope
+; including from draft-ietf-cose-merkle-tree-proofs and
+; draft-ietf-scitt-architecture for validation
+
+signed-agent-record = #6.18([           ; COSE_Sign1 tag
+    protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
+    unprotected: unprotected-header     ; Trace metadata
+    payload: bstr / null                ; Detached if null
+    signature: bstr
+])
+
+protected-header = {
+  &(CWT_Claims: 15) => CWT_Claims
+  ? &(alg: 1) => int
+  ? &(content_type: 3) => tstr / uint
+  ? &(kid: 4) => bstr
+  ? &(x5t: 34) => COSE_CertHash
+  ? &(x5chain: 33) => COSE_X509
+  * label => any
+}
+
+CWT_Claims = {
+  &(iss: 1) => tstr
+  &(sub: 2) => tstr
+  * label => any
+}
+
+unprotected-header = {
+  ? &(trace-metadata-key: 100) => trace-metadata ; 100 is placeholder
+  ? &(x5chain: 33) => COSE_X509
+  ? &(receipts: 394)  => [ + Receipt ]
+  * label => any
+}
+
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr                ; SHA-256 hex digest of payload
+    ? content-hash-alg: tstr
+}
+
+; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+trace-format-id = tstr
+
+COSE_X509 = bstr / [ 2*certs: bstr ]
+COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
+label = int / tstr
+
+; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
+
+Receipt = #6.18(COSE_Sign1)
+
+cose-label = int / tstr
+cose-value = any
+
+Protected_Header = {
+  * cose-label => cose-value
+}
+
+Unprotected_Header = {
+  &(receipts: 394)  => [+ bstr .cbor Receipt]
+  * cose-label => cose-value
+}
+
+COSE_Sign1 = [
+  protected   : bstr .cbor Protected_Header,
+  unprotected : Unprotected_Header,
+  payload     : bstr / nil,
+  signature   : bstr
+]
+
+          Figure 1: CDDL definition of an Agent Conversation
+
+4.  References
+
+4.1.  Normative References
+
+   [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
+              <https://www.iana.org/assignments/cwt>.
+
+   [IANA.jwt] IANA, "JSON Web Token (JWT)",
+              <https://www.iana.org/assignments/jwt>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
+
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7519>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [STD90]    Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/rfc/rfc8259>.
+
+   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+4.2.  Informative References
+
+   [I-D.ietf-scitt-architecture]
+              Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
+              Y., and S. Lasker, "An Architecture for Trustworthy and
+              Transparent Digital Supply Chains", Work in Progress,
+              Internet-Draft, draft-ietf-scitt-architecture-22, 10
+              October 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-scitt-architecture-22>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+   [STD96]    Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Authors' Addresses
+
+   Henk Birkholz
+   Email: henk.birkholz@ietf.contact
+
+
+   Tobias Heldt
+   Email: tobias@xor.tech
+
+
+   Orie Steele
+   Email: orie@or13.io
