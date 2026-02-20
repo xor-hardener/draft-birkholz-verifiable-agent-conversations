@@ -389,9 +389,9 @@ Table of Contents
 
    *  message-entry (type: "assistant"): Model response
 
-   *  tool-entry.input: Tool invocation parameters
+   *  tool-call-entry.input: Tool invocation parameters
 
-   *  tool-entry.output: Tool execution results
+   *  tool-result-entry.output: Tool execution results
 
    *  reasoning-entry.content: Chain-of-thought (where available)
 
