@@ -251,7 +251,7 @@ Table of Contents
 2.2.  Common Requirements Intersection
 
    Analysis of the above frameworks reveals eleven (11) categories of
-   requirements that appear across ALL or MOST frameworks.  These
+   requirements that appear across all or most frameworks.  These
    represent the minimum baseline that verifiable agent conversation
    records MUST support.
 
