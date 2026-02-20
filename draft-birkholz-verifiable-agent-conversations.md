@@ -74,8 +74,7 @@ For example:
 *  An agent authorized to read files might invoke tools to modify production
    systems or exfiltrate sensitive data beyond its authorization scope.
 
-*  An agent's visible chain-of-thought output might diverge from the reasoning
-   that actually produced its actions.
+*  An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.
 
 *  An agent might deliberately underperform during capability evaluations while
    performing at full capacity during deployment.
