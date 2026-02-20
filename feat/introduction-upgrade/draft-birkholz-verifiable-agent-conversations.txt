@@ -118,10 +118,10 @@ Table of Contents
    auditable after the fact and enable non-repudiation as laid out in
    the Supply Chain Integrity, Transparency, and Trust architecture
    [I-D.ietf-scitt-architecture].  The fifth goal is to enable detection
-   of behavioral anomalies in agent interactions--including unauthorized
+   of behavioral anomalies in agent interactions, including unauthorized
    tool invocations, inconsistencies between reasoning traces and
    actions, and performance modulation across evaluation and deployment
-   contexts--through structured, comparable conversation records.  The
+   contexts, through structured, comparable conversation records.  The
    sixth goal is to enable cross-vendor interoperability by defining a
    common representation for agent conversations that can be translated
    from multiple existing agent implementations with distinct native
