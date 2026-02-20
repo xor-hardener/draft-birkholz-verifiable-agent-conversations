@@ -5,7 +5,9 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 24 August 2026                                 20 February 2026
+Expires: 24 August 2026                                                 
+                                                               O. Steele
+                                                        20 February 2026
 
 
                      Verifiable Agent Conversations
@@ -521,3 +523,7 @@ Authors' Addresses
 
    Tobias Heldt
    Email: tobias@xor.tech
+
+
+   Orie Steele
+   Email: orie@or13.io
