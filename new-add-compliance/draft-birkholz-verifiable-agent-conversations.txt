@@ -754,7 +754,7 @@ Table of Contents
 
    *  FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31
 
-   *  PCI DSS] PCI DSS v4.0.1 (March 2024)
+   *  PCI DSS: PCI DSS v4.0.1 (March 2024)
 
    *  ISO 42001: ISO/IEC 42001:2023
 
