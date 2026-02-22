@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-19T00:37:08.458322+00:00",
+  "timestamp": "2026-02-22T00:36:09.059840+00:00",
   "repo": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
   "labels": [
     {
@@ -47,6 +47,11 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "needs-refactoring",
+      "description": "",
+      "color": "F0872F"
     }
   ],
   "issues": [
@@ -65,6 +70,38 @@
       "updatedAt": "2026-02-02T14:44:02Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDORG4n7s7sbEEb",
+      "title": "Relation to vCon",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/issues/9",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://datatracker.ietf.org/group/vcon/about/\n\nJSON vs CBOR... Mapping from or to vCon.\n\n",
+      "createdAt": "2026-02-20T04:33:36Z",
+      "updatedAt": "2026-02-20T04:33:36Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDORG4n7s7sbFml",
+      "title": "Human & Machine Identity",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/issues/10",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Relation to WIMSE / OAuth... MCP Auth / DCR... Any of this relevant?",
+      "createdAt": "2026-02-20T04:35:41Z",
+      "updatedAt": "2026-02-20T04:35:41Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -73,24 +110,26 @@
       "id": "PR_kwDORG4n7s7Cd8M6",
       "title": "feat(cddl): Update agent-conversation schema with empirical abstractions",
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "0xAverageUser",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "## Summary\n\nUpdates the CDDL schema (`agent-conversation.cddl`) with empirically-derived abstractions from analyzing 221 CVE-fixing session traces across 4 different implementations.\n\n<!-- See: PR #4 for dataset manifest, trace samples, and reasoning artifacts -->\n<!-- See: PR #3 for complete I-D specification referencing this schema -->\n\n## Key Changes\n\n### Abstract Entry Types\n- Unified message types across Claude Code, Gemini CLI, Codex CLI, and OpenCode\n- Entry types: `user-entry`, `assistant-entry`, `tool-call-entry`, `tool-result-entry`, `reasoning-entry`, `system-event-entry`, `vendor-entry`\n\n**Coverage**: Each type maps to 4/4 agent implementations (see PR #4 `docs/agent-type-mapping-table.md` for detailed mapping)\n\n### Vendor Extension Mechanism\n- Added `vendor-extension` type with provenance tagging\n- Dual key support: `extension-key = tstr / int` (JSON strings + CBOR integers)\n- Replaces opaque `anymap` with structured, tagged extensions\n\n**Rationale**: 4/4 agents have vendor-specific metadata; dual key support enables JSON-CBOR interoperability (see PR #4 `examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md` Q6 for evidence-backed decision, confidence 0.82)\n\n### Format Tolerance\n- `abstract-timestamp = tstr / number` (supports RFC 3339 strings and epoch milliseconds)\n- Accommodates variance across 4 agent formats while recommending RFC 3339\n\n**Empirical Evidence**: 3/4 agents use RFC 3339, 1/4 uses epoch ms (see PR #4 `examples/DATASET_MANIFEST.md` for distribution)\n\n### Naming Clarity\n- Renamed `tool` field to `recording-agent` to avoid collision with `tool-call-entry`\n- Merged into `agent-meta` structure\n\n**Decision Trace**: See PR #4 `examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md` Q10 for question that surfaced this collision\n\n## Documentation Quality\n\n- **553 lines** with **53% inline comment density** (exceeds RFC 9052 COSE at ~40%)\n- Each field documented with:\n  - **Evidence** (X/4 agents support)\n  - **Rationale** for abstraction decisions\n  - **Interoperability** notes (SHOULD vs MUST)\n\n**Cross-References in Comments**:\n- Key abstraction decisions link to reasoning artifacts in PR #4\n- Vendor format coverage cites agent type mapping table\n- Empirical evidence points to dataset manifest\n\n## Empirical Basis\n\n<!-- See: PR #4 for complete dataset documentation -->\n\n- **Dataset**: CVE-Bench \"arvo-250iq\" benchmark\n- **Traces**: 221 sessions across 23 CVEs\n- **Agents**: 4 implementations \u00d7 multiple models\n- **Formats**: Claude Code (JSONL), Gemini CLI (JSON), Codex CLI (JSONL), OpenCode (JSON)\n- **Location**: `bench/runs/arvo-250iq/run-2026-02-07/` (XOR monorepo)\n\n**Success Rates** (demonstrates production-quality traces):\n- Claude Code: 78% (18/23 CVEs fixed)\n- Gemini CLI: 70% (16/23 CVEs fixed)\n- Codex CLI: 83% (19/23 CVEs fixed)\n- OpenCode: 74% (17/23 CVEs fixed)\n\n## Methodology\n\n<!-- See: PR #4 docs/cddl-extraction-methodology.md for full pipeline details -->\n\n4-stage reasoning pipeline:\n\n1. **RLM Extraction**: Pattern extraction across formats\n   - Artifact: PR #4 `examples/reasoning-artifacts/01-rlm-extraction-cddl-unification.md`\n   - Identified timestamps (4/4), session IDs (4/4), tool calls (4/4), reasoning (2/4)\n\n2. **Agent0 Questions**: 12 probing questions challenging assumptions\n   - Artifact: PR #4 `examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md`\n   - Surfaced timestamp format variance, extension key types, tool naming collision\n\n3. **Quint Decision**: Evidence-backed decision record (0.80 confidence)\n   - Artifact: PR #4 `examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md`\n   - Decision matrix with confidence scores and evidence counts\n\n4. **Council Deliberation**: Multi-perspective consensus (0.71 score, 9 corrections)\n   - Artifact: PR #4 `examples/reasoning-artifacts/04-council-deliberation-cddl-unification.md`\n   - Mathematician (invariants), Creative (flexibility), Skeptic (attack vectors)\n\n## Testing\n\nSchema validated against all 221 traces after vendor-specific to abstract type conversion.\n\n**Test Vectors**: See PR #3 Appendix C for concrete examples in JSON/CBOR\n\n## Related Work\n\n- **PR #3**: I-D prose update (complete specification document)\n  - Section 3: Session Trace (references this CDDL)\n  - Appendix B: Empirical Basis (cites this dataset)\n  - Appendix C: Test Vectors (validates against this CDDL)\n\n- **PR #4**: Documentation (extraction methodology and agent type mapping)\n  - `docs/cddl-extraction-methodology.md`: How this CDDL was derived\n  - `docs/agent-type-mapping-table.md`: Vendor format \u2192 abstract type mapping\n  - `examples/DATASET_MANIFEST.md`: Complete dataset inventory\n  - `examples/reasoning-artifacts/`: Full reasoning chain (RLM \u2192 Agent0 \u2192 Quint \u2192 Council)\n\n---\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-09T12:17:49Z",
-      "updatedAt": "2026-02-19T00:20:13Z",
+      "updatedAt": "2026-02-19T13:03:28Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "main",
-      "baseRefOid": "ee79d3bd3e3afd235ae83dbb566176ff8455b879",
+      "baseRefOid": "44cfaef22a4a21b4111131c0c58c8c4472d4fb79",
       "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "headRefName": "feat/update-cddl-schema",
-      "headRefOid": "147cffdf291d41262b1ef9a5fd3ffad6c87ac3e6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "8b0c8305614044d6b5e34a80892abf0c8953944b",
+      "closedAt": "2026-02-19T13:03:28Z",
+      "mergedAt": "2026-02-19T13:03:28Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "f05b09e1029b8d30290affd3a6411b8a07c1ba3e"
+      },
       "comments": [
         {
           "author": "0xAverageUser",
@@ -136,12 +175,12 @@
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/3",
       "state": "OPEN",
       "author": "0xAverageUser",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "## Summary\n\nComplete IETF Internet-Draft specification for Verifiable Agent Conversations, evolved through 9 phases from 640 to **1426 lines (123% increase)** to achieve audit-grade quality suitable for SOC 2, ISO 27001, and regulatory review.\n\n<!-- See: PR #2 for the CDDL schema defining the data structures -->\n<!-- See: PR #4 for dataset manifest, extraction methodology, and reasoning artifacts -->\n\n## Content Overview\n\n### 10 Normative Sections\n1. **Abstract**: Concrete description of session-trace + file-attribution + COSE_Sign1\n2. **Verifiable Agent Record**: Root type and common structures (references PR #2 CDDL)\n3. **Session Trace**: Envelope, agent metadata, environment, 7 entry types (see PR #2 for type definitions)\n4. **File Attribution**: Code provenance linking to session trace\n5. **Signing Envelope**: COSE_Sign1 wrapper for cryptographic verification\n6. **Vendor Extensions**: Structured extensions with provenance tagging (see PR #2 for extension-key definition)\n7. **Security Considerations**: Integrity, credentials, keys, multi-agent coordination\n8. **Privacy Considerations**: GDPR compliance, differential privacy, reasoning encryption\n9. **IANA Considerations**: Trace format registry + media type registrations\n10. **Conformance Requirements**: Producer/Verifier/Consumer classes with RFC 2119 terminology\n\n### 6 Informative Appendices\n- **A**: File Attribution Derivation Algorithm (partial derivability analysis)\n- **B**: Empirical Basis (221 traces, 4 agents, 23 CVEs) - **See PR #4 for complete dataset documentation**\n- **C**: Test Vectors (3 concrete examples in JSON/CBOR) - **See PR #4 trace samples for real-world examples**\n- **D**: Interoperability (RATS/SCITT/SUIT ecosystem integration)\n- **E**: Implementation Considerations (producer/verifier/consumer guidance + code examples)\n- **F**: Security Analysis (threat model, 8 attack vectors, residual risk)\n\n## Key Differentiators\n\n### 1. Formal Conformance (350 IQ)\n- **3 Conformance Classes**: Producer (Section 10.1), Verifier (Section 10.2), Consumer (Section 10.3)\n- **RFC 2119/8174 Terminology**: Precise MUST/SHOULD/MAY requirements per class\n- **5 Mathematical Invariants** (Section 10.4):\n  - I1: Temporal Ordering (monotonic timestamps)\n  - I2: Tool Call Pairing (every result has exactly one call)\n  - I3: Session Bounds (entries within session timeframe)\n  - I4: Unique Tool Call IDs (no duplicate call identifiers)\n  - I5: File Attribution Consistency (file ops traceable to session)\n- Enables formal verification without execution environment access\n\n### 2. Implementation-Ready (400 IQ)\n- **3 Test Vectors** (Appendix C): Minimal session, combined session+file, signed with vendor extension\n  - Cross-reference: See PR #4 `examples/traces/claude-sample.jsonl` for real-world trace structure\n- **Code Examples** (Appendix E): Python, JavaScript, Rust with runnable patterns\n- **Concrete Guidance**: Streaming vs batch, timestamp generation strategies, tool call ID schemes\n- **CDDL Validation Pipeline**: Step-by-step verification process\n- Early implementers can copy-paste patterns, reducing time-to-conformance\n\n### 3. Audit-Grade Security (450 IQ)\n- **Formal Threat Model** (Appendix F):\n  - 3 adversary classes: Passive Observer, Active Attacker, Insider Threat\n  - 4 trust boundaries: Recording agent, verifier, transparency log, downstream consumer\n- **8 Attack Vectors** with mitigations:\n  - AV1: Trace Fabrication (COSE_Sign1, content_hash, VCS anchors)\n  - AV2: Selective Entry Omission (integrity invariants detect gaps)\n  - AV3: Timestamp Manipulation (transparency log receipts)\n  - AV4: Signature Stripping (policy enforcement)\n  - AV5: Key Compromise (transparency log anchoring, key rotation)\n  - AV6: Credential Leakage (redaction, allow-list filtering)\n  - AV7: Differential Privacy Violation (noise injection, thresholds)\n  - AV8: Reasoning Entry Leakage (encryption, metadata minimization)\n- **Security Properties Analysis**: 4 PROVIDED (Integrity, Authenticity, Non-repudiation, Transparency), 3 NOT PROVIDED (Confidentiality, Anonymity, Completeness)\n- Security teams can use threat model for penetration testing and risk assessment\n\n### 4. Ecosystem Integration (250 IQ)\n- **RATS Architecture** (Appendix D.1): VAC records serve as Evidence in RFC 9334 attestation flow\n- **SCITT Architecture** (Appendix D.2): VAC records as SCITT Statements for supply chain transparency\n- **SUIT Manifests** (Appendix D.3): Dev-time (VAC) + deploy-time (SUIT) = full custody chain\n- **Media Types** (Section 9.2): `application/verifiable-agent-record+{json,cbor}` with fragment identifiers\n- Network effects across IETF working groups\n\n### 5. Privacy & Compliance (300 IQ)\n- **GDPR Guidance** (Section 8.1): Personal information handling, right to deletion vs transparency log permanence\n- **Differential Privacy** (Section 8.3): Benchmark publication with noise injection and k-threshold\n- **Reasoning Encryption** (Section 8.2): Privacy-preserving agent thought processes\n- **Credential Redaction** (Section 7.3): Allow-list filtering for sensitive data\n\n## Evolution Phases\n\n| Phase | Lines | IQ Level | Key Addition |\n|-------|-------|----------|--------------|\n| 1-4 | 640 | Baseline | Core spec + CDDL + signing + vendor extensions |\n| 5 | 867 | 250 IQ | Test vectors + RATS/SCITT/SUIT interoperability |\n| 6 | 961 | 300 IQ | Privacy considerations + formal IANA registrations |\n| 7 | 1059 | 350 IQ | Conformance classes + integrity invariants |\n| 8 | 1237 | 400 IQ | Implementation guidance + code examples |\n| 9 | 1426 | 450 IQ | Comprehensive security analysis + threat model |\n\n## Empirical Foundation\n\n<!-- See: PR #4 for complete dataset documentation and reasoning artifacts -->\n\n- **Dataset**: CVE-Bench \"arvo-250iq\" benchmark (see PR #4 `examples/DATASET_MANIFEST.md`)\n- **Traces**: 221 CVE-fixing sessions (see PR #4 `examples/traces/` for samples)\n- **CVEs**: 23 distinct vulnerabilities\n- **Agents**: Claude Code (JSONL), Gemini CLI (JSON), Codex CLI (JSONL), OpenCode (JSON)\n- **Domain**: Security vulnerability remediation (code fixing)\n\nEvidence location: `bench/runs/arvo-250iq/run-2026-02-07/` (XOR monorepo)\n\n**Reasoning Pipeline**: See PR #4 `examples/reasoning-artifacts/` for complete 4-stage derivation:\n1. RLM extraction \u2192 pattern identification\n2. Agent0 questions \u2192 assumption challenging\n3. Quint decision \u2192 evidence-backed choices (0.80 confidence)\n4. Council deliberation \u2192 multi-perspective validation (0.71 consensus)\n\n## Strategic Positioning\n\nThis standard creates **5 compounding loops** that strengthen XOR's market position:\n\n1. **Benchmark Authority**: XOR's CVE-Bench IS the evidence base; leaderboard becomes \"IETF-conformant\"\n2. **Signing Verifier**: XOR builds reference verifier, gains telemetry on ecosystem adoption\n3. **Format Registry**: XOR defined canonical names; IANA registry establishes naming authority\n4. **Evidence Corpus**: Standard credibility scales with XOR's benchmark output\n5. **Category Ownership**: \"Verifiable Agent Conversations\" is now IETF-track term, not marketing\n\nEvery conformant trace validates XOR's schema. Every signing verification uses XOR's reference implementation. Every format registration reinforces XOR's category ownership.\n\n## Cross-References Between PRs\n\n### To PR #2 (CDDL Schema)\n- Section 3 (Session Trace): References `agent-conversation.cddl` type definitions\n- Section 6 (Vendor Extensions): Uses `extension-key = tstr / int` from CDDL\n- Appendix C (Test Vectors): Validates against CDDL schema\n\n### To PR #4 (Documentation)\n- **Appendix B** (Empirical Basis): Cites `examples/DATASET_MANIFEST.md` for dataset inventory\n- **Appendix C** (Test Vectors): References `examples/traces/` for real-world trace structure\n- **Section 3.2** (Entry Types): Links to `docs/agent-type-mapping-table.md` for vendor coverage\n- **Informative References**: Points to `examples/reasoning-artifacts/` for derivation transparency\n\n## Cross-References Within This PR\n\nAdded cross-reference comments linking critical sections:\n\n- **Section 3 \u2192 Appendix B**: \"See Appendix B for empirical basis of entry type selection\"\n- **Section 5 \u2192 Section 7**: \"See Section 7 for security considerations of signing\"\n- **Section 6 \u2192 Appendix E.3**: \"See Appendix E.3 for consumer vendor extension handling\"\n- **Section 10 \u2192 Appendix C**: \"See Appendix C for conformance test vectors\"\n- **Appendix B \u2192 PR #4**: \"See examples/DATASET_MANIFEST.md for complete dataset inventory\"\n- **Appendix C \u2192 PR #4**: \"See examples/traces/ for additional real-world samples\"\n- **Appendix E \u2192 PR #4**: \"See docs/cddl-extraction-methodology.md for schema derivation process\"\n- **Appendix F \u2192 Section 7**: \"See Section 7 for normative security requirements\"\n\n## Next Steps\n\n1. **Henk Review Cycle**: Co-author alignment on session-trace + file-attribution integration\n2. **IETF Submission**: Target March 2nd for draft-birkholz-verifiable-agent-conversations-00\n3. **Reference Implementation**: Build producer, verifier, consumer per conformance classes\n4. **CVE-Bench v2**: Double conformant traces (target 500) to strengthen empirical basis\n\n## Dependencies\n\n- **Related PR #2**: CDDL schema update (independent review)\n- **Related PR #4**: Documentation (extraction methodology + agent type mapping + dataset + reasoning artifacts)\n\n---\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-09T12:19:07Z",
-      "updatedAt": "2026-02-09T13:01:00Z",
+      "updatedAt": "2026-02-20T04:24:00Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "main",
       "baseRefOid": "ee79d3bd3e3afd235ae83dbb566176ff8455b879",
@@ -155,13 +194,27 @@
       "comments": [
         {
           "author": "0xAverageUser",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "@henkbirkholz review ",
           "createdAt": "2026-02-09T12:48:01Z",
           "updatedAt": "2026-02-09T12:48:01Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kRuV1",
+          "commit": {
+            "abbreviatedOid": "696eb65"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T04:24:00Z",
+          "updatedAt": "2026-02-20T04:24:00Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 4,
@@ -170,12 +223,12 @@
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/4",
       "state": "OPEN",
       "author": "0xAverageUser",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "## Summary\n\nAdds comprehensive implementation documentation explaining how the CDDL schema was empirically derived from analyzing 221 CVE-fixing agent session traces, including the dataset manifest, trace samples, and complete reasoning pipeline artifacts.\n\n## New Documentation Files\n\n### 1. `docs/cddl-extraction-methodology.md` (8KB, 185 lines)\n\n<!-- See: PR #2 for the CDDL schema produced by this methodology -->\n<!-- See: PR #3 Section: Appendix B for empirical basis discussion -->\n\nComplete explanation of the **4-stage reasoning pipeline** used to extract abstract CDDL types from empirical data:\n\n#### Stage 1: RLM (Reasoning Learning Module) Extraction\n- **Tool**: `xor.research.rlm.extraction`\n- **Input**: Raw agent trajectories (JSONL/JSON files from 4 different agents)\n- **Output**: Structured extraction of common patterns across formats\n- **Artifact**: `examples/reasoning-artifacts/01-rlm-extraction-cddl-unification.md` (43KB)\n\n**Key Findings**:\n- Timestamps: 4/4 formats use timestamps (2 RFC 3339, 2 epoch ms)\n- Session IDs: 4/4 have session identifiers (UUID v4, v7, SHA-256)\n- Tool calls: 4/4 have tool invocation records with varied naming\n- Reasoning: 2/4 formats include explicit reasoning/thinking entries\n- Vendor metadata: All 4 require `vendor-extension` mechanism\n\n#### Stage 2: Agent0 Question Generation\n- **Tool**: `xor.research.agent0.generate_curriculum_tasks`\n- **Input**: RLM extraction results\n- **Output**: 12 probing questions challenging assumptions\n- **Artifact**: `examples/reasoning-artifacts/02-agent0-questions-cddl-merge.md` (23KB)\n\n**Question Categories**:\n- CHALLENGE (5): \"How do you handle timestamp format variance?\" \u2192 `abstract-timestamp = tstr / number`\n- ASSUME (3): \"Can file attribution be fully derived?\" \u2192 separation of session vs file-attribution\n- CONTRADICT (4): \"What if vendor extensions conflict?\" \u2192 `extension-key = tstr / int`\n\n#### Stage 3: Quint Evidence-Based Decision\n- **Tool**: `xor.research.quint.standalone.analyze_documents`\n- **Input**: Agent0 questions + RLM extractions + 221 trace files\n- **Output**: Decision Record with 0.80 confidence score\n- **Artifact**: `examples/reasoning-artifacts/03-quint-decision-DRR-cddl-unification.md` (45KB)\n\n**Evidence Sources**: 221 CVE traces, 4 agent formats, Henk's schema, IETF RFCs\n\n#### Stage 4: Council Multi-Perspective Deliberation\n- **Tool**: `xor.research.strategy.council`\n- **Input**: Quint DRR + strategic considerations\n- **Output**: Consensus score 0.71 with 9 mandatory corrections\n- **Artifact**: `examples/reasoning-artifacts/04-council-deliberation-cddl-unification.md` (12KB)\n\n**Perspectives**: Mathematician (formal invariants), Creative (flexibility), Skeptic (attack vectors)\n\n### 2. `docs/agent-type-mapping-table.md` (14KB, 580 lines)\n\n<!-- See: PR #2 for the abstract CDDL types defined -->\n<!-- See: examples/traces/ for actual trace samples -->\n\nComprehensive mapping matrix showing how specific agent implementations represent trajectory message types and map to abstract CDDL types.\n\n**Coverage**:\n- **4 Agent Implementations**: Claude Code (JSONL), Gemini CLI (JSON), Codex CLI (JSONL), OpenCode (JSON)\n- **7 Abstract Entry Types**: user-entry, assistant-entry, tool-call-entry, tool-result-entry, reasoning-entry, system-event-entry, vendor-entry\n\n**Mapping Examples**:\n- User messages: `type: \"user\"` (Claude) \u2192 `role: \"user\"` (Gemini/Codex/OpenCode) \u2192 `user-entry` (abstract)\n- Tool calls: `content[].type: \"tool_use\"` (Claude) \u2192 `parts[].function_call` (Gemini) \u2192 `tool-call-entry` (abstract)\n- Timestamps: RFC 3339 strings (3 agents) + epoch ms (1 agent) \u2192 `abstract-timestamp = tstr / number`\n\n### 3. `examples/DATASET_MANIFEST.md` (Dataset Inventory)\n\n<!-- See: PR #3 Appendix B for dataset discussion in I-D -->\n<!-- See: examples/traces/ for representative samples -->\n\nComplete inventory of the empirical dataset used for CDDL extraction:\n\n- **Total Sessions**: 221 CVE-fixing agent traces\n- **CVEs**: 23 distinct vulnerabilities across 3 projects\n- **Agents**: Claude Code (~55), Gemini CLI (~55), Codex CLI (~55), OpenCode (~56)\n- **Projects**: harfbuzz/harfbuzz (10 CVEs), openthread/openthread (7 CVEs), darktable-org/rawspeed (6 CVEs)\n- **File Naming**: `{agent}-{model}-{project}-{cve_id}-{attempt}-{artifact}.{ext}`\n- **Success Rates**: Claude 78%, Gemini 70%, Codex 83%, OpenCode 74%\n\n**Empirical Findings**:\n- Common patterns (all 4 agents): timestamps (100%), session IDs (100%), tool invocation (100%)\n- Variance requiring abstraction: timestamp format (string vs number), session ID format (UUID v4/v7, SHA-256), extension keys (JSON strings vs CBOR ints)\n\n**Dataset Limitations**:\n- Domain specificity: CVE vulnerability fixes only\n- Vendor selection: 4 agents (other major agents not included)\n- Temporal snapshot: February 7, 2026 implementations\n- Success bias: 70-83% success rate may underrepresent edge cases\n\n### 4. `examples/traces/` (Representative Trace Samples)\n\n<!-- See: docs/agent-type-mapping-table.md for detailed format analysis -->\n<!-- See: examples/DATASET_MANIFEST.md for full dataset inventory -->\n\nMinimal representative samples showing actual message structure from empirical data:\n\n- `claude-sample.jsonl`: Claude Code format (5 events, JSONL newline-delimited)\n- `gemini-sample.json`: Gemini CLI format (single JSON array) - *to be added*\n- `codex-sample.json`: Codex CLI format (JSONL with envelope) - *to be added*\n- `opencode-sample.json`: OpenCode format (JSON with metadata) - *to be added*\n\n**Key Differences Illustrated**:\n- File format: JSONL vs single JSON\n- Timestamp format: RFC 3339 strings vs epoch milliseconds\n- Tool call representation: 4 different field naming conventions\n- Reasoning/thinking: explicit vs embedded\n\n### 5. `examples/reasoning-artifacts/` (4-Stage Pipeline Artifacts)\n\n<!-- See: docs/cddl-extraction-methodology.md for pipeline explanation -->\n<!-- See: PR #2 for the CDDL schema output -->\n\nComplete reasoning chain from raw traces to CDDL schema:\n\n1. **01-rlm-extraction-cddl-unification.md** (43KB): Pattern extraction identifying commonalities and variance across 4 formats\n2. **02-agent0-questions-cddl-merge.md** (23KB): 12 probing questions surfacing edge cases (CHALLENGE/ASSUME/CONTRADICT)\n3. **03-quint-decision-DRR-cddl-unification.md** (45KB): Evidence-backed decisions with citations and 0.80 confidence scores\n4. **04-council-deliberation-cddl-unification.md** (12KB): Multi-perspective validation with 0.71 consensus and 9 corrections\n\n**Transparency Benefits**:\n- Empirical grounding: Demonstrates CDDL wasn't designed arbitrarily\n- Reasoning chain: Traceable lineage for every design decision\n- Explainability: Reviewers can audit evidence and challenge decisions\n- Reproducibility: Pipeline can re-run on new formats/datasets\n\n## Value for Implementers\n\nThese documents provide:\n\n1. **Implementation Guide**: Step-by-step instructions for converting vendor-specific formats to abstract types\n2. **Evidence Transparency**: Complete reasoning chain from raw data to CDDL decisions\n3. **Verification Reference**: Validators can check conformance against documented patterns\n4. **Trust Building**: Shows CDDL was empirically derived, not arbitrarily designed\n5. **Reproducibility**: Full dataset manifest + reasoning artifacts enable independent verification\n\n## Relationship to Other PRs\n\n- **PR #2** (CDDL Schema): The artifact produced by this methodology\n  - Cross-reference: `agent-conversation.cddl` comments cite reasoning artifacts\n  - Mapping: Each abstract type documented with agent coverage (X/4)\n\n- **PR #3** (I-D Prose): References this methodology in Appendix B (Empirical Basis)\n  - Cross-reference: Appendix B cites dataset manifest and reasoning artifacts\n  - Test Vectors (Appendix C): Derived from trace samples\n\n**Independent Reviewability**: These docs can be reviewed/merged without blocking schema or spec changes.\n\n## Cross-References Added\n\nTo foster deep understanding and great reviewer UX, the following cross-reference comments have been added:\n\n### In CDDL Schema (`agent-conversation.cddl`) - PR #2\n- Links to reasoning artifacts for key abstraction decisions\n- References agent type mapping table for vendor format coverage\n- Points to dataset manifest for empirical evidence\n\n### In I-D Prose (`draft-birkholz-verifiable-agent-conversations.md`) - PR #3\n- Appendix B links to dataset manifest and reasoning artifacts\n- Appendix C test vectors reference trace samples\n- Implementation sections link to extraction methodology\n\n### In Documentation Files (This PR)\n- Cross-links between methodology, mapping table, manifest, and artifacts\n- Bi-directional references to CDDL and I-D for context\n\n## Dataset Access\n\nFull dataset (221 traces, ~1.2GB, 671 files) available at:\n- **XOR monorepo** (not included in this repository): `bench/runs/arvo-250iq/run-2026-02-07/`\n- **Representative samples** (this repository): `examples/traces/`\n\n## References\n\n- RFC 8610: Concise Data Definition Language (CDDL)\n- RFC 3339: Date and Time on the Internet: Timestamps\n- RFC 9052: CBOR Object Signing and Encryption (COSE)\n- RFC 9562: Universally Unique Identifiers (UUIDs)\n\n---\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-09T12:20:34Z",
-      "updatedAt": "2026-02-09T12:56:27Z",
+      "updatedAt": "2026-02-20T04:22:32Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "main",
       "baseRefOid": "ee79d3bd3e3afd235ae83dbb566176ff8455b879",
@@ -187,7 +240,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kRtS5",
+          "commit": {
+            "abbreviatedOid": "b17c617"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T04:22:32Z",
+          "updatedAt": "2026-02-20T04:22:32Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 5,
@@ -254,16 +321,691 @@
       "author": "henkbirkholz",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "needs-refactoring"
+      ],
       "body": "## Summary\n\nAdds a comprehensive compliance requirements analysis section identifying the intersection of requirements across 11 major compliance frameworks applicable to AI agent traceability and session logging.\n\n### Frameworks Analyzed\n\n| Framework | Jurisdiction | Sector |\n|-----------|-------------|--------|\n| EU AI Act (2024/1689) | EU | Cross-sector |\n| Cyber Resilience Act | EU | Digital products |\n| NIS2 Directive | EU | Essential entities |\n| ETSI TS 104 223 | EU/Intl | AI systems |\n| SOC 2 | US/Intl | Service orgs |\n| FedRAMP Rev. 5 | US | Federal cloud |\n| PCI DSS v4.0 | Intl | Payments |\n| ISO/IEC 42001 | Intl | AI management |\n| FFIEC IT Handbook | US | Financial |\n| BSI AI Finance | DE | Financial AI |\n| NIST AI 100-2 | US | Cross-sector |\n\n### Key Finding: 11 Universal Requirements\n\nAll frameworks require these capabilities:\n\n1. **Automatic event logging** - System-generated records\n2. **Timestamps** - Precise temporal ordering\n3. **Actor identification** - Who performed actions\n4. **Action/event recording** - What was done\n5. **Input/output recording** (AI-specific) - Prompts and responses\n6. **Retention periods** - 6-18 months depending on framework\n7. **Tamper-evidence** - Integrity protection\n8. **Incident response** - Support investigation\n9. **Anomaly detection** - Risk identification\n10. **Human oversight** - Enable review\n11. **Traceability** - Reconstruct behavior\n\n### Mapping to This Specification\n\nEach requirement is mapped to specific CDDL data elements.\n\n## Files Added\n\n- `compliance-requirements.md` - Full analysis document (300+ lines)\n- `compliance-research/README.md` - Research methodology and sources\n- `compliance-research/downloads/` - Reference documents (PDFs gitignored)\n\n## Test plan\n\n- [ ] Review compliance mapping accuracy\n- [ ] Verify CDDL element references match current schema\n- [ ] Consider incorporating into main draft as new section\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-18T15:27:12Z",
-      "updatedAt": "2026-02-18T15:27:12Z",
+      "updatedAt": "2026-02-20T14:10:01Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "feat/update-cddl-schema",
       "baseRefOid": "1e5f09161f8eaa18836e4012eef5bd2860f1aa00",
       "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "headRefName": "feat/compliance-requirements-v2",
-      "headRefOid": "5a58dc106a341ef064b5cd026bee639c0577a3ed",
+      "headRefOid": "e31323bd1f101991d007eaebdf265057677e664e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kRsg6",
+          "commit": {
+            "abbreviatedOid": "e31323b"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T04:21:23Z",
+          "updatedAt": "2026-02-20T04:21:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDORG4n7s7E55JK",
+      "title": "First-draft of Requirement Analysis",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/8",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-19T15:08:36Z",
+      "updatedAt": "2026-02-20T10:56:30Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "f05b09e1029b8d30290affd3a6411b8a07c1ba3e",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "add-compliance-section",
+      "headRefOid": "e11012d56ba83ec2fe8c2c628972b50ed3dbd5f1",
+      "closedAt": "2026-02-20T10:56:30Z",
+      "mergedAt": "2026-02-20T10:56:30Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "331aa0791a52c52d472f58c5356d5113025a5fc0"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kRns4",
+          "commit": {
+            "abbreviatedOid": "d424102"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T04:14:53Z",
+          "updatedAt": "2026-02-20T04:14:53Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "```suggestion\nAnalysis of the above frameworks reveals eleven (11) categories of requirements that appear across all or most frameworks.\n```",
+              "createdAt": "2026-02-20T04:14:53Z",
+              "updatedAt": "2026-02-20T04:14:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kRrYF",
+          "commit": {
+            "abbreviatedOid": "d424102"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T04:20:00Z",
+          "updatedAt": "2026-02-20T04:20:00Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDORG4n7s7FF63P",
+      "title": "Upgrade introduction: trust framing, threat examples, goals 5-7",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/11",
+      "state": "MERGED",
+      "author": "0xAverageUser",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\nSurgical upgrade to the Introduction section following RFC 9334 patterns and interview-driven decisions.\n\n**Six changes, one file:**\n\n1. **New opening sentence** \u2014 mirrors RFC 9334 trust-question framing: \"The question of whether the recorded output of an autonomous agent faithfully represents the agent's actual behavior...\"\n\n2. **Strengthened human liability** \u2014 \"The responsible human party requires records of agent behavior to demonstrate due diligence over the agents acting under their authority.\"\n\n3. **Threat examples** \u2014 three inline bullets (RATS bank/healthcare pattern): tool misuse beyond authorization scope, deceptive chain-of-thought, sandbagging during evaluations.\n\n4. **Goal 5** \u2014 behavioral anomaly detection (unauthorized tool invocations, reasoning/action inconsistencies, performance modulation).\n\n5. **Goal 6** \u2014 cross-vendor interoperability (common format translatable from multiple agent implementations).\n\n6. **Goal 7** \u2014 regulatory compliance evidence (AI documentation, traceability, human oversight requirements).\n\n**Grammar fixes:** \"other autonomous agents\" (was \"other autonomous\"), \"increase the need\" (subject-verb agreement).\n\n**Not included (deferred):** specific AI safety paper citations (alignment faking, Apollo Research) \u2014 these belong in Security Considerations, not the introduction.\n\n## Style compliance\n\nAll new text follows the 15 writing rules derived from the existing draft:\n- Define-on-first-use with inline parenthetical\n- Facts stated, never evaluated\n- Goals as numbered declarative sentences\n- Bulleted examples (RATS pattern)\n- No hedging, no hedged futures\n- No AI vocabulary (the 24-pattern humanizer check passes)\n\n## Test plan\n\n- [ ] `make` builds without errors (kramdown-rfc renders correctly)\n- [ ] Reference tags (`{{-rats-arch}}`, `{{-scitt-arch}}`) resolve\n- [ ] Bulleted list renders correctly in HTML output\n- [ ] `make fix-lint` passes\n\nGenerated with [Claude Code](https://claude.com/claude-code)",
+      "createdAt": "2026-02-20T07:56:34Z",
+      "updatedAt": "2026-02-20T11:25:16Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "f05b09e1029b8d30290affd3a6411b8a07c1ba3e",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "feat/introduction-upgrade",
+      "headRefOid": "83b3ae26725c8bef744ad878a455976006184da6",
+      "closedAt": "2026-02-20T11:25:16Z",
+      "mergedAt": "2026-02-20T11:25:16Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "90ae5dd7003a847eae1851221c7a5a43cc677e33"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kVzaD",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "kittyandrew",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T09:18:28Z",
+          "updatedAt": "2026-02-20T09:18:28Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXSkS",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:35:47Z",
+          "updatedAt": "2026-02-20T10:35:47Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\nThe question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.\n```",
+              "createdAt": "2026-02-20T10:35:47Z",
+              "updatedAt": "2026-02-20T10:35:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXTv-",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:37:04Z",
+          "updatedAt": "2026-02-20T10:37:04Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\nAutonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.\nThis creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.\n```",
+              "createdAt": "2026-02-20T10:37:04Z",
+              "updatedAt": "2026-02-20T10:37:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXUVT",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:37:41Z",
+          "updatedAt": "2026-02-20T10:37:41Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "```suggestion\nIn essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.\n```",
+              "createdAt": "2026-02-20T10:37:41Z",
+              "updatedAt": "2026-02-20T10:37:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXV5G",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:39:00Z",
+          "updatedAt": "2026-02-20T10:39:00Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\nIn agentic AI systems, machine actors interact with other machine actors.\nThe number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.\n```",
+              "createdAt": "2026-02-20T10:39:00Z",
+              "updatedAt": "2026-02-20T10:39:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXXcg",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:40:39Z",
+          "updatedAt": "2026-02-20T10:40:39Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "```suggestion\nTo demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.\n```",
+              "createdAt": "2026-02-20T10:40:39Z",
+              "updatedAt": "2026-02-20T10:40:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXX4O",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:41:07Z",
+          "updatedAt": "2026-02-20T10:41:07Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "```suggestion\nThese increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).\n```",
+              "createdAt": "2026-02-20T10:41:07Z",
+              "updatedAt": "2026-02-20T10:41:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXZSx",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:42:02Z",
+          "updatedAt": "2026-02-20T10:42:02Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\nThe verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.\n```",
+              "createdAt": "2026-02-20T10:42:02Z",
+              "updatedAt": "2026-02-20T10:42:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXZ62",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:42:21Z",
+          "updatedAt": "2026-02-20T10:42:22Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\n*  An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.\n```",
+              "createdAt": "2026-02-20T10:42:22Z",
+              "updatedAt": "2026-02-20T10:42:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXahn",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:42:40Z",
+          "updatedAt": "2026-02-20T10:42:40Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "```suggestion\n*  An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.\n```",
+              "createdAt": "2026-02-20T10:42:40Z",
+              "updatedAt": "2026-02-20T10:42:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXbQK",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:43:01Z",
+          "updatedAt": "2026-02-20T10:43:01Z",
+          "comments": [
+            {
+              "originalPosition": 26,
+              "body": "```suggestion\n*  An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.\n```",
+              "createdAt": "2026-02-20T10:43:01Z",
+              "updatedAt": "2026-02-20T10:43:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXcIv",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:43:29Z",
+          "updatedAt": "2026-02-20T10:43:29Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "```suggestion\nThe fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.\n```",
+              "createdAt": "2026-02-20T10:43:29Z",
+              "updatedAt": "2026-02-20T10:43:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kXdIb",
+          "commit": {
+            "abbreviatedOid": "226538e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2026-02-20T10:43:59Z",
+          "updatedAt": "2026-02-20T10:43:59Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kYQcI",
+          "commit": {
+            "abbreviatedOid": "83b3ae2"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T11:25:05Z",
+          "updatedAt": "2026-02-20T11:25:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDORG4n7s7FJsJk",
+      "title": "Adding Orie",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/12",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-20T12:13:58Z",
+      "updatedAt": "2026-02-20T13:53:04Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "90ae5dd7003a847eae1851221c7a5a43cc677e33",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "add-orie",
+      "headRefOid": "81c2be741777d6ce421ab289ea871ef163760b2f",
+      "closedAt": "2026-02-20T13:53:04Z",
+      "mergedAt": "2026-02-20T13:53:03Z",
+      "mergedBy": "0xAverageUser",
+      "mergeCommit": {
+        "oid": "60eae85530687e2e85bff648d13ad7b7f000ca20"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kacqP",
+          "commit": {
+            "abbreviatedOid": "81c2be7"
+          },
+          "author": "0xAverageUser",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T13:52:58Z",
+          "updatedAt": "2026-02-20T13:52:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDORG4n7s7FJ1W1",
+      "title": "Revert \"First-draft of Requirement Analysis\"",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/13",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reverts xor-hardener/draft-birkholz-verifiable-agent-conversations#8",
+      "createdAt": "2026-02-20T12:24:12Z",
+      "updatedAt": "2026-02-20T12:25:46Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "90ae5dd7003a847eae1851221c7a5a43cc677e33",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "revert-8-add-compliance-section",
+      "headRefOid": "25dad32468a3560d705c816c956d46f2721fad6c",
+      "closedAt": "2026-02-20T12:25:46Z",
+      "mergedAt": "2026-02-20T12:25:46Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "3918a13b6491aee420b379c968ec30e14f3a0298"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDORG4n7s7FJ7aI",
+      "title": "re-adding requirements section",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/14",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-20T12:31:01Z",
+      "updatedAt": "2026-02-20T13:57:09Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "3918a13b6491aee420b379c968ec30e14f3a0298",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "new-add-compliance",
+      "headRefOid": "91be4409e335da7267ba98462124f0ae4ad7a585",
+      "closedAt": "2026-02-20T13:57:09Z",
+      "mergedAt": "2026-02-20T13:57:09Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "6bf42b982dd2cf486d7d7ba1a41c556d831cebfe"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kZQVy",
+          "commit": {
+            "abbreviatedOid": "662189e"
+          },
+          "author": "kittyandrew",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Schema alignment review: 3 issues found where type/field names in the compliance section don't match the current CDDL schema (6 locations total). Suggested fixes below.",
+          "createdAt": "2026-02-20T12:37:13Z",
+          "updatedAt": "2026-02-20T12:37:14Z",
+          "comments": [
+            {
+              "originalPosition": 77,
+              "body": "The CDDL field is `model-id` (kebab-case), not `model_id` (snake_case). Matches the kebab-case convention used throughout the schema.\n\n```suggestion\nThe `contributor` type captures actor attribution with `type` (human/ai/mixed/unknown) and optional `model-id`.\n```",
+              "createdAt": "2026-02-20T12:37:13Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            },
+            {
+              "originalPosition": 110,
+              "body": "The schema splits tool entries into separate types: `tool-call-entry` (which has `input`) and `tool-result-entry` (which has `output`). There is no `tool-entry` type.\n\n```suggestion\n- `tool-call-entry.input`: Tool invocation parameters\n- `tool-result-entry.output`: Tool execution results\n```",
+              "createdAt": "2026-02-20T12:37:14Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            },
+            {
+              "originalPosition": 249,
+              "body": "Same issue \u2014 `tool-entry` is not a defined type in the schema. The two types are `tool-call-entry` and `tool-result-entry`.\n\n```suggestion\n- `tool-call-entry` / `tool-result-entry`: Captures agentic actions\n```",
+              "createdAt": "2026-02-20T12:37:14Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            },
+            {
+              "originalPosition": 273,
+              "body": "Same `tool-entry` \u2192 `tool-call-entry` / `tool-result-entry` fix for the mapping table.\n\n```suggestion\n| `tool-call-entry` / `tool-result-entry` | Art. 12 | 5.4.2-1 | CC7.2 | AU-12 | 10.2 | A.6.2.8 | - |\n```",
+              "createdAt": "2026-02-20T12:37:14Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            },
+            {
+              "originalPosition": 302,
+              "body": "Same fix \u2014 tool output lives on `tool-result-entry`, not `tool-entry`.\n\n```suggestion\n2. `tool-result-entry.output` may contain query results with PII\n```",
+              "createdAt": "2026-02-20T12:37:14Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            },
+            {
+              "originalPosition": 313,
+              "body": "Stray `]` \u2014 should be `:` like the other reference entries.\n\n```suggestion\n- PCI DSS: PCI DSS v4.0.1 (March 2024)\n```",
+              "createdAt": "2026-02-20T12:37:14Z",
+              "updatedAt": "2026-02-20T12:37:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kZRHk",
+          "commit": {
+            "abbreviatedOid": "662189e"
+          },
+          "author": "kittyandrew",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T12:38:08Z",
+          "updatedAt": "2026-02-20T12:38:08Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kZUCB",
+          "commit": {
+            "abbreviatedOid": "91be440"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "lgtm!",
+          "createdAt": "2026-02-20T12:41:13Z",
+          "updatedAt": "2026-02-20T12:41:13Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kafRg",
+          "commit": {
+            "abbreviatedOid": "91be440"
+          },
+          "author": "0xAverageUser",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T13:55:20Z",
+          "updatedAt": "2026-02-20T13:55:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDORG4n7s7FLqH6",
+      "title": "Removed clutter from CDDL Definition and fixed some types (e.g., posix time -> uint)",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/15",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-20T14:37:20Z",
+      "updatedAt": "2026-02-20T14:40:42Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "6bf42b982dd2cf486d7d7ba1a41c556d831cebfe",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "cddl-cleanup",
+      "headRefOid": "44886fcdaff55aae606059c2cf3c693e86d3cf8c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kbb07",
+          "commit": {
+            "abbreviatedOid": "44886fc"
+          },
+          "author": "kittyandrew",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "lgtm",
+          "createdAt": "2026-02-20T14:40:42Z",
+          "updatedAt": "2026-02-20T14:40:42Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDORG4n7s7FME4-",
+      "title": "Aligning COSE Envelope definitions with SCITT Signed Statements and COSE Receipts",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/16",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "also importing CDDL definitions for seamless validation (will be removed closer to publication)",
+      "createdAt": "2026-02-20T15:01:55Z",
+      "updatedAt": "2026-02-20T16:11:32Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "6bf42b982dd2cf486d7d7ba1a41c556d831cebfe",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "scitt-ready",
+      "headRefOid": "2b12d9e0f62b0f4f2703f046a33ca52e62b07947",
+      "closedAt": "2026-02-20T16:11:31Z",
+      "mergedAt": "2026-02-20T16:11:31Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "e9da35fcfcb5fc4f95dd7b770adba0ecc95dbbaa"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7kdJoa",
+          "commit": {
+            "abbreviatedOid": "2b12d9e"
+          },
+          "author": "kittyandrew",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-20T16:02:08Z",
+          "updatedAt": "2026-02-20T16:02:08Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7kdUKj",
+          "commit": {
+            "abbreviatedOid": "2b12d9e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "lgtm & validation works on my end.",
+          "createdAt": "2026-02-20T16:11:17Z",
+          "updatedAt": "2026-02-20T16:11:17Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDORG4n7s7FRmt3",
+      "title": "Add RFC 9393-style data structure definitions",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/17",
+      "state": "OPEN",
+      "author": "kittyandrew",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\n- Adds a new `# Data Structure Definitions` section documenting all 22 CDDL types following the RFC 9393 \u00a72.3 pattern (CDDL fragment \u2192 prose \u2192 definition-list member descriptions)\n- Covers common types, root, session, environment, entry types, token usage, file attribution, and signing envelope\n- JSON-only (no integer indices), per Henk's guidance\n\n## Test plan\n\n- [ ] Verify kramdown-rfc renders the definition lists correctly (`make`)\n- [ ] Spot-check CDDL fragments against `agent-conversation.cddl`\n- [ ] Review prose descriptions for accuracy and completeness\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
+      "createdAt": "2026-02-20T22:42:59Z",
+      "updatedAt": "2026-02-20T22:42:59Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "e9da35fcfcb5fc4f95dd7b770adba0ecc95dbbaa",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "add-data-definitions",
+      "headRefOid": "42e4a965e35ac10c1a79598494deef0a8bc899be",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
