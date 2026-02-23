@@ -27,6 +27,7 @@ author:
 normative:
   RFC4648: base64
   RFC5280: pkix
+  RFC6838:
   RFC7252: coap
   RFC7515: jws
   RFC7519: jwt
@@ -1200,5 +1201,96 @@ content-hash-alg:
 ~~~
 {: #fig-cddl-record artwork-align="left"
    title="CDDL definition of an Agent Conversation"}
+
+# IANA Considerations
+
+## Media Type
+
+IANA is requested to add "application/agent-conversation" as a new media type for Verifiable Agent Conversation Records to the "Media Types" registry {{!IANA.media-types}} in the Standards Tree {{RFC6838}}:
+
+| Name | Template | Reference |
+|----------------------|----------------------------------|-----------|
+| `agent-conversation` | `application/agent-conversation` | {{&SELF}} |
+{: #tbl-mt-reg title="Verifiable Agent Conversation Record Media Type"}
+
+Type name:
+: application
+
+Subtype name:
+: agent-conversation
+
+Required parameters:
+: N/A
+
+Optional parameters:
+: N/A
+
+Encoding considerations:
+: binary
+
+Security considerations:
+: See Security Considerations {secconsec}
+
+Interoperability considerations:
+: N/A
+
+Published specification:
+: {{&SELF}}
+
+Applications that use this media type:
+: Applications that need to describe AI agent conversation for verification and auditability.
+
+Fragment identifier considerations:
+: N/A
+
+Additional information:
+: Deprecated alias names for this type:
+  :  N/A
+
+  Magic number(s):
+  : N/A
+
+  File extension(s):
+  : acr
+
+  Macintosh file type code(s):
+  : N/A
+
+Person/email address to contact for further information:
+: TBD
+
+Intended usage:
+: COMMON
+
+Restriction on usage:
+: none
+
+Author:
+: See Author's Addresses section
+
+Change controller:
+: IETF
+
+Provisional registration:
+: no
+
+## CoAP Content Format
+
+IANA is requested to assign a Content-Format ID for Verifiable Agent Conversation Records in the "CoAP Content-Formats" registry, within the "Constrained RESTful Environments (CoRE) Parameters" registry group {{!IANA.core-parameters}}:
+
+| Content-Type | Content Coding | ID | Reference |
+|------------------|---|------|---------------------------|
+| application/agent-conversation | - | TBD1 | {{&SELF}} |
+{: #tbl-cf-reg title="Verifiable Agent Conversation Record Content Format"}
+
+If possible, TBD1 should be assigned in the 256...9999 range.
+
+## CBOR Tag
+
+IANA is requested to allocate a tag for Verifiable Agent Conversation Records in the "CBOR Tags" registry {{!IANA.cbor-tags}}, preferably with the specific value requested:
+
+| Tag  | Data Item | Semantics |
+| 4149 | binary | Verifiable Agent Conversation Records as defined in {{&SELF}} |
+{: #tbl-tag-reg title="Verifiable Agent Conversation Record CBOR Tag"}
 
 --- back
