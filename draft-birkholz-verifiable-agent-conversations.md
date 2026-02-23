@@ -55,7 +55,12 @@ entity:
 
 --- abstract
 
-Abstract
+Autonomous agents based on large language models increasingly perform consequential tasks on behalf of humans and other agents.
+Demonstrating that recorded agent behavior faithfully represents actual behavior is essential for accountability, compliance, and human oversight.
+This document defines a data format for verifiable agent conversation records using CDDL, with representations in both JSON and CBOR.
+The format captures session metadata, message exchanges, tool invocations, reasoning traces, and system events in a structured, extensible schema.
+A COSE_Sign1 signing envelope provides cryptographic integrity protection, enabling integration with IETF transparency services.
+The specification supports cross-vendor interoperability by defining a common representation that accommodates translation from multiple existing agent implementations with distinct native formats.
 
 --- middle
 
