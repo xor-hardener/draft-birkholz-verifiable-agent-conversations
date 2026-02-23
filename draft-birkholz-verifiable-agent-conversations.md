@@ -2,7 +2,7 @@
 v: 3
 
 title: "Verifiable Agent Conversations"
-abbrev: "RATS CMW"
+abbrev: "Verifiable ACRs"
 docname: draft-birkholz-verifiable-agent-conversations-latest
 category: std
 consensus: true
