@@ -23,10 +23,11 @@ Abstract
    agent conversation records using CDDL, with representations in both
    JSON and CBOR.  The format captures session metadata, message
    exchanges, tool invocations, reasoning traces, and system events in a
-   structured, extensible schema.  A COSE_Sign1 signing envelope
-   provides cryptographic integrity protection, enabling integration
-   with IETF transparency services.  The specification supports cross-
-   vendor interoperability by defining a common representation that
+   structured, extensible CDDL definition for verifiable agent
+   conversation records.  A COSE_Sign1 signing envelope provides
+   cryptographic integrity protection, enabling integration with IETF
+   transparency services.  The specification supports cross-vendor
+   interoperability by defining a common representation that
    accommodates translation from multiple existing agent implementations
    with distinct native formats.
 
