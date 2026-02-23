@@ -1602,7 +1602,7 @@ Implementations MUST:
 3. Limit resource consumption during parsing to prevent denial-of-service.
 
 The open extensibility (`* tstr => any`) in record types allows arbitrary additional fields.
-Implementations MUST NOT assume that unrecognized fields are safe to process or display.
+Fields that are not defined by this specification or by updates to this specification have to be either dismissed by implementations or processed with significant caution.
 
 ### Injection Attacks
 
