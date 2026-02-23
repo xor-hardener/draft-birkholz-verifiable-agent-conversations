@@ -2,6 +2,40 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-20: Data Structure Definitions Section
+
+Added a new `# Data Structure Definitions` section to the Internet-Draft body, following the
+RFC 9393 §2.3 pattern: CDDL fragment → brief prose → definition-list member descriptions.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Section pattern? | **RFC 9393 §2.3 style** | Henk's request: "as simple as RFC 9393". Each type gets: heading, CDDL fragment, 2-3 sentence description, kramdown definition list for members. |
+| 2 | JSON-only or integer indices? | **JSON-only (string keys)** | Per Henk's guidance. No integer index assignments. CBOR-optimized encoding deferred to future revision. |
+| 3 | Where to insert? | **Between compliance section and full CDDL include** | Separate PR on `add-data-definitions` branch. Natural reading order: requirements → type definitions → full schema. |
+
+### Content
+
+Source material: `docs/type-descriptions.md` (100% type coverage) reformatted into RFC 9393 style.
+
+Types documented (22 total):
+- **Common types** (3): `abstract-timestamp`, `session-id`, `entry-id` — brief definitions, no CDDL fragment
+- **Root type** (1): `verifiable-agent-record`
+- **Session types** (3): `session-trace`, `agent-meta`, `recording-agent`
+- **Environment types** (2): `environment`, `vcs-context`
+- **Entry types** (5): `message-entry`, `tool-call-entry`, `tool-result-entry`, `reasoning-entry`, `event-entry` — with union intro
+- **Token usage** (1): `token-usage`
+- **File attribution** (6): `file-attribution-record`, `file`, `conversation`, `range`, `contributor`, `resource` — with NOTE about unvalidated status
+- **Signing envelope** (2): `signed-agent-record`, `trace-metadata`
+
+### What was NOT included (per plan)
+
+- No integer index assignments (JSON-only per Henk)
+- No IANA registry references (not yet)
+- No CDDL sockets discussion
+- No Field Naming Convention section (tooling docs, not I-D body)
+
 ## 2026-02-20: End-to-End Signing Validation & SCITT Conformance
 
 PR #16 (`scitt-ready` branch) restructured the CDDL signing envelope (Section 9) for SCITT
