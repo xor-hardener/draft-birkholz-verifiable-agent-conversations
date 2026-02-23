@@ -69,7 +69,7 @@ In agentic AI systems, machine actors interact with other machine actors.
 The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
-These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts (CoT) of autonomous agents, retroactively (i.e., accountability and auditability after the fact).
 
 The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
 
@@ -77,28 +77,36 @@ For example:
 
 *  An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.
 
-*  An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.
+*  An agent's visible CoT output might diverge from the reasoning that actually produced its actions.
 
 *  An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.
 
-This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
-The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
-The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
-The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture {{-rats-arch}}.
-The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture {{-scitt-arch}}.
-The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
-The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
-The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
+This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody (CoC) is possible.
+
+This document defines verifiable records of agent conversations as a building block towards seven dedicated goals:
+
+1. The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
+2. The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
+3. The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture {{-rats-arch}}.
+4. The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture {{-scitt-arch}}.
+5. The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
+6. The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
+7. The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
 
 Most agent conversations today are represented in "human-readable" text formats.
 For example, {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
 The Concise Binary Object Representation (CBOR {{STD94}}) is used as the primary representation next to the established representation that is JSON.
 
+In this version of the document the signing portion of JSON content is done via {{STD90}}.
+Using {{STD90}} enables interoperability with Transparency Services specified by the IETF {{-scitt-arch}} and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.
+
+Note: further improvements in support of in-memory processing, further compacting human-readable text strings, and using CBOR as an alternative representation for verifiable records of agent conversations will follow.
+
 ## Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-In this document, CDDL {{-cddl}} is used to describe the data formats.
+In this document, CDDL {{-cddl}} is used to describe the data formats of agent conversations for JSON and CBOR (with no optimization for CBOR, currently).
 
 The reader is assumed to be familiar with the vocabulary and concepts defined in {{-rats-arch}} and {{-scitt-arch}}.
 
@@ -127,12 +135,13 @@ The following frameworks were analyzed for their requirements on AI agent tracea
 
 ## Common Requirements Intersection
 
-Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
-These represent the minimum baseline that verifiable agent conversation records MUST support.
+The analysis of the frameworks listed above results in eleven categories of requirements that appear across ALL or MOST frameworks.
+These categories frame and represent a minimum baseline that verifiable agent conversation records MUST support.
 
 ### REQ-1: Automatic Event Logging
 
 All frameworks require automatic, system-generated logging of events without reliance on manual recording.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -149,7 +158,8 @@ Each `entry` represents a discrete, system-recorded event with structured metada
 
 ### REQ-2: Timestamp Requirements
 
-All frameworks require precise temporal information for each logged event.
+Most frameworks require precise temporal information for each logged event.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -163,7 +173,8 @@ The `timestamp` field in each entry uses `abstract-timestamp` which accepts both
 
 ### REQ-3: Actor Identification
 
-All frameworks require attribution of actions to identifiable actors (human or system).
+Most frameworks require some attribution of actions to identifiable actors (human or system).
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -179,6 +190,7 @@ Session-level `agent-meta` identifies the AI system.
 ### REQ-4: Action/Event Type Recording
 
 All frameworks require recording of what action or event occurred.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -192,7 +204,8 @@ The `type` field in each entry discriminates event types: `user`, `assistant`, `
 
 ### REQ-5: Input/Output Recording (AI-Specific)
 
-AI-specific frameworks require recording of inputs (prompts) and outputs (responses).
+All AI-specific frameworks require recording of inputs (prompts) and outputs (responses).
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -212,6 +225,7 @@ Mapping to this specification:
 ### REQ-6: Retention Period Requirements
 
 Most frameworks specify minimum retention periods for audit logs.
+Explicit requirements are listed as follows:
 
 | Framework | Minimum Retention |
 |-----------|-------------------|
@@ -225,7 +239,8 @@ Implementations SHOULD retain verifiable agent conversation records for at least
 
 ### REQ-7: Tamper-Evidence and Integrity Protection
 
-All frameworks require protection against unauthorized modification of logs.
+All frameworks require some protection against unauthorized modification of logs.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -240,7 +255,8 @@ The `content-hash` field in `trace-metadata` enables verification of payload int
 
 ### REQ-8: Incident Response Support
 
-All frameworks require logs to support incident investigation and response.
+All frameworks require some logs to support incident investigation and response.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -254,7 +270,8 @@ The structured format enables rapid extraction of relevant entries by timestamp 
 
 ### REQ-9: Anomaly and Risk Detection Support
 
-Frameworks require logs to enable detection of anomalous or risky behavior.
+All frameworks require some logs to enable detection of anomalous or risky behavior.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -273,7 +290,8 @@ The standardized entry types and structured `tool-call`/`tool-result` pairs enab
 
 ### REQ-10: Human Oversight Enablement
 
-AI-specific frameworks require logs to support human review and oversight.
+All AI-specific frameworks require logs to support human review and oversight.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -288,7 +306,8 @@ The hierarchical `children` field preserves conversation structure.
 
 ### REQ-11: Traceability and Reproducibility
 
-All frameworks require the ability to trace system behavior and reconstruct events.
+All frameworks require some ability to trace system behavior and reconstruct events.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
