@@ -30,7 +30,8 @@ Abstract
    specified in RFC 9334.  The specification supports cross-vendor
    interoperability by defining a common representation that
    accommodates translation from multiple existing agent implementations
-   with distinct native formats.
+   with distinct data structure layouts that are typically represented
+   in JSON.
 
 Discussion Venues
 
