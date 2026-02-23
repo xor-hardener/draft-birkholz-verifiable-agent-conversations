@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 24 August 2026</td>
+<td class="center">Expires 27 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-birkholz-verifiable-agent-conversations-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-02-20" class="published">20 February 2026</time>
+<time datetime="2026-02-23" class="published">23 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-08-24">24 August 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-27">27 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1360,7 +1360,7 @@ In agentic AI systems, machine actors interact with other machine actors.
 The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
-These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).<a href="#section-1-1" class="pilcrow">¶</a></p>
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts (CoT) of autonomous agents, retroactively (i.e., accountability and auditability after the fact).<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">For example:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1368,23 +1368,43 @@ These increasingly complex interactions between multiple actors that can also be
           <p id="section-1-4.1.1">An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.2">
-          <p id="section-1-4.2.1">An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-4.2.1">An agent's visible CoT output might diverge from the reasoning that actually produced its actions.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.3">
           <p id="section-1-4.3.1">An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-5">This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
-The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
-The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
-The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>.
-The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.
-The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
-The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
-The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">Most agent conversations today are represented in "human-readable" text formats.
+<p id="section-1-5">This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody (CoC) is possible.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">This document defines verifiable records of agent conversations as a building block towards seven dedicated goals:<a href="#section-1-6" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-1-7">
+<li id="section-1-7.1">
+          <p id="section-1-7.1.1">The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.<a href="#section-1-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.2">
+          <p id="section-1-7.2.1">The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.<a href="#section-1-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.3">
+          <p id="section-1-7.3.1">The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>.<a href="#section-1-7.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.4">
+          <p id="section-1-7.4.1">The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-1-7.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.5">
+          <p id="section-1-7.5.1">The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.<a href="#section-1-7.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.6">
+          <p id="section-1-7.6.1">The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.<a href="#section-1-7.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-7.7">
+          <p id="section-1-7.7.1">The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.<a href="#section-1-7.7.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+<p id="section-1-8">Most agent conversations today are represented in "human-readable" text formats.
 For example, <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-6" class="pilcrow">¶</a></p>
+The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">In this version of the document the signing portion of JSON content is done via <span>[<a href="#STD90" class="cite xref">STD90</a>]</span>.
+Using <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> enables interoperability with Transparency Services specified by the IETF <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span> and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-10">Note: further improvements in support of in-memory processing, further compacting human-readable text strings, and using CBOR as an alternative representation for verifiable records of agent conversations will follow.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <div id="conventions-and-definitions">
 <section id="section-1.1">
         <h3 id="name-conventions-and-definitions">
@@ -1394,7 +1414,7 @@ The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="ci
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
-<p id="section-1.1-2">In this document, CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> is used to describe the data formats.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">In this document, CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> is used to describe the data formats of agent conversations for JSON and CBOR (with no optimization for CBOR, currently).<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">The reader is assumed to be familiar with the vocabulary and concepts defined in <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> and <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1499,14 +1519,15 @@ The verifiable agent conversation format defined in this document addresses thes
         <h3 id="name-common-requirements-interse">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-common-requirements-interse" class="section-name selfRef">Common Requirements Intersection</a>
         </h3>
-<p id="section-2.2-1">Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
-These represent the minimum baseline that verifiable agent conversation records <span class="bcp14">MUST</span> support.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">The analysis of the frameworks listed above results in eleven categories of requirements that appear across ALL or MOST frameworks.
+These categories frame and represent a minimum baseline that verifiable agent conversation records <span class="bcp14">MUST</span> support.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <div id="req-1-automatic-event-logging">
 <section id="section-2.2.1">
           <h4 id="name-req-1-automatic-event-loggi">
 <a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-req-1-automatic-event-loggi" class="section-name selfRef">REQ-1: Automatic Event Logging</a>
           </h4>
-<p id="section-2.2.1-1">All frameworks require automatic, system-generated logging of events without reliance on manual recording.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">All frameworks require automatic, system-generated logging of events without reliance on manual recording.
+Explicit requirements are listed as follows:<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
             <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -1552,7 +1573,8 @@ Each <code>entry</code> represents a discrete, system-recorded event with struct
           <h4 id="name-req-2-timestamp-requirement">
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-req-2-timestamp-requirement" class="section-name selfRef">REQ-2: Timestamp Requirements</a>
           </h4>
-<p id="section-2.2.2-1">All frameworks require precise temporal information for each logged event.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-1">Most frameworks require precise temporal information for each logged event.
+Explicit requirements are listed as follows:<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-3">
             <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
 <thead>
@@ -1589,7 +1611,8 @@ The <code>timestamp</code> field in each entry uses <code>abstract-timestamp</co
           <h4 id="name-req-3-actor-identification">
 <a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-req-3-actor-identification" class="section-name selfRef">REQ-3: Actor Identification</a>
           </h4>
-<p id="section-2.2.3-1">All frameworks require attribution of actions to identifiable actors (human or system).<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-1">Most frameworks require some attribution of actions to identifiable actors (human or system).
+Explicit requirements are listed as follows:<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-4">
             <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>
@@ -1627,7 +1650,8 @@ Session-level <code>agent-meta</code> identifies the AI system.<a href="#section
           <h4 id="name-req-4-action-event-type-rec">
 <a href="#section-2.2.4" class="section-number selfRef">2.2.4. </a><a href="#name-req-4-action-event-type-rec" class="section-name selfRef">REQ-4: Action/Event Type Recording</a>
           </h4>
-<p id="section-2.2.4-1">All frameworks require recording of what action or event occurred.<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-1">All frameworks require recording of what action or event occurred.
+Explicit requirements are listed as follows:<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-5">
             <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
 <thead>
@@ -1664,7 +1688,8 @@ The <code>type</code> field in each entry discriminates event types: <code>user<
           <h4 id="name-req-5-input-output-recordin">
 <a href="#section-2.2.5" class="section-number selfRef">2.2.5. </a><a href="#name-req-5-input-output-recordin" class="section-name selfRef">REQ-5: Input/Output Recording (AI-Specific)</a>
           </h4>
-<p id="section-2.2.5-1">AI-specific frameworks require recording of inputs (prompts) and outputs (responses).<a href="#section-2.2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.5-1">All AI-specific frameworks require recording of inputs (prompts) and outputs (responses).
+Explicit requirements are listed as follows:<a href="#section-2.2.5-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-6">
             <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
 <thead>
@@ -1717,7 +1742,8 @@ The <code>type</code> field in each entry discriminates event types: <code>user<
           <h4 id="name-req-6-retention-period-requ">
 <a href="#section-2.2.6" class="section-number selfRef">2.2.6. </a><a href="#name-req-6-retention-period-requ" class="section-name selfRef">REQ-6: Retention Period Requirements</a>
           </h4>
-<p id="section-2.2.6-1">Most frameworks specify minimum retention periods for audit logs.<a href="#section-2.2.6-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.6-1">Most frameworks specify minimum retention periods for audit logs.
+Explicit requirements are listed as follows:<a href="#section-2.2.6-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-7">
             <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
 <thead>
@@ -1754,7 +1780,8 @@ Implementations <span class="bcp14">SHOULD</span> retain verifiable agent conver
           <h4 id="name-req-7-tamper-evidence-and-i">
 <a href="#section-2.2.7" class="section-number selfRef">2.2.7. </a><a href="#name-req-7-tamper-evidence-and-i" class="section-name selfRef">REQ-7: Tamper-Evidence and Integrity Protection</a>
           </h4>
-<p id="section-2.2.7-1">All frameworks require protection against unauthorized modification of logs.<a href="#section-2.2.7-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.7-1">All frameworks require some protection against unauthorized modification of logs.
+Explicit requirements are listed as follows:<a href="#section-2.2.7-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-8">
             <caption><a href="#table-8" class="selfRef">Table 8</a></caption>
 <thead>
@@ -1792,7 +1819,8 @@ The <code>content-hash</code> field in <code>trace-metadata</code> enables verif
           <h4 id="name-req-8-incident-response-sup">
 <a href="#section-2.2.8" class="section-number selfRef">2.2.8. </a><a href="#name-req-8-incident-response-sup" class="section-name selfRef">REQ-8: Incident Response Support</a>
           </h4>
-<p id="section-2.2.8-1">All frameworks require logs to support incident investigation and response.<a href="#section-2.2.8-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.8-1">All frameworks require some logs to support incident investigation and response.
+Explicit requirements are listed as follows:<a href="#section-2.2.8-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-9">
             <caption><a href="#table-9" class="selfRef">Table 9</a></caption>
 <thead>
@@ -1829,7 +1857,8 @@ The structured format enables rapid extraction of relevant entries by timestamp 
           <h4 id="name-req-9-anomaly-and-risk-dete">
 <a href="#section-2.2.9" class="section-number selfRef">2.2.9. </a><a href="#name-req-9-anomaly-and-risk-dete" class="section-name selfRef">REQ-9: Anomaly and Risk Detection Support</a>
           </h4>
-<p id="section-2.2.9-1">Frameworks require logs to enable detection of anomalous or risky behavior.<a href="#section-2.2.9-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.9-1">All frameworks require some logs to enable detection of anomalous or risky behavior.
+Explicit requirements are listed as follows:<a href="#section-2.2.9-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-10">
             <caption><a href="#table-10" class="selfRef">Table 10</a></caption>
 <thead>
@@ -1880,7 +1909,8 @@ The standardized entry types and structured <code>tool-call</code>/<code>tool-re
           <h4 id="name-req-10-human-oversight-enab">
 <a href="#section-2.2.10" class="section-number selfRef">2.2.10. </a><a href="#name-req-10-human-oversight-enab" class="section-name selfRef">REQ-10: Human Oversight Enablement</a>
           </h4>
-<p id="section-2.2.10-1">AI-specific frameworks require logs to support human review and oversight.<a href="#section-2.2.10-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.10-1">All AI-specific frameworks require logs to support human review and oversight.
+Explicit requirements are listed as follows:<a href="#section-2.2.10-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-11">
             <caption><a href="#table-11" class="selfRef">Table 11</a></caption>
 <thead>
@@ -1918,7 +1948,8 @@ The hierarchical <code>children</code> field preserves conversation structure.<a
           <h4 id="name-req-11-traceability-and-rep">
 <a href="#section-2.2.11" class="section-number selfRef">2.2.11. </a><a href="#name-req-11-traceability-and-rep" class="section-name selfRef">REQ-11: Traceability and Reproducibility</a>
           </h4>
-<p id="section-2.2.11-1">All frameworks require the ability to trace system behavior and reconstruct events.<a href="#section-2.2.11-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.11-1">All frameworks require some ability to trace system behavior and reconstruct events.
+Explicit requirements are listed as follows:<a href="#section-2.2.11-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-12">
             <caption><a href="#table-12" class="selfRef">Table 12</a></caption>
 <thead>
