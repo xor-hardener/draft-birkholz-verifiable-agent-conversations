@@ -1222,7 +1222,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-compliance-mapping-table" class="internal xref">Compliance Mapping Table</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
-                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-security-considerations-for" class="internal xref">Security Considerations for Compliance</a></p>
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-security-requirements-addre" class="internal xref">Security Requirements addressing Regulatory Compliance</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
                     <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-log-integrity" class="internal xref">Log Integrity</a></p>
@@ -1327,7 +1327,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-cddl-definition-for-generic" class="internal xref">CDDL Definition for generic Agent Conversations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-collated-cddl-definition-fo" class="internal xref">Collated CDDL Definition for generic Agent Conversations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-references" class="internal xref">References</a></p>
@@ -2012,7 +2012,7 @@ Explicit requirements are listed as follows:<a href="#section-2.2.11-1" class="p
 <p id="section-2.3.1-1">For AI systems classified as high-risk under Annex III, additional requirements apply:<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-2.3.1-2">
 <li id="section-2.3.1-2.1">
-              <p id="section-2.3.1-2.1.1"><strong>Biometric identification systems</strong> (Annex III, 1(a)) require logging of:<a href="#section-2.3.1-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-2.3.1-2.1.1">Biometric identification systems (Annex III, 1(a)) require logging of:<a href="#section-2.3.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.3.1-2.1.2.1">
                   <p id="section-2.3.1-2.1.2.1.1">Precise timestamps for start/end of each usage session<a href="#section-2.3.1-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2029,10 +2029,10 @@ Explicit requirements are listed as follows:<a href="#section-2.2.11-1" class="p
               </ul>
 </li>
             <li id="section-2.3.1-2.2">
-              <p id="section-2.3.1-2.2.1"><strong>Log retention</strong>: Minimum 6 months; financial services may require longer per sector-specific regulation.<a href="#section-2.3.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.3.1-2.2.1">Log retention: Minimum 6 months; financial services may require longer per sector-specific regulation.<a href="#section-2.3.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-2.3.1-2.3">
-              <p id="section-2.3.1-2.3.1"><strong>Authority access</strong>: Art. 19 requires provision of logs to competent authorities upon reasoned request.<a href="#section-2.3.1-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-2.3.1-2.3.1">Authority Access: Art. 19 requires provision of logs to competent authorities upon reasoned request.<a href="#section-2.3.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
 </section>
@@ -2099,25 +2099,21 @@ Explicit requirements are listed as follows:<a href="#section-2.2.11-1" class="p
           <h4 id="name-pci-dss-v40-ai-specific-gui">
 <a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-pci-dss-v40-ai-specific-gui" class="section-name selfRef">PCI DSS v4.0 AI-Specific Guidance</a>
           </h4>
-<p id="section-2.3.3-1">The PCI Security Standards Council has published guidance on AI in payment environments:<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-2.3.3-2.1">
-              <p id="section-2.3.3-2.1.1">"Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."<a href="#section-2.3.3-2.1.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-2.3.3-3">This specification directly addresses this requirement through:<a href="#section-2.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3.3-1">The PCI Security Standards Council has published guidance on AI in payment environments:
+"Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.3-2">This specification directly addresses this requirement through:<a href="#section-2.3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.3.3-4.1">
-              <p id="section-2.3.3-4.1.1"><code>message-entry</code> (type: "user"): Captures prompt inputs<a href="#section-2.3.3-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.3.3-3.1">
+              <p id="section-2.3.3-3.1.1"><code>message-entry</code> (type: "user"): Captures prompt inputs<a href="#section-2.3.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.3.3-4.2">
-              <p id="section-2.3.3-4.2.1"><code>reasoning-entry</code>: Captures chain-of-thought (where available)<a href="#section-2.3.3-4.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.3.3-3.2">
+              <p id="section-2.3.3-3.2.1"><code>reasoning-entry</code>: Captures chain-of-thought (where available)<a href="#section-2.3.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.3.3-4.3">
-              <p id="section-2.3.3-4.3.1"><code>message-entry</code> (type: "assistant"): Captures model outputs<a href="#section-2.3.3-4.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.3.3-3.3">
+              <p id="section-2.3.3-3.3.1"><code>message-entry</code> (type: "assistant"): Captures model outputs<a href="#section-2.3.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.3.3-4.4">
-              <p id="section-2.3.3-4.4.1"><code>tool-call-entry</code> / <code>tool-result-entry</code>: Captures agentic actions<a href="#section-2.3.3-4.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.3.3-3.4">
+              <p id="section-2.3.3-3.4.1"><code>tool-call-entry</code> / <code>tool-result-entry</code>: Captures agentic actions<a href="#section-2.3.3-3.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2304,10 +2300,10 @@ Explicit requirements are listed as follows:<a href="#section-2.2.11-1" class="p
         </table>
 </section>
 </div>
-<div id="security-considerations-for-compliance">
+<div id="security-requirements-addressing-regulatory-compliance">
 <section id="section-2.5">
-        <h3 id="name-security-considerations-for">
-<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-security-considerations-for" class="section-name selfRef">Security Considerations for Compliance</a>
+        <h3 id="name-security-requirements-addre">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-security-requirements-addre" class="section-name selfRef">Security Requirements addressing Regulatory Compliance</a>
         </h3>
 <div id="log-integrity">
 <section id="section-2.5.1">
@@ -2433,14 +2429,14 @@ Implementations <span class="bcp14">SHOULD</span>:<a href="#section-2.5.1-1" cla
       <h2 id="name-data-structure-definitions">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-data-structure-definitions" class="section-name selfRef">Data Structure Definitions</a>
       </h2>
-<p id="section-3-1">This section defines each data type in the verifiable agent conversation schema.
-Each subsection presents the CDDL fragment for one type, a brief description, and per-member documentation.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">This section defines each complex data type in the verifiable agent conversation CDDL data definition.
+Each subsection presents a CDDL fragment for one type, a brief description, and per-member documentation.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="common-types">
 <section id="section-3.1">
         <h3 id="name-common-types">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-common-types" class="section-name selfRef">Common Types</a>
         </h3>
-<p id="section-3.1-1">The schema uses the following type aliases throughout.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The schema uses the following generic type definitions throughout.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.1-2">
           <dt id="section-3.1-2.1">abstract-timestamp:</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-2.2">
@@ -2467,7 +2463,7 @@ Values may be UUID v4, UUID v7, SHA-256 hashes, or other formats.<a href="#secti
         <h3 id="name-the-verifiable-agent-record">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-the-verifiable-agent-record" class="section-name selfRef">The verifiable-agent-record Map</a>
         </h3>
-<p id="section-3.2-1">The CDDL for the verifiable-agent-record map is as follows:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">The CDDL definition for the <code>verifiable-agent-record</code> map is specified as follows:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.2-2">
 <pre>
 verifiable-agent-record = {
@@ -2482,7 +2478,7 @@ verifiable-agent-record = {
 }
 </pre><a href="#section-3.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-3">The verifiable-agent-record is the top-level container for all data produced by or about an agent conversation.
+<p id="section-3.2-3">The <code>verifiable-agent-record</code> is the top-level container for all data produced by or about an agent conversation.
 It unifies two complementary perspectives: the session trace captures how code was produced (the full conversation replay), while file attribution captures what code was produced (which files were modified and by whom).<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.2-4">The following describes each member of this map.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.2-5">
@@ -2532,7 +2528,7 @@ Distinct from session timestamps, which record when the conversation occurred.<a
         <h3 id="name-the-session-trace-map">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-the-session-trace-map" class="section-name selfRef">The session-trace Map</a>
         </h3>
-<p id="section-3.3-1">The CDDL for the session-trace map is as follows:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">The CDDL definition for the <code>session-trace</code> map is specified as follows:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.3-2">
 <pre>
 session-trace = {
@@ -2547,9 +2543,9 @@ session-trace = {
 }
 </pre><a href="#section-3.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.3-3">A session-trace captures the full conversation between a user and an autonomous agent.
+<p id="section-3.3-3">A <code>session-trace</code> captures the full conversation between a user and an autonomous agent.
 It contains an ordered array of entries representing messages, tool invocations, reasoning steps, and system events.
-The trace preserves the complete interaction history including all native agent metadata, enabling both replay and audit of the conversation.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+The <code>session-trace</code> preserves the complete interaction history including all native agent metadata, enabling both replay and audit of the conversation.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3-4">The following describes each member of this map.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.3-5">
           <dt id="section-3.3-5.1">format:</dt>
@@ -2580,12 +2576,12 @@ Informative only; does not change the structure.<a href="#section-3.3-5.2.1" cla
           <dd class="break"></dd>
 <dt id="section-3.3-5.11">environment:</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-5.12">
-            <p id="section-3.3-5.12.1">Execution environment context such as working directory and version control state.<a href="#section-3.3-5.12.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.12.1">Execution environment context, such as working directory and version control state.<a href="#section-3.3-5.12.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-3.3-5.13">entries:</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-5.14">
-            <p id="section-3.3-5.14.1">The ordered array of conversation entries.<a href="#section-3.3-5.14.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.14.1">An ordered array of conversation entries.<a href="#section-3.3-5.14.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -2596,7 +2592,7 @@ Informative only; does not change the structure.<a href="#section-3.3-5.2.1" cla
         <h3 id="name-the-agent-meta-map">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-the-agent-meta-map" class="section-name selfRef">The agent-meta Map</a>
         </h3>
-<p id="section-3.4-1">The CDDL for the agent-meta map is as follows:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">The CDDL definition for the <code>agent-meta</code> map is specified as follows:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.4-2">
 <pre>
 agent-meta = {
@@ -2609,7 +2605,7 @@ agent-meta = {
 }
 </pre><a href="#section-3.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.4-3">The agent-meta type identifies the coding agent and language model used during a conversation session.
+<p id="section-3.4-3">The <code>agent-meta</code> type identifies the coding agent and language model used during a conversation session.
 Agent identification is essential for provenance tracking: knowing which model produced which output enables auditing, capability assessment, and compliance verification.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 <p id="section-3.4-4">The following describes each member of this map.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.4-5">
@@ -2647,7 +2643,7 @@ Relevant for multi-model sessions where the agent switches between models.<a hre
         <h3 id="name-the-recording-agent-map">
 <a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-the-recording-agent-map" class="section-name selfRef">The recording-agent Map</a>
         </h3>
-<p id="section-3.5-1">The CDDL for the recording-agent map is as follows:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">The CDDL definition for the <code>recording-agent</code> map is specified as follows:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.5-2">
 <pre>
 recording-agent = {
@@ -2657,8 +2653,8 @@ recording-agent = {
 }
 </pre><a href="#section-3.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.5-3">The recording-agent identifies the tool that generated this verifiable agent record, as distinct from the agent that conducted the conversation.
-This distinction matters for provenance chains: the recording tool's version affects how native data is translated into the canonical schema.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-3">The <code>recording-agent</code> map identifies the tool that generated this verifiable agent record, as distinct from the agent that conducted the conversation.
+This distinction matters for provenance chains: the recording tool's version affects how native data is translated into the canonical CDDL data definition specified in this document.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 <p id="section-3.5-4">The following describes each member of this map.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.5-5">
           <dt id="section-3.5-5.1">name:</dt>
@@ -2679,7 +2675,7 @@ This distinction matters for provenance chains: the recording tool's version aff
         <h3 id="name-the-environment-map">
 <a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-the-environment-map" class="section-name selfRef">The environment Map</a>
         </h3>
-<p id="section-3.6-1">The CDDL for the environment map is as follows:<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-1">The CDDL definition for the environment map is specified as follows:<a href="#section-3.6-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.6-2">
 <pre>
 environment = {
@@ -2690,7 +2686,7 @@ environment = {
 }
 </pre><a href="#section-3.6-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.6-3">The environment type captures execution context for the conversation: where the agent was running, what version control state was active, and whether sandboxing was in effect.
+<p id="section-3.6-3">The <code>environment</code> type captures execution context for the conversation: where the agent was running, what version control state was active, and whether sandboxing was in effect.
 This context is important for reproducibility and for understanding the scope of file modifications.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
 <p id="section-3.6-4">The following describes each member of this map.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.6-5">
@@ -2719,7 +2715,7 @@ Some agents run in sandboxed environments where the working directory is a tempo
         <h3 id="name-the-vcs-context-map">
 <a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-the-vcs-context-map" class="section-name selfRef">The vcs-context Map</a>
         </h3>
-<p id="section-3.7-1">The CDDL for the vcs-context map is as follows:<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-1">The CDDL definition for the vcs-context map is specified as follows:<a href="#section-3.7-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.7-2">
 <pre>
 vcs-context = {
@@ -2763,7 +2759,7 @@ Knowing the exact repository, branch, and commit at the time of a conversation e
         <h3 id="name-entry-types">
 <a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-entry-types" class="section-name selfRef">Entry Types</a>
         </h3>
-<p id="section-3.8-1">The schema defines five entry types representing the different kinds of events in an agent conversation.
+<p id="section-3.8-1">The CDDL definition specifies five <code>entry</code> types representing the different kinds of events in an agent conversation.
 Each type uses a <code>type</code> field as the discriminator.
 All entry types support optional <code>children</code> for hierarchical nesting and <code>* tstr =&gt; any</code> for preserving native agent fields that do not map to canonical fields.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8-2">
@@ -2780,7 +2776,7 @@ entry = message-entry
           <h4 id="name-the-message-entry-map">
 <a href="#section-3.8.1" class="section-number selfRef">3.8.1. </a><a href="#name-the-message-entry-map" class="section-name selfRef">The message-entry Map</a>
           </h4>
-<p id="section-3.8.1-1">The CDDL for the message-entry map is as follows:<a href="#section-3.8.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.8.1-1">The CDDL definition for the <code>message-entry</code> map is specified as follows:<a href="#section-3.8.1-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8.1-2">
 <pre>
 message-entry = {
@@ -2796,7 +2792,7 @@ message-entry = {
 }
 </pre><a href="#section-3.8.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8.1-3">A message-entry represents a conversational turn: either human input (type: "user") or agent response (type: "assistant").
+<p id="section-3.8.1-3">A <code>message-entry</code> represents a conversational turn: either human input (type: "user") or agent response (type: "assistant").
 This is the most common entry type, carrying the primary dialogue content of a session.
 For assistant messages, additional metadata may be present: the model that generated the response and token usage statistics.<a href="#section-3.8.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.8.1-4">The following describes each member of this map.<a href="#section-3.8.1-4" class="pilcrow">¶</a></p>
@@ -2853,7 +2849,7 @@ Used when the native format embeds tool calls or reasoning blocks inside an assi
           <h4 id="name-the-tool-call-entry-map">
 <a href="#section-3.8.2" class="section-number selfRef">3.8.2. </a><a href="#name-the-tool-call-entry-map" class="section-name selfRef">The tool-call-entry Map</a>
           </h4>
-<p id="section-3.8.2-1">The CDDL for the tool-call-entry map is as follows:<a href="#section-3.8.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.8.2-1">The CDDL definition for the <code>tool-call-entry</code> map is specified as follows:<a href="#section-3.8.2-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8.2-2">
 <pre>
 tool-call-entry = {
@@ -2868,8 +2864,8 @@ tool-call-entry = {
 }
 </pre><a href="#section-3.8.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8.2-3">A tool-call-entry represents a tool invocation: which tool was called and with what arguments.
-Tool calls are central to agent conversation records because tool use is the primary mechanism by which agents interact with the external environment.<a href="#section-3.8.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.8.2-3">A <code>tool-call-entry</code> represents a tool invocation: which tool was called and with what arguments.
+Tool calls are central to agent conversation records because tool use is the primary mechanism by which agents interact with external environment.<a href="#section-3.8.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.8.2-4">The following describes each member of this map.<a href="#section-3.8.2-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.8.2-5">
             <dt id="section-3.8.2-5.1">type:</dt>
@@ -2915,7 +2911,7 @@ Tool calls are central to agent conversation records because tool use is the pri
           <h4 id="name-the-tool-result-entry-map">
 <a href="#section-3.8.3" class="section-number selfRef">3.8.3. </a><a href="#name-the-tool-result-entry-map" class="section-name selfRef">The tool-result-entry Map</a>
           </h4>
-<p id="section-3.8.3-1">The CDDL for the tool-result-entry map is as follows:<a href="#section-3.8.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.8.3-1">The CDDL definition for the <code>tool-result-entry</code> map is specified as follows:<a href="#section-3.8.3-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8.3-2">
 <pre>
 tool-result-entry = {
@@ -2931,8 +2927,8 @@ tool-result-entry = {
 }
 </pre><a href="#section-3.8.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8.3-3">A tool-result-entry represents the output returned by a tool after execution.
-It is linked to its corresponding tool-call-entry via the call-id field.
+<p id="section-3.8.3-3">A <code>tool-result-entry</code> represents the output returned by a tool after execution.
+It is linked to its corresponding tool-call-entry via the <code>call-id</code> field.
 The result carries the tool's response data and optional status metadata indicating success or failure.<a href="#section-3.8.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.8.3-4">The following describes each member of this map.<a href="#section-3.8.3-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.8.3-5">
@@ -2984,7 +2980,7 @@ The result carries the tool's response data and optional status metadata indicat
           <h4 id="name-the-reasoning-entry-map">
 <a href="#section-3.8.4" class="section-number selfRef">3.8.4. </a><a href="#name-the-reasoning-entry-map" class="section-name selfRef">The reasoning-entry Map</a>
           </h4>
-<p id="section-3.8.4-1">The CDDL for the reasoning-entry map is as follows:<a href="#section-3.8.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.8.4-1">The CDDL definition for the <code>reasoning-entry</code> map is specified as follows:<a href="#section-3.8.4-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8.4-2">
 <pre>
 reasoning-entry = {
@@ -2999,7 +2995,7 @@ reasoning-entry = {
 }
 </pre><a href="#section-3.8.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8.4-3">A reasoning-entry captures chain-of-thought, thinking, or internal reasoning content from the agent.
+<p id="section-3.8.4-3">A reasoning-entry captures CoT, thinking, or internal reasoning content from the agent.
 Not all agents expose reasoning traces; when they do, the content may be plaintext, structured blocks, or encrypted.
 Reasoning entries are valuable for auditing decision-making processes and understanding why an agent took particular actions.<a href="#section-3.8.4-3" class="pilcrow">¶</a></p>
 <p id="section-3.8.4-4">The following describes each member of this map.<a href="#section-3.8.4-4" class="pilcrow">¶</a></p>
@@ -3049,7 +3045,7 @@ Used where the model provider encrypts chain-of-thought output.<a href="#section
           <h4 id="name-the-event-entry-map">
 <a href="#section-3.8.5" class="section-number selfRef">3.8.5. </a><a href="#name-the-event-entry-map" class="section-name selfRef">The event-entry Map</a>
           </h4>
-<p id="section-3.8.5-1">The CDDL for the event-entry map is as follows:<a href="#section-3.8.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.8.5-1">The CDDL definition for the <code>event-entry</code> map is specified as follows:<a href="#section-3.8.5-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.8.5-2">
 <pre>
 event-entry = {
@@ -3063,7 +3059,7 @@ event-entry = {
 }
 </pre><a href="#section-3.8.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8.5-3">An event-entry records system lifecycle events that are not part of the conversation dialogue but are relevant for understanding the session context.
+<p id="section-3.8.5-3">An <code>event-entry</code> records system lifecycle events that are not part of the conversation dialogue but are relevant for understanding the session context.
 Examples include session start/end markers, token usage summaries, permission changes, and configuration events.<a href="#section-3.8.5-3" class="pilcrow">¶</a></p>
 <p id="section-3.8.5-4">The following describes each member of this map.<a href="#section-3.8.5-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.8.5-5">
@@ -3109,7 +3105,7 @@ The structure varies by event type.<a href="#section-3.8.5-5.6.1" class="pilcrow
         <h3 id="name-the-token-usage-map">
 <a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-the-token-usage-map" class="section-name selfRef">The token-usage Map</a>
         </h3>
-<p id="section-3.9-1">The CDDL for the token-usage map is as follows:<a href="#section-3.9-1" class="pilcrow">¶</a></p>
+<p id="section-3.9-1">The CDDL definition for the <code>token-usage</code> map is specified as follows:<a href="#section-3.9-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.9-2">
 <pre>
 token-usage = {
@@ -3123,39 +3119,40 @@ token-usage = {
 }
 </pre><a href="#section-3.9-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.9-3">The token-usage type captures token consumption metrics for a model response.
+<p id="section-3.9-3">The <code>token-usage</code> type captures token consumption metrics for a model response.
 Token usage data is essential for cost tracking, quota management, and understanding model behavior.
 All fields are optional because different agents report different subsets of token metrics.<a href="#section-3.9-3" class="pilcrow">¶</a></p>
-<p id="section-3.9-4">The following describes each member of this map.<a href="#section-3.9-4" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-3.9-5">
-          <dt id="section-3.9-5.1">input:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.2">
-            <p id="section-3.9-5.2.1">The number of input tokens consumed by this response.<a href="#section-3.9-5.2.1" class="pilcrow">¶</a></p>
+<p id="section-3.9-4">Editor's Note: add a non-empty generic here<a href="#section-3.9-4" class="pilcrow">¶</a></p>
+<p id="section-3.9-5">The following describes each member of this map.<a href="#section-3.9-5" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-3.9-6">
+          <dt id="section-3.9-6.1">input:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.2">
+            <p id="section-3.9-6.2.1">The number of input tokens consumed by this response.<a href="#section-3.9-6.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.9-5.3">output:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.4">
-            <p id="section-3.9-5.4.1">The number of output tokens generated.<a href="#section-3.9-5.4.1" class="pilcrow">¶</a></p>
+<dt id="section-3.9-6.3">output:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.4">
+            <p id="section-3.9-6.4.1">The number of output tokens generated.<a href="#section-3.9-6.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.9-5.5">cached:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.6">
-            <p id="section-3.9-5.6.1">The number of input tokens served from cache rather than reprocessed.<a href="#section-3.9-5.6.1" class="pilcrow">¶</a></p>
+<dt id="section-3.9-6.5">cached:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.6">
+            <p id="section-3.9-6.6.1">The number of input tokens served from cache rather than reprocessed.<a href="#section-3.9-6.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.9-5.7">reasoning:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.8">
-            <p id="section-3.9-5.8.1">Tokens consumed by chain-of-thought or reasoning computation.<a href="#section-3.9-5.8.1" class="pilcrow">¶</a></p>
+<dt id="section-3.9-6.7">reasoning:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.8">
+            <p id="section-3.9-6.8.1">Tokens consumed by chain-of-thought or reasoning computation.<a href="#section-3.9-6.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.9-5.9">total:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.10">
-            <p id="section-3.9-5.10.1">The total token count.<a href="#section-3.9-5.10.1" class="pilcrow">¶</a></p>
+<dt id="section-3.9-6.9">total:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.10">
+            <p id="section-3.9-6.10.1">The total token count.<a href="#section-3.9-6.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.9-5.11">cost:</dt>
-          <dd style="margin-left: 1.5em" id="section-3.9-5.12">
-            <p id="section-3.9-5.12.1">The monetary cost in US dollars for this response.<a href="#section-3.9-5.12.1" class="pilcrow">¶</a></p>
+<dt id="section-3.9-6.11">cost:</dt>
+          <dd style="margin-left: 1.5em" id="section-3.9-6.12">
+            <p id="section-3.9-6.12.1">The monetary cost in US dollars for this response.<a href="#section-3.9-6.12.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -3166,19 +3163,15 @@ All fields are optional because different agents report different subsets of tok
         <h3 id="name-file-attribution-types">
 <a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-file-attribution-types" class="section-name selfRef">File Attribution Types</a>
         </h3>
-<ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-3.10-1.1">
-            <p id="section-3.10-1.1.1">NOTE: This section is specified but not yet validated against real session data.
-Implementation is pending.<a href="#section-3.10-1.1.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
+<p id="section-3.10-1">NOTE: This section is specified but not yet validated against real session data.
+Implementation is pending.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
 <p id="section-3.10-2">File attribution captures what code was produced: which files were modified, which line ranges were changed, and who authored them.<a href="#section-3.10-2" class="pilcrow">¶</a></p>
 <div id="the-file-attribution-record-map">
 <section id="section-3.10.1">
           <h4 id="name-the-file-attribution-record">
 <a href="#section-3.10.1" class="section-number selfRef">3.10.1. </a><a href="#name-the-file-attribution-record" class="section-name selfRef">The file-attribution-record Map</a>
           </h4>
-<p id="section-3.10.1-1">The CDDL for the file-attribution-record map is as follows:<a href="#section-3.10.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.1-1">The CDDL definition for the <code>file-attribution-record</code> map is specified as follows:<a href="#section-3.10.1-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.1-2">
 <pre>
 file-attribution-record = {
@@ -3186,7 +3179,7 @@ file-attribution-record = {
 }
 </pre><a href="#section-3.10.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.1-3">The file-attribution-record is the top-level container for file attribution data.
+<p id="section-3.10.1-3">The <code>file-attribution-record</code> is the top-level container for file attribution data.
 It holds an array of files, each with their attributed line ranges and contributor information.<a href="#section-3.10.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.1-4">The following describes each member of this map.<a href="#section-3.10.1-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.10.1-5">
@@ -3203,7 +3196,7 @@ It holds an array of files, each with their attributed line ranges and contribut
           <h4 id="name-the-file-map">
 <a href="#section-3.10.2" class="section-number selfRef">3.10.2. </a><a href="#name-the-file-map" class="section-name selfRef">The file Map</a>
           </h4>
-<p id="section-3.10.2-1">The CDDL for the file map is as follows:<a href="#section-3.10.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.2-1">The CDDL definition for the <code>file</code> map is specified as follows:<a href="#section-3.10.2-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.2-2">
 <pre>
 file = {
@@ -3212,7 +3205,7 @@ file = {
 }
 </pre><a href="#section-3.10.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.2-3">A file represents a single source file that was modified during the conversation.
+<p id="section-3.10.2-3">A <code>file</code> represents a single source file that was modified during the conversation.
 It groups all conversations that contributed changes to this file.<a href="#section-3.10.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.2-4">The following describes each member of this map.<a href="#section-3.10.2-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.10.2-5">
@@ -3234,7 +3227,7 @@ It groups all conversations that contributed changes to this file.<a href="#sect
           <h4 id="name-the-conversation-map">
 <a href="#section-3.10.3" class="section-number selfRef">3.10.3. </a><a href="#name-the-conversation-map" class="section-name selfRef">The conversation Map</a>
           </h4>
-<p id="section-3.10.3-1">The CDDL for the conversation map is as follows:<a href="#section-3.10.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.3-1">The CDDL definition for the <code>conversation</code> map is specified as follows:<a href="#section-3.10.3-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.3-2">
 <pre>
 conversation = {
@@ -3245,7 +3238,7 @@ conversation = {
 }
 </pre><a href="#section-3.10.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.3-3">A conversation links a specific session to the line ranges it produced in a file.
+<p id="section-3.10.3-3">A <code>conversation</code> links a specific session to the line ranges it produced in a file.
 This enables tracing from a line of code back to the conversation that generated it.<a href="#section-3.10.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.3-4">The following describes each member of this map.<a href="#section-3.10.3-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.10.3-5">
@@ -3278,7 +3271,7 @@ Can be overridden per-range.<a href="#section-3.10.3-5.4.1" class="pilcrow">¶</
           <h4 id="name-the-range-map">
 <a href="#section-3.10.4" class="section-number selfRef">3.10.4. </a><a href="#name-the-range-map" class="section-name selfRef">The range Map</a>
           </h4>
-<p id="section-3.10.4-1">The CDDL for the range map is as follows:<a href="#section-3.10.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.4-1">The CDDL definition for the <code>range</code> map is specified as follows:<a href="#section-3.10.4-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.4-2">
 <pre>
 range = {
@@ -3290,7 +3283,7 @@ range = {
 }
 </pre><a href="#section-3.10.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.4-3">A range identifies a contiguous block of lines in a file that were produced by a specific conversation.
+<p id="section-3.10.4-3">A <code>range</code> identifies a contiguous block of lines in a file that were produced by a specific conversation.
 Line numbers are 1-indexed and inclusive.
 The optional content hash enables position-independent tracking when lines move due to later edits.<a href="#section-3.10.4-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.4-4">The following describes each member of this map.<a href="#section-3.10.4-4" class="pilcrow">¶</a></p>
@@ -3328,7 +3321,7 @@ The optional content hash enables position-independent tracking when lines move 
           <h4 id="name-the-contributor-map">
 <a href="#section-3.10.5" class="section-number selfRef">3.10.5. </a><a href="#name-the-contributor-map" class="section-name selfRef">The contributor Map</a>
           </h4>
-<p id="section-3.10.5-1">The CDDL for the contributor map is as follows:<a href="#section-3.10.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.5-1">The CDDL definition for the <code>contributor</code> map is specified as follows:<a href="#section-3.10.5-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.5-2">
 <pre>
 contributor = {
@@ -3337,7 +3330,7 @@ contributor = {
 }
 </pre><a href="#section-3.10.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.5-3">A contributor identifies who authored a range of code.
+<p id="section-3.10.5-3">A <code>contributor</code> identifies who authored a range of code.
 The type field distinguishes between human-authored, AI-generated, mixed, and unknown authorship.<a href="#section-3.10.5-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.5-4">The following describes each member of this map.<a href="#section-3.10.5-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.10.5-5">
@@ -3359,7 +3352,7 @@ The type field distinguishes between human-authored, AI-generated, mixed, and un
           <h4 id="name-the-resource-map">
 <a href="#section-3.10.6" class="section-number selfRef">3.10.6. </a><a href="#name-the-resource-map" class="section-name selfRef">The resource Map</a>
           </h4>
-<p id="section-3.10.6-1">The CDDL for the resource map is as follows:<a href="#section-3.10.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.10.6-1">The CDDL definition for the <code>resource</code> map is specified as follows:<a href="#section-3.10.6-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.10.6-2">
 <pre>
 resource = {
@@ -3368,7 +3361,7 @@ resource = {
 }
 </pre><a href="#section-3.10.6-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.10.6-3">A resource represents an external reference related to a conversation, such as an issue tracker entry, a pull request, or a documentation page.<a href="#section-3.10.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.10.6-3">A <code>resource</code> represents an external reference related to a conversation, such as an issue tracker entry, a pull request, or a documentation page.<a href="#section-3.10.6-3" class="pilcrow">¶</a></p>
 <p id="section-3.10.6-4">The following describes each member of this map.<a href="#section-3.10.6-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.10.6-5">
             <dt id="section-3.10.6-5.1">type:</dt>
@@ -3397,7 +3390,7 @@ resource = {
           <h4 id="name-the-signed-agent-record-str">
 <a href="#section-3.11.1" class="section-number selfRef">3.11.1. </a><a href="#name-the-signed-agent-record-str" class="section-name selfRef">The signed-agent-record Structure</a>
           </h4>
-<p id="section-3.11.1-1">The CDDL for the signed-agent-record structure is as follows:<a href="#section-3.11.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.11.1-1">The CDDL definition for a <code>signed-agent-record</code> structure is specified as follows:<a href="#section-3.11.1-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.11.1-2">
 <pre>
 signed-agent-record = #6.18([
@@ -3408,8 +3401,8 @@ signed-agent-record = #6.18([
 ])
 </pre><a href="#section-3.11.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.11.1-3">The signed-agent-record is a COSE_Sign1 envelope (CBOR Tag 18) that wraps a verifiable agent record with a cryptographic signature.
-Signing provides non-repudiation and tamper evidence, satisfying the RATS evidence generation (<span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>) and SCITT auditability (<span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>) requirements.
+<p id="section-3.11.1-3">A <code>signed-agent-record</code> is a COSE_Sign1 envelope (CBOR Tag 18) that wraps a verifiable agent record with a cryptographic signature.
+Signing provides data provenance and tamper evidence, satisfying some requirements of RATS Evidence generation (<span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span>) and SCITT auditability (<span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span>) requirements.
 The payload may be included or detached (null); in detached mode, the record is supplied separately during verification.<a href="#section-3.11.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.11.1-4">The following describes each element of this structure.<a href="#section-3.11.1-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.11.1-5">
@@ -3441,7 +3434,7 @@ The payload may be included or detached (null); in detached mode, the record is 
           <h4 id="name-the-trace-metadata-map">
 <a href="#section-3.11.2" class="section-number selfRef">3.11.2. </a><a href="#name-the-trace-metadata-map" class="section-name selfRef">The trace-metadata Map</a>
           </h4>
-<p id="section-3.11.2-1">The CDDL for the trace-metadata map is as follows:<a href="#section-3.11.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.11.2-1">The CDDL definition for the <code>trace-metadata</code> map is specified as follows:<a href="#section-3.11.2-1" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-3.11.2-2">
 <pre>
 trace-metadata = {
@@ -3455,7 +3448,7 @@ trace-metadata = {
 }
 </pre><a href="#section-3.11.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.11.2-3">The trace-metadata type carries summary information about the signed record in the COSE_Sign1 unprotected header.
+<p id="section-3.11.2-3">The <code>trace-metadata</code> type carries summary information about the signed record in the COSE_Sign1 unprotected header.
 This enables consumers to inspect key properties of a signed record without deserializing the full payload.<a href="#section-3.11.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.11.2-4">The following describes each member of this map.<a href="#section-3.11.2-4" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3.11.2-5">
@@ -3501,10 +3494,10 @@ This enables consumers to inspect key properties of a signed record without dese
 </div>
 </section>
 </div>
-<div id="cddl-definition-for-generic-agent-conversations">
+<div id="collated-cddl-definition-for-generic-agent-conversations">
 <section id="section-4">
-      <h2 id="name-cddl-definition-for-generic">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-cddl-definition-for-generic" class="section-name selfRef">CDDL Definition for generic Agent Conversations</a>
+      <h2 id="name-collated-cddl-definition-fo">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-collated-cddl-definition-fo" class="section-name selfRef">Collated CDDL Definition for generic Agent Conversations</a>
       </h2>
 <span id="name-cddl-definition-of-an-agent"></span><div id="fig-cddl-record">
 <figure id="figure-1">

@@ -80,7 +80,7 @@ Table of Contents
        2.3.3.  PCI DSS v4.0 AI-Specific Guidance
        2.3.4.  Financial Sector Requirements (FFIEC, BSI)
      2.4.  Compliance Mapping Table
-     2.5.  Security Considerations for Compliance
+     2.5.  Security Requirements addressing Regulatory Compliance
        2.5.1.  Log Integrity
        2.5.2.  Access Control
        2.5.3.  Data Protection
@@ -111,7 +111,7 @@ Table of Contents
      3.11. Signing Envelope Types
        3.11.1.  The signed-agent-record Structure
        3.11.2.  The trace-metadata Map
-   4.  CDDL Definition for generic Agent Conversations
+   4.  Collated CDDL Definition for generic Agent Conversations
    5.  References
      5.1.  Normative References
      5.2.  Informative References
@@ -634,7 +634,7 @@ Table of Contents
    For AI systems classified as high-risk under Annex III, additional
    requirements apply:
 
-   1.  *Biometric identification systems* (Annex III, 1(a)) require
+   1.  Biometric identification systems (Annex III, 1(a)) require
        logging of:
 
        *  Precise timestamps for start/end of each usage session
@@ -645,11 +645,11 @@ Table of Contents
 
        *  Natural persons involved in result verification
 
-   2.  *Log retention*: Minimum 6 months; financial services may require
+   2.  Log retention: Minimum 6 months; financial services may require
        longer per sector-specific regulation.
 
-   3.  *Authority access*: Art. 19 requires provision of logs to
-       competent authorities upon reasoned request.
+   3.  Authority Access: Art. 19 requires provision of logs to competent
+       authorities upon reasoned request.
 
 2.3.2.  ETSI TS 104 223 Session Logging Requirements
 
@@ -689,11 +689,9 @@ Table of Contents
 2.3.3.  PCI DSS v4.0 AI-Specific Guidance
 
    The PCI Security Standards Council has published guidance on AI in
-   payment environments:
-
-      "Where possible, logging should be sufficient to audit the prompt
-      inputs and reasoning process used by the AI system that led to the
-      output provided."
+   payment environments: "Where possible, logging should be sufficient
+   to audit the prompt inputs and reasoning process used by the AI
+   system that led to the output provided."
 
    This specification directly addresses this requirement through:
 
@@ -766,7 +764,7 @@ Table of Contents
 
                                   Table 15
 
-2.5.  Security Considerations for Compliance
+2.5.  Security Requirements addressing Regulatory Compliance
 
 2.5.1.  Log Integrity
 
@@ -835,13 +833,14 @@ Table of Contents
 
 3.  Data Structure Definitions
 
-   This section defines each data type in the verifiable agent
-   conversation schema.  Each subsection presents the CDDL fragment for
-   one type, a brief description, and per-member documentation.
+   This section defines each complex data type in the verifiable agent
+   conversation CDDL data definition.  Each subsection presents a CDDL
+   fragment for one type, a brief description, and per-member
+   documentation.
 
 3.1.  Common Types
 
-   The schema uses the following type aliases throughout.
+   The schema uses the following generic type definitions throughout.
 
    abstract-timestamp:  An RFC 3339 date-time string or numeric epoch
       milliseconds.  New implementations SHOULD use RFC 3339 strings;
@@ -856,7 +855,8 @@ Table of Contents
 
 3.2.  The verifiable-agent-record Map
 
-   The CDDL for the verifiable-agent-record map is as follows:
+   The CDDL definition for the verifiable-agent-record map is specified
+   as follows:
 
    verifiable-agent-record = {
        version: tstr
@@ -905,7 +905,8 @@ Table of Contents
 
 3.3.  The session-trace Map
 
-   The CDDL for the session-trace map is as follows:
+   The CDDL definition for the session-trace map is specified as
+   follows:
 
    session-trace = {
        ? format: tstr
@@ -921,7 +922,7 @@ Table of Contents
    A session-trace captures the full conversation between a user and an
    autonomous agent.  It contains an ordered array of entries
    representing messages, tool invocations, reasoning steps, and system
-   events.  The trace preserves the complete interaction history
+   events.  The session-trace preserves the complete interaction history
    including all native agent metadata, enabling both replay and audit
    of the conversation.
 
@@ -940,14 +941,14 @@ Table of Contents
    agent-meta:  Metadata about the agent and model that conducted this
       conversation.
 
-   environment:  Execution environment context such as working directory
-      and version control state.
+   environment:  Execution environment context, such as working
+      directory and version control state.
 
-   entries:  The ordered array of conversation entries.
+   entries:  An ordered array of conversation entries.
 
 3.4.  The agent-meta Map
 
-   The CDDL for the agent-meta map is as follows:
+   The CDDL definition for the agent-meta map is specified as follows:
 
    agent-meta = {
        model-id: tstr
@@ -984,7 +985,8 @@ Table of Contents
 
 3.5.  The recording-agent Map
 
-   The CDDL for the recording-agent map is as follows:
+   The CDDL definition for the recording-agent map is specified as
+   follows:
 
    recording-agent = {
        name: tstr
@@ -992,11 +994,11 @@ Table of Contents
        * tstr => any
    }
 
-   The recording-agent identifies the tool that generated this
+   The recording-agent map identifies the tool that generated this
    verifiable agent record, as distinct from the agent that conducted
    the conversation.  This distinction matters for provenance chains:
    the recording tool's version affects how native data is translated
-   into the canonical schema.
+   into the canonical CDDL data definition specified in this document.
 
    The following describes each member of this map.
 
@@ -1006,7 +1008,7 @@ Table of Contents
 
 3.6.  The environment Map
 
-   The CDDL for the environment map is as follows:
+   The CDDL definition for the environment map is specified as follows:
 
    environment = {
        working-dir: tstr
@@ -1035,7 +1037,7 @@ Table of Contents
 
 3.7.  The vcs-context Map
 
-   The CDDL for the vcs-context map is as follows:
+   The CDDL definition for the vcs-context map is specified as follows:
 
    vcs-context = {
        type: tstr
@@ -1063,11 +1065,11 @@ Table of Contents
 
 3.8.  Entry Types
 
-   The schema defines five entry types representing the different kinds
-   of events in an agent conversation.  Each type uses a type field as
-   the discriminator.  All entry types support optional children for
-   hierarchical nesting and * tstr => any for preserving native agent
-   fields that do not map to canonical fields.
+   The CDDL definition specifies five entry types representing the
+   different kinds of events in an agent conversation.  Each type uses a
+   type field as the discriminator.  All entry types support optional
+   children for hierarchical nesting and * tstr => any for preserving
+   native agent fields that do not map to canonical fields.
 
    entry = message-entry
          / tool-call-entry
@@ -1077,7 +1079,8 @@ Table of Contents
 
 3.8.1.  The message-entry Map
 
-   The CDDL for the message-entry map is as follows:
+   The CDDL definition for the message-entry map is specified as
+   follows:
 
    message-entry = {
        type: "user" / "assistant"
@@ -1124,7 +1127,8 @@ Table of Contents
 
 3.8.2.  The tool-call-entry Map
 
-   The CDDL for the tool-call-entry map is as follows:
+   The CDDL definition for the tool-call-entry map is specified as
+   follows:
 
    tool-call-entry = {
        type: "tool-call"
@@ -1140,7 +1144,7 @@ Table of Contents
    A tool-call-entry represents a tool invocation: which tool was called
    and with what arguments.  Tool calls are central to agent
    conversation records because tool use is the primary mechanism by
-   which agents interact with the external environment.
+   which agents interact with external environment.
 
    The following describes each member of this map.
 
@@ -1161,7 +1165,8 @@ Table of Contents
 
 3.8.3.  The tool-result-entry Map
 
-   The CDDL for the tool-result-entry map is as follows:
+   The CDDL definition for the tool-result-entry map is specified as
+   follows:
 
    tool-result-entry = {
        type: "tool-result"
@@ -1202,7 +1207,8 @@ Table of Contents
 
 3.8.4.  The reasoning-entry Map
 
-   The CDDL for the reasoning-entry map is as follows:
+   The CDDL definition for the reasoning-entry map is specified as
+   follows:
 
    reasoning-entry = {
        type: "reasoning"
@@ -1215,12 +1221,12 @@ Table of Contents
        * tstr => any
    }
 
-   A reasoning-entry captures chain-of-thought, thinking, or internal
-   reasoning content from the agent.  Not all agents expose reasoning
-   traces; when they do, the content may be plaintext, structured
-   blocks, or encrypted.  Reasoning entries are valuable for auditing
-   decision-making processes and understanding why an agent took
-   particular actions.
+   A reasoning-entry captures CoT, thinking, or internal reasoning
+   content from the agent.  Not all agents expose reasoning traces; when
+   they do, the content may be plaintext, structured blocks, or
+   encrypted.  Reasoning entries are valuable for auditing decision-
+   making processes and understanding why an agent took particular
+   actions.
 
    The following describes each member of this map.
 
@@ -1242,7 +1248,7 @@ Table of Contents
 
 3.8.5.  The event-entry Map
 
-   The CDDL for the event-entry map is as follows:
+   The CDDL definition for the event-entry map is specified as follows:
 
    event-entry = {
        type: "system-event"
@@ -1278,7 +1284,7 @@ Table of Contents
 
 3.9.  The token-usage Map
 
-   The CDDL for the token-usage map is as follows:
+   The CDDL definition for the token-usage map is specified as follows:
 
    token-usage = {
        ? input: uint
@@ -1295,6 +1301,8 @@ Table of Contents
    management, and understanding model behavior.  All fields are
    optional because different agents report different subsets of token
    metrics.
+
+   Editor's Note: add a non-empty generic here
 
    The following describes each member of this map.
 
@@ -1314,15 +1322,16 @@ Table of Contents
 
 3.10.  File Attribution Types
 
-      NOTE: This section is specified but not yet validated against real
-      session data.  Implementation is pending.
+   NOTE: This section is specified but not yet validated against real
+   session data.  Implementation is pending.
 
    File attribution captures what code was produced: which files were
    modified, which line ranges were changed, and who authored them.
 
 3.10.1.  The file-attribution-record Map
 
-   The CDDL for the file-attribution-record map is as follows:
+   The CDDL definition for the file-attribution-record map is specified
+   as follows:
 
    file-attribution-record = {
        files: [* file]
@@ -1338,7 +1347,7 @@ Table of Contents
 
 3.10.2.  The file Map
 
-   The CDDL for the file map is as follows:
+   The CDDL definition for the file map is specified as follows:
 
    file = {
        path: tstr
@@ -1358,7 +1367,7 @@ Table of Contents
 
 3.10.3.  The conversation Map
 
-   The CDDL for the conversation map is as follows:
+   The CDDL definition for the conversation map is specified as follows:
 
    conversation = {
        ? url: tstr .regexp uri-regexp
@@ -1387,7 +1396,7 @@ Table of Contents
 
 3.10.4.  The range Map
 
-   The CDDL for the range map is as follows:
+   The CDDL definition for the range map is specified as follows:
 
    range = {
        start-line: uint
@@ -1418,7 +1427,7 @@ Table of Contents
 
 3.10.5.  The contributor Map
 
-   The CDDL for the contributor map is as follows:
+   The CDDL definition for the contributor map is specified as follows:
 
    contributor = {
        type: "human" / "ai" / "mixed" / "unknown"
@@ -1437,7 +1446,7 @@ Table of Contents
 
 3.10.6.  The resource Map
 
-   The CDDL for the resource map is as follows:
+   The CDDL definition for the resource map is specified as follows:
 
    resource = {
        type: tstr
@@ -1461,7 +1470,8 @@ Table of Contents
 
 3.11.1.  The signed-agent-record Structure
 
-   The CDDL for the signed-agent-record structure is as follows:
+   The CDDL definition for a signed-agent-record structure is specified
+   as follows:
 
    signed-agent-record = #6.18([
        protected: bstr .cbor protected-header
@@ -1470,13 +1480,13 @@ Table of Contents
        signature: bstr
    ])
 
-   The signed-agent-record is a COSE_Sign1 envelope (CBOR Tag 18) that
+   A signed-agent-record is a COSE_Sign1 envelope (CBOR Tag 18) that
    wraps a verifiable agent record with a cryptographic signature.
-   Signing provides non-repudiation and tamper evidence, satisfying the
-   RATS evidence generation ([RFC9334]) and SCITT auditability
-   ([I-D.ietf-scitt-architecture]) requirements.  The payload may be
-   included or detached (null); in detached mode, the record is supplied
-   separately during verification.
+   Signing provides data provenance and tamper evidence, satisfying some
+   requirements of RATS Evidence generation ([RFC9334]) and SCITT
+   auditability ([I-D.ietf-scitt-architecture]) requirements.  The
+   payload may be included or detached (null); in detached mode, the
+   record is supplied separately during verification.
 
    The following describes each element of this structure.
 
@@ -1493,7 +1503,8 @@ Table of Contents
 
 3.11.2.  The trace-metadata Map
 
-   The CDDL for the trace-metadata map is as follows:
+   The CDDL definition for the trace-metadata map is specified as
+   follows:
 
    trace-metadata = {
        session-id: session-id
@@ -1528,7 +1539,7 @@ Table of Contents
 
    content-hash-alg:  The hash algorithm used (default: "sha-256").
 
-4.  CDDL Definition for generic Agent Conversations
+4.  Collated CDDL Definition for generic Agent Conversations
 
 ; =============================================================================
 ; Verifiable Agent Conversations — CDDL Schema
