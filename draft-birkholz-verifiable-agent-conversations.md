@@ -1204,475 +1204,102 @@ content-hash-alg:
 # Privacy Considerations
 
 Verifiable agent conversation records reveal substantial information about agent behavior, system state, and user interactions.
-The conveyance and storage of these records creates significant privacy implications that implementers have to take into account.
+The privacy considerations of {{RFC6973}} apply.
 
 ## Information Disclosure
 
-Verifiable agent conversation records can expose multiple categories of information to parties who access them.
+User prompts captured in message entries may contain personal identifiers, business confidential information, credentials inadvertently included in prompts, or behavioral patterns.
+Agent responses and reasoning traces may reveal inference results that expose information about users not explicitly provided, confidential information retrieved by tools, or system architecture details through tool names and parameters.
+Implementations MUST treat user-provided content as potentially containing personally identifiable information.
 
-### User-Provided Information
+Record metadata exposes operational details that may have privacy implications.
+Model identifiers reveal AI capabilities, CLI versions enable targeted attacks against known vulnerabilities, working directories expose file system structure, and VCS context discloses repository names and commit timing.
+Token usage patterns may enable inference about conversation content even when the content itself is protected.
 
-User prompts captured in `message-entry` (type: "user") may contain:
+## Sensitive Content in Records
 
-- Personal identifiers (names, email addresses, phone numbers).
-- Business confidential information (trade secrets, strategic plans).
-- Credentials or authentication tokens inadvertently included in prompts.
-- Location data or behavioral patterns.
+Reasoning entries may contain inferences that constitute special category data, including health-related inferences from user queries, political opinions derived from conversation context, or biometric data processed by AI systems.
+The `reasoning-entry.encrypted` field reflects that some model providers encrypt chain-of-thought content; when reasoning is encrypted, audit capabilities depend on the provider's cooperation.
 
-Implementations MUST treat user-provided content as potentially containing personally identifiable information (PII).
+Tool inputs and outputs warrant particular attention.
+Tool call inputs may contain credentials, API keys, or file contents.
+Tool results may contain query results with personal data from databases or external services.
+Implementations SHOULD provide configurable redaction rules for common patterns and support selective entry type recording based on deployment requirements.
 
-### Agent-Generated Information
+## Retention Considerations
 
-Agent responses and reasoning traces may reveal:
+Multiple frameworks impose retention requirements that may conflict with data minimization principles.
+Organizations must balance compliance obligations requiring extended retention against privacy principles requiring timely deletion.
 
-- Inference results that expose information about users not explicitly provided.
-- Decision-making logic that could be exploited by adversaries.
-- Confidential information retrieved by tools and included in responses.
-- System architecture details through tool names and parameters.
+Compliant data management may require separating raw personal data from audit trail metadata, implementing automated deletion for personal data after compliance-minimum periods, and maintaining cryptographic commitments enabling verification without retaining content.
 
-### System State Information
+## Correlation and Inference
 
-Records expose operational details that may have privacy implications.
-Examples from this specification include:
+Presentations of the same record to multiple parties can be correlated by matching on the signature component.
+Session identifiers enable linking of records across time, potentially revealing long-term behavioral patterns or organizational structure.
+Implementations SHOULD use unlinkable session identifiers where correlation is not required.
 
-| Field | Information Disclosed |
-|-------|----------------------|
-| `agent-meta.model-id` | AI capabilities and potential vulnerabilities |
-| `agent-meta.cli-version` | Software version enabling targeted attacks |
-| `environment.working-dir` | File system structure and organization |
-| `vcs-context` | Repository names, branch strategies, commit timing |
-| `tool-call-entry.input` | File paths, database queries, API endpoints |
-| `token-usage` | Usage patterns enabling inference about conversation content |
-
-## Personal Data in Conversation Records
-
-### Categories of Personal Data
-
-The following table identifies where personal data may appear in verifiable agent conversation records:
-
-| Record Element | Data Category | GDPR Classification |
-|----------------|---------------|---------------------|
-| `message-entry.content` (user) | User-provided personal data | Directly provided |
-| `message-entry.content` (assistant) | Derived personal data | Inferred data |
-| `tool-result-entry.output` | Query results with PII | Third-party data |
-| `reasoning-entry.content` | Inferences about data subjects | Special category (potentially) |
-| `contributor.model-id` | Pseudonymous identifier | Pseudonymous data |
-| `session-id` | Session linkage identifier | Indirect identifier |
-
-### Special Category Data
-
-Reasoning entries may contain inferences that constitute special category data under GDPR Article 9:
-
-- Health-related inferences from user queries.
-- Political opinions derived from conversation context.
-- Religious or philosophical beliefs inferred from content.
-- Biometric data processed by AI systems (EU AI Act Annex III).
-
-Implementations processing special category data MUST implement additional protections including explicit consent mechanisms or demonstration of legitimate basis under Article 9(2).
-
-## Data Minimization
-
-Per GDPR Article 5(1)(c), personal data must be "adequate, relevant and limited to what is necessary."
-Verifiable agent conversation records create tension between completeness for audit purposes and minimization for privacy.
-
-### Minimization Strategies
-
-Content redaction: Replace PII with tokens before record generation.
-
-| Original | Redacted |
-|----------|----------|
-| "Contact john.doe@example.com" | "Contact [EMAIL_REDACTED]" |
-| "Call me at 555-1234" | "Call me at [PHONE_REDACTED]" |
-
-Selective recording: Exclude entry types not required for audit purposes.
-Not all deployments require `reasoning-entry` capture; omitting reasoning traces reduces privacy exposure.
-
-Aggregation: Replace detailed `token-usage` with aggregated session metrics.
-
-Pseudonymization: Replace direct identifiers with consistent pseudonyms enabling analysis without re-identification.
-
-Implementations SHOULD:
-
-1. Provide configurable redaction rules for common PII patterns.
-2. Support selective entry type recording based on deployment requirements.
-3. Document the privacy-audit tradeoff for each configuration option.
-
-## Retention and Deletion
-
-### Retention Requirements
-
-Multiple frameworks impose retention requirements that conflict with data minimization:
-
-| Framework | Minimum Retention | Maximum Guidance |
-|-----------|-------------------|------------------|
-| EU AI Act Art. 19 | 6 months | Per sector-specific regulation |
-| FedRAMP (M-21-31) | 12 months active + 18 months cold | - |
-| PCI DSS 4.0 | 12 months total | - |
-| GDPR Art. 5(1)(e) | - | "No longer than necessary" |
-
-Organizations have to establish a balance between:
-
-1. Compliance obligations requiring extended retention.
-2. Privacy principles requiring timely deletion.
-3. Litigation hold requirements that may extend retention indefinitely.
-
-### Architectural Separation
-
-Per EU AI Act and GDPR reconciliation guidance, compliant data management requires recognizing GDPR's Storage Limitation Principle as the constraint on personal data retention.
-
-Implementations SHOULD:
-
-1. Separate raw personal data from audit trail metadata.
-2. Implement automated deletion for personal data after compliance-minimum periods.
-3. Construct audit trails from anonymized or aggregated data where possible.
-4. Maintain cryptographic commitments (hashes) enabling verification without retaining content.
-
-### Deletion Verification
-
-When deletion is required:
-
-1. Records MUST be deleted from primary storage.
-2. Records MUST be deleted from backup systems within defined retention cycles.
-3. Cryptographic hashes or signatures derived from deleted records MAY be retained.
-4. Audit logs of deletion actions MUST be maintained.
-
-## Consent and Disclosure
-
-### Transparency Requirements
-
-Per GDPR Articles 13-14 and EU AI Act transparency requirements:
-
-1. Data subjects MUST be informed that their interactions may be recorded.
-2. The purposes of recording MUST be disclosed.
-3. The categories of data recorded MUST be specified.
-4. Retention periods MUST be communicated.
-
-### Consent Considerations
-
-Consent may be required for certain recording activities:
-
-| Scenario | Consent Basis |
-|----------|---------------|
-| Employee use of AI coding assistants | Employment contract, legitimate interest |
-| Consumer-facing AI interactions | Explicit consent, contractual necessity |
-| Recording of reasoning traces | Legitimate interest assessment required |
-| Cross-border transfer of records | Appropriate safeguards (SCCs, adequacy decisions) |
-
-Implementations SHOULD:
-
-1. Provide clear notice at session start that recording occurs.
-2. Support user preferences for recording scope where operationally feasible.
-3. Maintain records of consent or legal basis for each recording activity.
-
-## Reasoning Trace Confidentiality
-
-Chain of thought and reasoning content presents unique privacy considerations.
-
-### Sensitivity of Reasoning
-
-Reasoning entries may reveal:
-
-1. How the agent interpreted ambiguous user requests.
-2. Assumptions made about user intent or context.
-3. Internal decision processes that may disadvantage certain users.
-4. Potential biases in model reasoning.
-
-### Encrypted Reasoning
-
-Some model providers encrypt reasoning traces, as reflected in the `reasoning-entry.encrypted` field.
-Encrypted reasoning:
-
-1. Protects reasoning content from unauthorized access.
-2. Enables selective disclosure to authorized parties.
-3. Complicates audit and oversight activities.
-
-Organizations have to carefully consider whether encrypted reasoning satisfies oversight requirements:
-
-- EU AI Act Article 26(5) requires "monitoring the operation" of high-risk AI systems.
-- ETSI TS 104223 5.4.2-3 requires ability to "monitor internal states."
-
-Where reasoning is encrypted, organizations SHOULD:
-
-1. Negotiate access to decryption capabilities for compliance purposes.
-2. Document the oversight gap in risk assessments.
-3. Implement compensating controls (output monitoring, behavioral analysis).
-
-## Cross-Border Transfer
-
-### Transfer Mechanisms
-
-Verifiable agent conversation records may be transferred across jurisdictions when:
-
-- Cloud services process records in different regions.
-- Agent providers receive records for quality improvement.
-- Regulatory authorities request records under mutual assistance agreements.
-
-Per GDPR Chapter V, transfers to third countries require:
-
-1. Adequacy decisions (EU Commission approved destinations).
-2. Standard Contractual Clauses (SCCs) with supplementary measures.
-3. Binding Corporate Rules for intra-group transfers.
-4. Explicit consent for occasional transfers.
-
-### Data Localization
-
-Some sectors require data localization:
-
-| Sector | Requirement |
-|--------|-------------|
-| Financial services (Germany) | BSI AI Finance criteria may require local processing |
-| Government (FedRAMP) | US-only storage for certain impact levels |
-| Healthcare | National health data regulations |
-
-Implementations SHOULD:
-
-1. Support configurable storage locations.
-2. Enable record filtering by jurisdiction before transfer.
-3. Maintain transfer logs for compliance demonstration.
-
-## Privacy-Preserving Alternatives
-
-### Anonymization
-
-True anonymization (irreversible, no re-identification risk) removes data from GDPR scope.
-However, conversation records rarely qualify as anonymous due to:
-
-- Unique conversation patterns enabling re-identification.
-- Contextual details revealing identity.
-- Cross-correlation with other data sources.
-
-### Differential Privacy
-
-For aggregate analysis of conversation records, differential privacy techniques may enable statistical insights without individual record access.
-This applies to:
-
-- Usage pattern analysis.
-- Model performance metrics.
-- Error rate calculations.
-
-### Secure Computation
-
-Multi-party computation or homomorphic encryption may enable:
-
-- Signature verification without content disclosure.
-- Compliance checking without plaintext access.
-- Aggregate reporting across multiple data controllers.
-
-These techniques remain experimental for verifiable agent conversation record use cases.
-
-## Inference Attacks
-
-Per RFC 9334, attackers might deduce information "from the resulting effects or timing of the processing" without direct record access.
-
-### Metadata Analysis
-
-Without accessing record content, observers may infer:
-
-- Conversation frequency and duration patterns.
-- Types of tools used (via `tool-call-entry` presence).
-- Error rates and failure patterns.
-- Timing correlations with external events.
-
-### Cross-Record Correlation
-
-Linking records across sessions may reveal:
-
-- Long-term behavioral patterns.
-- Project or task continuity.
-- Organizational structure from access patterns.
-
-Implementations SHOULD:
-
-1. Limit metadata exposure in unprotected headers.
-2. Use unlinkable session identifiers where correlation is not required.
-3. Consider timing obfuscation for sensitive deployments.
+Without accessing record content, observers may infer conversation frequency and duration patterns, types of tools used, error rates, or timing correlations with external events.
+Metadata exposure in unprotected headers warrants careful consideration; the `trace-metadata` in the COSE unprotected header reveals session identifiers, agent vendor, and timestamps even when the payload is encrypted.
 
 ## Authority Access
 
-### Regulatory Disclosure
-
-EU AI Act Article 19 requires provision of logs to competent authorities upon reasoned request.
-Similar requirements exist under:
-
-- NIS2 incident investigation powers.
-- Financial services supervisory access.
-- Competition authority investigations.
-
-### Access Logging
-
-Per EU AI Act and general audit principles, access to records MUST itself be logged:
-
-1. Who accessed which records.
-2. When access occurred.
-3. What legal basis justified access.
-4. What data was disclosed.
-
-This again creates a recursive privacy consideration: access logs may themselves contain personal data requiring protection.
+Regulatory frameworks may require provision of records to authorities upon request.
+Access to records has to be logged, capturing who accessed which records, when access occurred, what legal basis justified access, and what data was disclosed.
+This creates a recursive consideration: access logs may themselves contain personal data requiring protection.
 
 # Security Considerations
 
-This section describes security considerations for verifiable agent conversation records.
-Without a specific deployment architecture to evaluate, it is impossible to assert that all security threats have been mitigated.
-Implementers MUST conduct threat modeling appropriate to their deployment context.
+## Record Integrity
 
-## Record Integrity and Tamper Evidence
-
-The `signed-agent-record` envelope using COSE_Sign1 provides cryptographic integrity protection for the record payload.
-The `content-hash` field in `trace-metadata` enables verification of payload integrity independent of the COSE signature.
-
-Relying Parties SHOULD verify signatures before processing record contents.
-A valid signature does not guarantee the truthfulness of the record contents; it only establishes that the claimed signer produced the record.
-
-The integrity protection applies to the serialized record at signing time.
+The `signed-agent-record` envelope provides cryptographic integrity protection for the serialized record payload.
+A valid signature establishes that the claimed signer produced the record but does not guarantee the truthfulness of its contents.
 Modifications to the record structure after signing invalidate the signature, but modifications before signing cannot be detected.
-Implementations that generate records incrementally during a conversation MUST sign only after the conversation concludes or at defined checkpoints.
+Implementations generating records incrementally during a conversation MUST sign only after the conversation concludes or at defined checkpoints.
 
 ## Signing Key Protection
 
-The security of `signed-agent-record` structures depends critically on the protection of private signing keys.
+The security of signed records depends critically on the protection of private signing keys.
 If an attacker obtains a signing key, they can forge records indistinguishable from genuine ones.
+Protection mechanisms range from operating system process isolation in development environments to hardware security modules with physical tampering resistance in high-assurance deployments.
+Compromised signing keys require rejection of records signed after the compromise date and notification to Relying Parties.
 
-Protection levels vary by deployment context:
-
-| Security Level | Mechanism | Example |
-|----------------|-----------|---------|
-| Low | Operating system process isolation | Development environments |
-| Moderate | Trusted Execution Environments (TEEs) | Cloud-hosted agent services |
-| High | Hardware security modules (HSMs) with physical tampering resistance | Financial services, high-risk AI systems |
-
-### Key Provisioning
-
-Off-device key generation requires confidentiality protection during transmission and storage.
-This creates recursive security dependencies: the security of the signing key depends on the security of the key distribution mechanism.
-
-On-device key generation eliminates transmission risks but requires integrity assurance of the device chain of custody to prevent unauthorized key endorsement.
-
-### Key Compromise
-
-Compromised signing keys may require:
-
-1. Rejection of records signed after the compromise date.
-2. Re-issuance of records with new signatures where the original content remains trustworthy.
-3. Notification to Relying Parties of the compromise scope.
-
-Key compromise breaks non-repudiation for records signed after the compromise.
-Implementations SHOULD maintain records of key validity periods to support forensic analysis of historical records.
+Key provisioning processes must guarantee that exclusively valid attestation key material is established.
+Off-device key generation requires confidentiality protection during transmission, creating recursive security dependencies.
+On-device key generation eliminates transmission risks but requires chain-of-custody integrity to prevent attackers from obtaining endorsement for keys they control.
 
 ## Timestamp Integrity
 
-Timestamps in verifiable agent conversation records establish temporal ordering of events.
-Attackers who can manipulate timestamps can:
-
-1. Backdate records: Create the appearance that events occurred at different times.
-2. Freeze epochs: Lock participants in a chosen time period, evading freshness checks.
-3. Delay/reorder events: Manipulate perceived temporal relationships between entries.
-
+Timestamps establish temporal ordering of events within records.
+Attackers who can manipulate timestamps can backdate records, freeze participants in chosen time periods to evade freshness checks, or manipulate perceived temporal relationships between entries.
 Timestamps within records are attested by the signer, not independently verified.
-Implementations requiring independent timestamp verification SHOULD use external timestamping services or transparency logs.
-
-The `abstract-timestamp` type accepts both RFC 3339 strings and epoch milliseconds.
-Implementations MUST normalize timestamp formats before comparison to prevent discrepancies arising from format differences.
-
-## Sensitive Content Exposure
-
-Records may contain multiple categories of sensitive information:
-
-| Content Type | Location | Risk |
-|--------------|----------|------|
-| User prompts | `message-entry` (type: "user") | Confidential business information exposure |
-| Model responses | `message-entry` (type: "assistant") | Internal reasoning or capability disclosure |
-| Tool inputs | `tool-call-entry.input` | Credential or API key leakage |
-| Tool outputs | `tool-result-entry.output` | Query results containing sensitive data |
-| Reasoning traces | `reasoning-entry.content` | Decision-making process disclosure |
-
-The `reasoning-entry.encrypted` field exists because some model providers encrypt chain-of-thought content.
-When reasoning is encrypted, audit capabilities are limited to the provider's decryption cooperation.
+Implementations requiring independent timestamp verification SHOULD use external timestamping services or transparency logs such as those defined in {{-scitt-arch}}.
 
 ## Adversarial Content
 
 Processing verifiable agent conversation records involves parsing content that may be produced by adversaries.
 This applies both to user-supplied prompts and to model outputs that may have been influenced by adversarial inputs.
+The open extensibility (`* tstr => any`) in record types allows arbitrary additional fields; implementations MUST NOT assume that unrecognized fields are safe to process or display.
 
-
-### Injection Attacks
-
-Records may contain content designed to exploit downstream systems:
-
-1. Prompt injection in user content: Malicious prompts preserved in records may execute if records are processed by AI systems.
-2. Script injection in tool outputs: Tool results may contain executable content (JavaScript, shell commands) that executes if rendered unsafely.
-3. Path traversal in file paths: File paths in `tool-call-entry` or `file-attribution` may attempt directory traversal.
-
-Implementations processing record content MUST apply appropriate sanitization before:
-
-1. Rendering content in web interfaces.
-2. Executing content in agent contexts.
-3. Using paths for file system operations.
-
-## Threat Model
-
-### Attacker Capabilities
-
-The threat model considers attackers who may:
-
-| Capability | Threat | Mitigation |
-|------------|--------|------------|
-| Observe network traffic | Intercept records in transit | TLS encryption |
-| Access storage systems | Read or modify stored records | Encryption at rest, access control |
-| Compromise signing keys | Forge valid signatures | HSM protection, key rotation |
-| Compromise agent runtime | Generate false records | TEE isolation, attestation |
-| Influence model outputs | Inject misleading content | Human oversight, anomaly detection |
-
-### Detection vs. Prevention
-
-Verifiable agent conversation records primarily enable detection of anomalous or unauthorized behavior rather than prevention.
-The records support detection of:
-
-1. Unauthorized tool invocations: Comparing tool calls against authorization policies.
-2. Reasoning-action inconsistencies: Analyzing whether `reasoning-entry` content aligns with subsequent actions.
-3. Performance modulation: Detecting differences between evaluation and deployment behavior.
-
-Detection requires that records accurately reflect actual agent behavior.
-An agent that controls its own recording can omit or falsify entries.
-Separation between the agent runtime and the recording system strengthens detection guarantees.
-
-### Trust Boundaries
-
-Trust boundaries in verifiable agent conversation record systems include:
-
-1. Agent runtime to recording system: The agent that generated the conversation may differ from the system that records it.
-2. Recording system to storage: Records transit between generation and archival.
-3. Storage to verification: Records are retrieved and verified by Relying Parties.
-4. Verification to decision: Verified records inform human or automated decisions.
-
-Attacks at any boundary may compromise record integrity or confidentiality.
-The `recording-agent` field distinguishes the recording tool from the conversing agent, enabling Relying Parties to assess trust in the recording process.
+Records may contain content designed to exploit downstream systems.
+Malicious prompts preserved in records may execute if records are subsequently processed by AI systems.
+Tool results may contain executable content that executes if rendered unsafely in web interfaces.
+File paths in tool calls or file attribution entries may attempt directory traversal.
+Implementations MUST apply appropriate sanitization before rendering content, executing it in agent contexts, or using paths for file system operations.
 
 ## Non-Repudiation
 
 The `signed-agent-record` envelope alone provides authenticity and integrity, not non-repudiation.
 A signer can claim key compromise or dispute the signing time without independent evidence.
+Non-repudiation requires additional infrastructure such as transparency services {{-scitt-arch}} that provide independent timestamp proof via registration receipts, append-only logs preventing retroactive denial, and third-party witnesses to the signing event.
 
-Non-repudiation requires additional infrastructure such as transparency services ({{-scitt-arch}}) that provide:
+## Detection and Trust Boundaries
 
-1. Independent timestamp proof via registration receipts.
-2. Append-only logs preventing retroactive denial of registration.
-3. Third-party witnesses to the signing event.
+Verifiable agent conversation records primarily enable detection of anomalous behavior rather than prevention.
+Detection requires that records accurately reflect actual agent behavior; an agent that controls its own recording can omit or falsify entries.
+The `recording-agent` field distinguishes the recording tool from the conversing agent, enabling Relying Parties to assess trust in the recording process.
 
-Without such infrastructure, signatures establish only that someone with access to the private key produced the record.
-
-## Conversation Tree Integrity
-
-The `entry-id`, `parent-id`, and `children` fields enable reconstruction of conversation trees.
-Attackers who can modify records may:
-
-1. Reorder entries to change apparent conversation flow.
-2. Remove entries to hide actions.
-3. Inject entries to attribute actions falsely.
-4. Modify `parent-id` references to change apparent causal relationships.
-
-The `call-id` field linking `tool-call-entry` and `tool-result-entry` pairs may be manipulated to associate calls with incorrect results.
-
-Signing the complete record protects against post-signature manipulation.
-Implementations that permit incremental updates MUST re-sign after each modification or use incremental signing schemes.
+Trust boundaries exist between the agent runtime and recording system, between the recording system and storage, between storage and verification, and between verification and decision-making.
+Attacks at any boundary may compromise record integrity or confidentiality.
 
 --- back
