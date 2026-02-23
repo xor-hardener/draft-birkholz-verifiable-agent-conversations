@@ -1366,7 +1366,7 @@ Implementations SHOULD:
 
 ## Reasoning Trace Confidentiality
 
-CoT and reasoning content presents unique privacy considerations.
+Chain of thought and reasoning content presents unique privacy considerations.
 
 ### Sensitivity of Reasoning
 
