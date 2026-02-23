@@ -1477,10 +1477,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-adversarial-content" class="internal xref">Adversarial Content</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5.2.1">
-                    <p id="section-toc.1-1.6.2.5.2.1.1"><a href="#section-6.5.1" class="auto internal xref">6.5.1</a>.  <a href="#name-parsing-security" class="internal xref">Parsing Security</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5.2.2">
-                    <p id="section-toc.1-1.6.2.5.2.2.1"><a href="#section-6.5.2" class="auto internal xref">6.5.2</a>.  <a href="#name-injection-attacks" class="internal xref">Injection Attacks</a></p>
+                    <p id="section-toc.1-1.6.2.5.2.1.1"><a href="#section-6.5.1" class="auto internal xref">6.5.1</a>.  <a href="#name-injection-attacks" class="internal xref">Injection Attacks</a></p>
 </li>
                 </ul>
 </li>
@@ -4888,54 +4885,33 @@ When reasoning is encrypted, audit capabilities are limited to the provider's de
         </h3>
 <p id="section-6.5-1">Processing verifiable agent conversation records involves parsing content that may be produced by adversaries.
 This applies both to user-supplied prompts and to model outputs that may have been influenced by adversarial inputs.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
-<div id="parsing-security">
+<div id="injection-attacks">
 <section id="section-6.5.1">
-          <h4 id="name-parsing-security">
-<a href="#section-6.5.1" class="section-number selfRef">6.5.1. </a><a href="#name-parsing-security" class="section-name selfRef">Parsing Security</a>
+          <h4 id="name-injection-attacks">
+<a href="#section-6.5.1" class="section-number selfRef">6.5.1. </a><a href="#name-injection-attacks" class="section-name selfRef">Injection Attacks</a>
           </h4>
-<p id="section-6.5.1-1">Implementations <span class="bcp14">MUST</span>:<a href="#section-6.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.5.1-1">Records may contain content designed to exploit downstream systems:<a href="#section-6.5.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6.5.1-2">
 <li id="section-6.5.1-2.1">
-              <p id="section-6.5.1-2.1.1">Validate all input fields against expected types and formats defined in the CDDL schema.<a href="#section-6.5.1-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-6.5.1-2.1.1">Prompt injection in user content: Malicious prompts preserved in records may execute if records are processed by AI systems.<a href="#section-6.5.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-6.5.1-2.2">
-              <p id="section-6.5.1-2.2.1">Reject malformed records rather than attempting error correction.<a href="#section-6.5.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-6.5.1-2.2.1">Script injection in tool outputs: Tool results may contain executable content (JavaScript, shell commands) that executes if rendered unsafely.<a href="#section-6.5.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-6.5.1-2.3">
-              <p id="section-6.5.1-2.3.1">Limit resource consumption during parsing to prevent denial-of-service.<a href="#section-6.5.1-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-6.5.1-2.3.1">Path traversal in file paths: File paths in <code>tool-call-entry</code> or <code>file-attribution</code> may attempt directory traversal.<a href="#section-6.5.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
-<p id="section-6.5.1-3">The open extensibility (<code>* tstr =&gt; any</code>) in record types allows arbitrary additional fields.
-Fields that are not defined by this specification or by updates to this specification have to be either dismissed by implementations or processed with significant caution.<a href="#section-6.5.1-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="injection-attacks">
-<section id="section-6.5.2">
-          <h4 id="name-injection-attacks">
-<a href="#section-6.5.2" class="section-number selfRef">6.5.2. </a><a href="#name-injection-attacks" class="section-name selfRef">Injection Attacks</a>
-          </h4>
-<p id="section-6.5.2-1">Records may contain content designed to exploit downstream systems:<a href="#section-6.5.2-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.5.2-2">
-<li id="section-6.5.2-2.1">
-              <p id="section-6.5.2-2.1.1">Prompt injection in user content: Malicious prompts preserved in records may execute if records are processed by AI systems.<a href="#section-6.5.2-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-6.5.1-3">Implementations processing record content <span class="bcp14">MUST</span> apply appropriate sanitization before:<a href="#section-6.5.1-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.5.1-4">
+<li id="section-6.5.1-4.1">
+              <p id="section-6.5.1-4.1.1">Rendering content in web interfaces.<a href="#section-6.5.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li id="section-6.5.2-2.2">
-              <p id="section-6.5.2-2.2.1">Script injection in tool outputs: Tool results may contain executable content (JavaScript, shell commands) that executes if rendered unsafely.<a href="#section-6.5.2-2.2.1" class="pilcrow">¶</a></p>
+            <li id="section-6.5.1-4.2">
+              <p id="section-6.5.1-4.2.1">Executing content in agent contexts.<a href="#section-6.5.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li id="section-6.5.2-2.3">
-              <p id="section-6.5.2-2.3.1">Path traversal in file paths: File paths in <code>tool-call-entry</code> or <code>file-attribution</code> may attempt directory traversal.<a href="#section-6.5.2-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          </ol>
-<p id="section-6.5.2-3">Implementations processing record content <span class="bcp14">MUST</span> apply appropriate sanitization before:<a href="#section-6.5.2-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.5.2-4">
-<li id="section-6.5.2-4.1">
-              <p id="section-6.5.2-4.1.1">Rendering content in web interfaces.<a href="#section-6.5.2-4.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li id="section-6.5.2-4.2">
-              <p id="section-6.5.2-4.2.1">Executing content in agent contexts.<a href="#section-6.5.2-4.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li id="section-6.5.2-4.3">
-              <p id="section-6.5.2-4.3.1">Using paths for file system operations.<a href="#section-6.5.2-4.3.1" class="pilcrow">¶</a></p>
+            <li id="section-6.5.1-4.3">
+              <p id="section-6.5.1-4.3.1">Using paths for file system operations.<a href="#section-6.5.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
 </section>

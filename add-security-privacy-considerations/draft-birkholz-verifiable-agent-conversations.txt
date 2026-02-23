@@ -153,8 +153,7 @@ Table of Contents
      6.3.  Timestamp Integrity
      6.4.  Sensitive Content Exposure
      6.5.  Adversarial Content
-       6.5.1.  Parsing Security
-       6.5.2.  Injection Attacks
+       6.5.1.  Injection Attacks
      6.6.  Threat Model
        6.6.1.  Attacker Capabilities
        6.6.2.  Detection vs. Prevention
@@ -2461,24 +2460,7 @@ COSE_Sign1 = [
    user-supplied prompts and to model outputs that may have been
    influenced by adversarial inputs.
 
-6.5.1.  Parsing Security
-
-   Implementations MUST:
-
-   1.  Validate all input fields against expected types and formats
-       defined in the CDDL schema.
-
-   2.  Reject malformed records rather than attempting error correction.
-
-   3.  Limit resource consumption during parsing to prevent denial-of-
-       service.
-
-   The open extensibility (* tstr => any) in record types allows
-   arbitrary additional fields.  Fields that are not defined by this
-   specification or by updates to this specification have to be either
-   dismissed by implementations or processed with significant caution.
-
-6.5.2.  Injection Attacks
+6.5.1.  Injection Attacks
 
    Records may contain content designed to exploit downstream systems:
 
