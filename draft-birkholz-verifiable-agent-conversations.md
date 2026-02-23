@@ -1593,16 +1593,6 @@ When reasoning is encrypted, audit capabilities are limited to the provider's de
 Processing verifiable agent conversation records involves parsing content that may be produced by adversaries.
 This applies both to user-supplied prompts and to model outputs that may have been influenced by adversarial inputs.
 
-### Parsing Security
-
-Implementations MUST:
-
-1. Validate all input fields against expected types and formats defined in the CDDL schema.
-2. Reject malformed records rather than attempting error correction.
-3. Limit resource consumption during parsing to prevent denial-of-service.
-
-The open extensibility (`* tstr => any`) in record types allows arbitrary additional fields.
-Fields that are not defined by this specification or by updates to this specification have to be either dismissed by implementations or processed with significant caution.
 
 ### Injection Attacks
 
