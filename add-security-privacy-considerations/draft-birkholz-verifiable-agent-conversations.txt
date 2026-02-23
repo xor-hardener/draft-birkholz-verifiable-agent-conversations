@@ -2474,8 +2474,9 @@ COSE_Sign1 = [
        service.
 
    The open extensibility (* tstr => any) in record types allows
-   arbitrary additional fields.  Implementations MUST NOT assume that
-   unrecognized fields are safe to process or display.
+   arbitrary additional fields.  Fields that are not defined by this
+   specification or by updates to this specification have to be either
+   dismissed by implementations or processed with significant caution.
 
 6.5.2.  Injection Attacks
 
