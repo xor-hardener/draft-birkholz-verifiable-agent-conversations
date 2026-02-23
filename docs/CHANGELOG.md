@@ -2,6 +2,105 @@
 
 Tracks all interview questions asked and decisions made during schema and tooling development.
 
+## 2026-02-20: Data Structure Definitions Section
+
+Added a new `# Data Structure Definitions` section to the Internet-Draft body, following the
+RFC 9393 §2.3 pattern: CDDL fragment → brief prose → definition-list member descriptions.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Section pattern? | **RFC 9393 §2.3 style** | Henk's request: "as simple as RFC 9393". Each type gets: heading, CDDL fragment, 2-3 sentence description, kramdown definition list for members. |
+| 2 | JSON-only or integer indices? | **JSON-only (string keys)** | Per Henk's guidance. No integer index assignments. CBOR-optimized encoding deferred to future revision. |
+| 3 | Where to insert? | **Between compliance section and full CDDL include** | Separate PR on `add-data-definitions` branch. Natural reading order: requirements → type definitions → full schema. |
+
+### Content
+
+Source material: `docs/type-descriptions.md` (100% type coverage) reformatted into RFC 9393 style.
+
+Types documented (22 total):
+- **Common types** (3): `abstract-timestamp`, `session-id`, `entry-id` — brief definitions, no CDDL fragment
+- **Root type** (1): `verifiable-agent-record`
+- **Session types** (3): `session-trace`, `agent-meta`, `recording-agent`
+- **Environment types** (2): `environment`, `vcs-context`
+- **Entry types** (5): `message-entry`, `tool-call-entry`, `tool-result-entry`, `reasoning-entry`, `event-entry` — with union intro
+- **Token usage** (1): `token-usage`
+- **File attribution** (6): `file-attribution-record`, `file`, `conversation`, `range`, `contributor`, `resource` — with NOTE about unvalidated status
+- **Signing envelope** (2): `signed-agent-record`, `trace-metadata`
+
+### What was NOT included (per plan)
+
+- No integer index assignments (JSON-only per Henk)
+- No IANA registry references (not yet)
+- No CDDL sockets discussion
+- No Field Naming Convention section (tooling docs, not I-D body)
+
+## 2026-02-20: End-to-End Signing Validation & SCITT Conformance
+
+PR #16 (`scitt-ready` branch) restructured the CDDL signing envelope (Section 9) for SCITT
+interoperability. The new `protected-header` requires `CWT_Claims` (label 15) with `iss` and
+`sub`, but `scripts/sign-record.py` didn't populate these fields. This session fixes the
+structural mismatch and adds CI-integrated end-to-end signing validation.
+
+### Decisions
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | How to populate CWT_Claims? | **CLI args `--issuer`/`--subject` with auto-defaults** | `iss` defaults to `model-provider` (e.g. "anthropic"), `sub` defaults to `session-id`. Sensible defaults for automation; overridable for custom deployments. |
+| 2 | SCITT-imported COSE_Sign1 uses `nil` instead of `null` | **Fix `nil` → `null`** | RFC 8610 uses `null`, not `nil`. The `signed-agent-record` at line 246 correctly uses `null`; the imported `COSE_Sign1` type (for Receipt validation) had a typo. |
+| 3 | Signing validation approach? | **New `validate-signing.py` end-to-end script** | Self-contained pipeline: parse → sign → CDDL-validate → verify. Ephemeral keypair per run (no secrets). Covers all 5 agent formats. |
+| 4 | CI integration? | **Add to existing `validate-cddl.yml`** | Extends the CDDL validation workflow with a pip install step and signing validation step. Path triggers widened to `scripts/**`. |
+
+### CDDL Changes
+
+- `agent-conversation.cddl` line 310: `nil` → `null` (SCITT-imported `COSE_Sign1` type)
+
+### Signing Changes (`scripts/sign-record.py`)
+
+- Added `CWT_CLAIMS_LABEL = 15`, `CWT_ISS_LABEL = 1`, `CWT_SUB_LABEL = 2` constants
+- Added `_extract_cwt_claims()` helper: derives `iss` from `model-provider`, `sub` from `session-id`
+- `cmd_sign()`: CWT_Claims map now included in protected header alongside Algorithm and ContentType
+- `cmd_verify()`: extracts and displays CWT Issuer/Subject from protected header
+- New CLI args: `--issuer`, `--subject` on the `sign` subcommand
+
+### New Script (`scripts/validate-signing.py`)
+
+End-to-end signing validation pipeline:
+1. Imports `PARSERS` and `wrap_record` from `validate-sessions.py` via `importlib`
+2. Picks one session per agent (first alphabetically)
+3. Parses + wraps into `verifiable-agent-record`
+4. Generates ephemeral Ed25519 keypair (in-memory, no secrets)
+5. Signs with COSE_Sign1 including CWT_Claims
+6. CDDL-validates the signed CBOR via `cddl` gem
+7. Verifies signature with detached payload reattachment
+8. Reports PASS/FAIL per agent, exits non-zero on any failure
+
+### CI Changes (`.github/workflows/validate-cddl.yml`)
+
+- Path triggers: `scripts/validate-sessions.py` → `scripts/**`
+- Added: `pip install -r requirements.txt` step (pycose, cbor2)
+- Renamed: existing step to "Validate unsigned records against CDDL"
+- Added: "Validate signed records (end-to-end)" step
+
+### Bug Fix: Timestamp Fallback
+
+`_extract_trace_metadata()` in both `sign-record.py` and `validate-signing.py` previously
+fell back to `"unknown"` when no session-start or record-created timestamp was available.
+The `trace-metadata` CDDL type requires `timestamp-start: abstract-timestamp` (RFC 3339 or
+epoch number), so `"unknown"` caused CDDL validation failures for Cursor sessions (which
+lack timestamps entirely). Fixed to fall back to current UTC time at signing.
+
+### Other Fixes
+
+- `sign-record.py`: Updated stale "Section 11" references to "Section 9" (signing envelope
+  was renumbered in the SCITT restructure)
+
+### Validation
+
+All 13 unsigned sessions pass. All 5 agents pass end-to-end signing validation
+(sign + CDDL-validate + verify). CWT Issuer and CWT Subject displayed in verify output.
+
 ## 2026-02-19: Data Quality Review & Cleanup
 
 Second review pass focused on produced record quality, null noise, dead fields, and consumer

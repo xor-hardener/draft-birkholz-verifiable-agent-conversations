@@ -3,7 +3,7 @@
 Sign and verify agent conversation records with COSE_Sign1 (RFC 9052).
 
 Produces detached-payload COSE_Sign1 signatures compatible with the
-`signed-agent-record` type defined in agent-conversation.cddl Section 11.
+`signed-agent-record` type defined in agent-conversation.cddl Section 9.
 The JSON record file stays separate; the .sig.cbor file contains only the
 cryptographic envelope (protected header, unprotected trace-metadata,
 null payload, signature bytes).
@@ -30,6 +30,7 @@ Requires: pycose, cbor2 (see requirements.txt)
 """
 
 import argparse
+import datetime
 import hashlib
 import json
 import sys
@@ -43,7 +44,10 @@ from pycose.headers import Algorithm, ContentType
 from pycose.keys import OKPKey
 from pycose.messages import Sign1Message
 
-TRACE_METADATA_LABEL = 100  # Private-use label per CDDL Section 11
+TRACE_METADATA_LABEL = 100  # Private-use label per CDDL Section 9
+CWT_CLAIMS_LABEL = 15  # COSE label for CWT_Claims in protected header
+CWT_ISS_LABEL = 1  # CWT issuer claim
+CWT_SUB_LABEL = 2  # CWT subject claim
 
 
 # ---------------------------------------------------------------------------
@@ -58,6 +62,20 @@ def _canonical_json(obj):
 
 def _sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def _extract_cwt_claims(record, issuer_override=None, subject_override=None):
+    """Build CWT_Claims map for the protected header.
+
+    Defaults: iss = model-provider (e.g. "anthropic"), sub = session-id.
+    """
+    session = record.get("session", {})
+    agent_meta = session.get("agent-meta", {})
+
+    iss = issuer_override or agent_meta.get("model-provider", "unknown")
+    sub = subject_override or session.get("session-id", record.get("id", "unknown"))
+
+    return {CWT_ISS_LABEL: iss, CWT_SUB_LABEL: sub}
 
 
 def _extract_trace_metadata(record, json_bytes):
@@ -77,7 +95,10 @@ def _extract_trace_metadata(record, json_bytes):
     if ts_start is not None:
         meta["timestamp-start"] = ts_start
     else:
-        meta["timestamp-start"] = record.get("created", "unknown")
+        # Fallback to signing time — trace-metadata requires a valid abstract-timestamp
+        # (RFC 3339 or epoch number), and some agents (e.g. Cursor) lack timestamps entirely.
+        now_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        meta["timestamp-start"] = record.get("created", now_utc)
 
     ts_end = session.get("session-end")
     if ts_end is not None:
@@ -132,9 +153,12 @@ def cmd_sign(args):
     key_pem = Path(args.key).read_text(encoding="utf-8")
     cose_key = OKPKey.from_pem_private_key(key_pem)
 
+    # Build CWT_Claims for protected header (SCITT-required)
+    cwt_claims = _extract_cwt_claims(record, args.issuer, args.subject)
+
     # Build COSE_Sign1 message
     msg = Sign1Message(
-        phdr={Algorithm: EdDSA, ContentType: "application/json"},
+        phdr={Algorithm: EdDSA, ContentType: "application/json", CWT_CLAIMS_LABEL: cwt_claims},
         uhdr={TRACE_METADATA_LABEL: trace_meta},
         payload=json_bytes,
     )
@@ -207,7 +231,13 @@ def cmd_verify(args):
             print(f"  Actual:   {actual_hash}")
             sys.exit(1)
 
+    # Extract CWT_Claims from protected header
+    phdr = decoded.phdr
+    cwt_claims = phdr.get(CWT_CLAIMS_LABEL, {})
+
     print("PASS: Signature verified")
+    print(f"  CWT Issuer:   {cwt_claims.get(CWT_ISS_LABEL, 'N/A')}")
+    print(f"  CWT Subject:  {cwt_claims.get(CWT_SUB_LABEL, 'N/A')}")
     print(f"  Session ID:   {trace_meta.get('session-id', 'N/A')}")
     print(f"  Agent vendor: {trace_meta.get('agent-vendor', 'N/A')}")
     print(f"  Trace format: {trace_meta.get('trace-format', 'N/A')}")
@@ -236,6 +266,8 @@ def main():
     sg.add_argument("--key", required=True, help="Path to private key PEM")
     sg.add_argument("--record", required=True, help="Path to JSON record file")
     sg.add_argument("--out", required=True, help="Output path for .sig.cbor file")
+    sg.add_argument("--issuer", help="CWT issuer (defaults to model-provider)")
+    sg.add_argument("--subject", help="CWT subject (defaults to session-id)")
 
     # verify
     vf = sub.add_parser("verify", help="Verify a COSE_Sign1 signature")

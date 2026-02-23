@@ -69,36 +69,50 @@ In agentic AI systems, machine actors interact with other machine actors.
 The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
-These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts of autonomous agents, retroactively (auditability after the fact).
+These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts (CoT) of autonomous agents, retroactively (i.e., accountability and auditability after the fact).
 
 The verifiable records of agent conversations that are specified in this document provide an essential basis for operators to detect divergences between intended and actual agent behavior after the interaction has concluded.
 
 For example:
 
-*  An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.
+* An agent authorized to read files might invoke tools to modify production systems or exfiltrate sensitive data beyond its authorization scope.
 
-*  An agent's visible chain-of-thought output might diverge from the reasoning that actually produced its actions.
+* An agent's visible CoT output might diverge from the reasoning that actually produced its actions.
 
-*  An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.
+* An agent might deliberately underperform during capability evaluations while performing at full capacity during deployment.
 
-This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody is possible.
-The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
-The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
-The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture {{-rats-arch}}.
-The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture {{-scitt-arch}}.
-The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
-The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
-The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
+This document defines conversation records representing activities of autonomous agents such that long-term preservation of the evidentiary value of these records across chains of custody (CoC) is possible.
+
+This document defines verifiable records of agent conversations as a building block towards seven dedicated goals:
+
+1. The first goal is to assure that the recording of an agent conversation (a distinct segment of the interaction with an autonomous agent) being proffered is the same as the agent conversation that actually occurred.
+
+2. The second goal is to provide a general structure of agent conversations that can represent most common types of agent conversation frames, is extensible, and allows for future evolution of agent conversation complexity and corresponding actor interaction.
+
+3. The third goal is to use existing IETF building blocks to present believable evidence about how an agent conversation is recorded utilizing Evidence generation as laid out in the Remote ATtestation ProcedureS architecture {{-rats-arch}}.
+
+4. The fourth goal is to use existing IETF building blocks to render conversation records auditable after the fact and enable non-repudiation as laid out in the Supply Chain Integrity, Transparency, and Trust architecture {{-scitt-arch}}.
+
+5. The fifth goal is to enable detection of behavioral anomalies in agent interactions, including unauthorized tool invocations, inconsistencies between reasoning traces and actions, and performance modulation across evaluation and deployment contexts, through structured, comparable conversation records.
+
+6. The sixth goal is to enable cross-vendor interoperability by defining a common representation for agent conversations that can be translated from multiple existing agent implementations with distinct native formats.
+
+7. The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
 
 Most agent conversations today are represented in "human-readable" text formats.
 For example, {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
 The Concise Binary Object Representation (CBOR {{STD94}}) is used as the primary representation next to the established representation that is JSON.
 
+In this version of the document the signing portion of JSON content is done via {{STD90}}.
+Using {{STD90}} enables interoperability with Transparency Services specified by the IETF {{-scitt-arch}} and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.
+
+Note: further improvements in support of in-memory processing, further compacting human-readable text strings, and using CBOR as an alternative representation for verifiable records of agent conversations will follow.
+
 ## Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-In this document, CDDL {{-cddl}} is used to describe the data formats.
+In this document, CDDL {{-cddl}} is used to describe the data formats of agent conversations for JSON and CBOR (with no optimization for CBOR, currently).
 
 The reader is assumed to be familiar with the vocabulary and concepts defined in {{-rats-arch}} and {{-scitt-arch}}.
 
@@ -127,12 +141,13 @@ The following frameworks were analyzed for their requirements on AI agent tracea
 
 ## Common Requirements Intersection
 
-Analysis of the above frameworks reveals eleven (11) categories of requirements that appear across ALL or MOST frameworks.
-These represent the minimum baseline that verifiable agent conversation records MUST support.
+The analysis of the frameworks listed above results in eleven categories of requirements that appear across ALL or MOST frameworks.
+These categories frame and represent a minimum baseline that verifiable agent conversation records MUST support.
 
 ### REQ-1: Automatic Event Logging
 
 All frameworks require automatic, system-generated logging of events without reliance on manual recording.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -149,7 +164,8 @@ Each `entry` represents a discrete, system-recorded event with structured metada
 
 ### REQ-2: Timestamp Requirements
 
-All frameworks require precise temporal information for each logged event.
+Most frameworks require precise temporal information for each logged event.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -163,7 +179,8 @@ The `timestamp` field in each entry uses `abstract-timestamp` which accepts both
 
 ### REQ-3: Actor Identification
 
-All frameworks require attribution of actions to identifiable actors (human or system).
+Most frameworks require some attribution of actions to identifiable actors (human or system).
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -179,6 +196,7 @@ Session-level `agent-meta` identifies the AI system.
 ### REQ-4: Action/Event Type Recording
 
 All frameworks require recording of what action or event occurred.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -192,7 +210,8 @@ The `type` field in each entry discriminates event types: `user`, `assistant`, `
 
 ### REQ-5: Input/Output Recording (AI-Specific)
 
-AI-specific frameworks require recording of inputs (prompts) and outputs (responses).
+All AI-specific frameworks require recording of inputs (prompts) and outputs (responses).
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -212,6 +231,7 @@ Mapping to this specification:
 ### REQ-6: Retention Period Requirements
 
 Most frameworks specify minimum retention periods for audit logs.
+Explicit requirements are listed as follows:
 
 | Framework | Minimum Retention |
 |-----------|-------------------|
@@ -225,7 +245,8 @@ Implementations SHOULD retain verifiable agent conversation records for at least
 
 ### REQ-7: Tamper-Evidence and Integrity Protection
 
-All frameworks require protection against unauthorized modification of logs.
+All frameworks require some protection against unauthorized modification of logs.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -240,7 +261,8 @@ The `content-hash` field in `trace-metadata` enables verification of payload int
 
 ### REQ-8: Incident Response Support
 
-All frameworks require logs to support incident investigation and response.
+All frameworks require some logs to support incident investigation and response.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -254,7 +276,8 @@ The structured format enables rapid extraction of relevant entries by timestamp 
 
 ### REQ-9: Anomaly and Risk Detection Support
 
-Frameworks require logs to enable detection of anomalous or risky behavior.
+All frameworks require some logs to enable detection of anomalous or risky behavior.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -273,7 +296,8 @@ The standardized entry types and structured `tool-call`/`tool-result` pairs enab
 
 ### REQ-10: Human Oversight Enablement
 
-AI-specific frameworks require logs to support human review and oversight.
+All AI-specific frameworks require logs to support human review and oversight.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -288,7 +312,8 @@ The hierarchical `children` field preserves conversation structure.
 
 ### REQ-11: Traceability and Reproducibility
 
-All frameworks require the ability to trace system behavior and reconstruct events.
+All frameworks require some ability to trace system behavior and reconstruct events.
+Explicit requirements are listed as follows:
 
 | Framework | Requirement |
 |-----------|-------------|
@@ -311,15 +336,15 @@ Mapping to this specification:
 
 For AI systems classified as high-risk under Annex III, additional requirements apply:
 
-1. **Biometric identification systems** (Annex III, 1(a)) require logging of:
+1. Biometric identification systems (Annex III, 1(a)) require logging of:
    - Precise timestamps for start/end of each usage session
    - Reference database used during input data validation
    - Input data leading to matches
    - Natural persons involved in result verification
 
-2. **Log retention**: Minimum 6 months; financial services may require longer per sector-specific regulation.
+2. Log retention: Minimum 6 months; financial services may require longer per sector-specific regulation.
 
-3. **Authority access**: Art. 19 requires provision of logs to competent authorities upon reasoned request.
+3. Authority Access: Art. 19 requires provision of logs to competent authorities upon reasoned request.
 
 ### ETSI TS 104 223 Session Logging Requirements
 
@@ -337,8 +362,7 @@ ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging 
 ### PCI DSS v4.0 AI-Specific Guidance
 
 The PCI Security Standards Council has published guidance on AI in payment environments:
-
-> "Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."
+"Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."
 
 This specification directly addresses this requirement through:
 
@@ -374,7 +398,7 @@ The following table maps this specification's data elements to compliance requir
 | `vcs-context` | - | 5.2.1-2 | - | CM-3 | - | A.6.2.8 | - |
 | `token-usage` | - | 5.4.2-4 | - | - | - | - | - |
 
-## Security Considerations for Compliance
+## Security Requirements addressing Regulatory Compliance
 
 ### Log Integrity
 
@@ -420,7 +444,756 @@ Logs may contain personal data subject to GDPR/privacy regulations:
 - Anthropic: "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs" (2025)
 - ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)
 
-# CDDL Definition for generic Agent Conversations
+# Data Structure Definitions
+
+This section defines each complex data type in the verifiable agent conversation CDDL data definition.
+Each subsection presents a CDDL fragment for one type, a brief description, and per-member documentation.
+
+## Common Types
+
+The schema uses the following generic type definitions throughout.
+
+abstract-timestamp:
+: An RFC 3339 date-time string or numeric epoch milliseconds.
+  New implementations SHOULD use RFC 3339 strings; consumers MUST accept both forms.
+
+session-id:
+: An opaque string uniquely identifying a conversation session.
+  Values may be UUID v4, UUID v7, SHA-256 hashes, or other formats.
+
+entry-id:
+: A per-entry unique reference within a session, enabling parent-child linking and tool call-result correlation.
+
+## The verifiable-agent-record Map
+
+The CDDL definition for the `verifiable-agent-record` map is specified as follows:
+
+~~~ cddl
+verifiable-agent-record = {
+    version: tstr
+    id: tstr
+    session: session-trace
+    ? created: abstract-timestamp
+    ? file-attribution: file-attribution-record
+    ? vcs: vcs-context
+    ? recording-agent: recording-agent
+    * tstr => any
+}
+~~~
+
+The `verifiable-agent-record` is the top-level container for all data produced by or about an agent conversation.
+It unifies two complementary perspectives: the session trace captures how code was produced (the full conversation replay), while file attribution captures what code was produced (which files were modified and by whom).
+
+The following describes each member of this map.
+
+version:
+: The schema version string following semantic versioning (e.g., "3.0.0-draft").
+  Consumers use this field to select the appropriate parser or validation logic.
+
+id:
+: A unique identifier for this record, typically a UUID.
+  Distinguishes records when multiple are stored or transmitted together.
+
+session:
+: The full conversation trace including all entries, tool calls, reasoning steps, and system events.
+
+created:
+: The timestamp when this record was generated.
+  Distinct from session timestamps, which record when the conversation occurred.
+
+file-attribution:
+: Structured data about which files were modified and which line ranges were written by the agent.
+
+vcs:
+: Version control metadata at the record level (repository, branch, revision).
+
+recording-agent:
+: Identifies the tool or agent that generated this record, as distinct from the agent that conducted the conversation.
+
+## The session-trace Map
+
+The CDDL definition for the `session-trace` map is specified as follows:
+
+~~~ cddl
+session-trace = {
+    ? format: tstr
+    session-id: session-id
+    ? session-start: abstract-timestamp
+    ? session-end: abstract-timestamp
+    agent-meta: agent-meta
+    ? environment: environment
+    entries: [* entry]
+    * tstr => any
+}
+~~~
+
+A `session-trace` captures the full conversation between a user and an autonomous agent.
+It contains an ordered array of entries representing messages, tool invocations, reasoning steps, and system events.
+The `session-trace` preserves the complete interaction history including all native agent metadata, enabling both replay and audit of the conversation.
+
+The following describes each member of this map.
+
+format:
+: Classifies the session style, such as "interactive" (human-in-the-loop) or "autonomous" (fully automated).
+  Informative only; does not change the structure.
+
+session-id:
+: Unique identifier for this session.
+
+session-start:
+: When the session began.
+
+session-end:
+: When the session ended.
+
+agent-meta:
+: Metadata about the agent and model that conducted this conversation.
+
+environment:
+: Execution environment context, such as working directory and version control state.
+
+entries:
+: An ordered array of conversation entries.
+
+## The agent-meta Map
+
+The CDDL definition for the `agent-meta` map is specified as follows:
+
+~~~ cddl
+agent-meta = {
+    model-id: tstr
+    model-provider: tstr
+    ? models: [* tstr]
+    ? cli-name: tstr
+    ? cli-version: tstr
+    * tstr => any
+}
+~~~
+
+The `agent-meta` type identifies the coding agent and language model used during a conversation session.
+Agent identification is essential for provenance tracking: knowing which model produced which output enables auditing, capability assessment, and compliance verification.
+
+The following describes each member of this map.
+
+model-id:
+: The primary language model identifier, using the naming convention of the provider (e.g., "claude-opus-4-5-20251101", "gemini-2.0-flash").
+
+model-provider:
+: The provider of the primary model (e.g., "anthropic", "google", "openai").
+
+models:
+: List of all model identifiers used during the session.
+  Relevant for multi-model sessions where the agent switches between models.
+
+cli-name:
+: The name of the CLI tool or agent framework (e.g., "claude-code", "gemini-cli", "codex-cli").
+
+cli-version:
+: The version of the CLI tool.
+
+## The recording-agent Map
+
+The CDDL definition for the `recording-agent` map is specified as follows:
+
+~~~ cddl
+recording-agent = {
+    name: tstr
+    ? version: tstr
+    * tstr => any
+}
+~~~
+
+The `recording-agent` map identifies the tool that generated this verifiable agent record, as distinct from the agent that conducted the conversation.
+This distinction matters for provenance chains: the recording tool's version affects how native data is translated into the canonical CDDL data definition specified in this document.
+
+The following describes each member of this map.
+
+name:
+: The name of the recording tool or agent.
+
+version:
+: The version of the recording tool.
+
+## The environment Map
+
+The CDDL definition for the environment map is specified as follows:
+
+~~~ cddl
+environment = {
+    working-dir: tstr
+    ? vcs: vcs-context
+    ? sandboxes: [* tstr]
+    * tstr => any
+}
+~~~
+
+The `environment` type captures execution context for the conversation: where the agent was running, what version control state was active, and whether sandboxing was in effect.
+This context is important for reproducibility and for understanding the scope of file modifications.
+
+The following describes each member of this map.
+
+working-dir:
+: The primary working directory path.
+  File paths in tool calls are typically relative to this directory.
+
+vcs:
+: Version control state at the time of the session (branch, revision, etc.).
+
+sandboxes:
+: Paths to sandbox mount points.
+  Some agents run in sandboxed environments where the working directory is a temporary mount.
+
+## The vcs-context Map
+
+The CDDL definition for the vcs-context map is specified as follows:
+
+~~~ cddl
+vcs-context = {
+    type: tstr
+    ? revision: tstr
+    ? branch: tstr
+    ? repository: tstr
+    * tstr => any
+}
+~~~
+
+The vcs-context type captures version control metadata for reproducibility.
+Knowing the exact repository, branch, and commit at the time of a conversation enables consumers to reconstruct the codebase state and verify file attributions.
+
+The following describes each member of this map.
+
+type:
+: The version control system type (e.g., "git", "jj", "hg", "svn").
+
+revision:
+: The commit SHA or change identifier at session time.
+
+branch:
+: The active branch name.
+
+repository:
+: The repository URL.
+
+## Entry Types
+
+The CDDL definition specifies five `entry` types representing the different kinds of events in an agent conversation.
+Each type uses a `type` field as the discriminator.
+All entry types support optional `children` for hierarchical nesting and `* tstr => any` for preserving native agent fields that do not map to canonical fields.
+
+~~~ cddl
+entry = message-entry
+      / tool-call-entry
+      / tool-result-entry
+      / reasoning-entry
+      / event-entry
+~~~
+
+### The message-entry Map
+
+The CDDL definition for the `message-entry` map is specified as follows:
+
+~~~ cddl
+message-entry = {
+    type: "user" / "assistant"
+    ? content: any
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? model-id: tstr
+    ? parent-id: entry-id
+    ? token-usage: token-usage
+    ? children: [* entry]
+    * tstr => any
+}
+~~~
+
+A `message-entry` represents a conversational turn: either human input (type: "user") or agent response (type: "assistant").
+This is the most common entry type, carrying the primary dialogue content of a session.
+For assistant messages, additional metadata may be present: the model that generated the response and token usage statistics.
+
+The following describes each member of this map.
+
+type:
+: The message direction.
+  "user" indicates human (or upstream agent) input; "assistant" indicates the agent's response.
+
+content:
+: The message body.
+  May be a plain text string, an array of typed content parts, or absent when the agent places content exclusively in child entries.
+
+timestamp:
+: When this message was produced.
+
+id:
+: Unique identifier for this entry within the session.
+
+model-id:
+: The model that generated this response.
+  Present on assistant entries; absent on user entries.
+
+parent-id:
+: References the parent entry, enabling tree-structured conversations.
+
+token-usage:
+: Token consumption metrics for this response.
+
+children:
+: Nested entries within this message.
+  Used when the native format embeds tool calls or reasoning blocks inside an assistant message.
+
+### The tool-call-entry Map
+
+The CDDL definition for the `tool-call-entry` map is specified as follows:
+
+~~~ cddl
+tool-call-entry = {
+    type: "tool-call"
+    name: tstr
+    input: any
+    ? call-id: tstr
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+~~~
+
+A `tool-call-entry` represents a tool invocation: which tool was called and with what arguments.
+Tool calls are central to agent conversation records because tool use is the primary mechanism by which agents interact with external environment.
+
+The following describes each member of this map.
+
+type:
+: Fixed discriminator value "tool-call".
+
+name:
+: The tool name (e.g., "Bash", "Edit", "Read", "apply_patch").
+
+input:
+: The arguments passed to the tool, preserved in their native structure.
+
+call-id:
+: Links this call to its corresponding result.
+
+timestamp:
+: When this tool call occurred.
+
+id:
+: Unique identifier for this entry.
+
+children:
+: Nested entries within this tool call.
+
+### The tool-result-entry Map
+
+The CDDL definition for the `tool-result-entry` map is specified as follows:
+
+~~~ cddl
+tool-result-entry = {
+    type: "tool-result"
+    output: any
+    ? call-id: tstr
+    ? status: tstr
+    ? is-error: bool
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+~~~
+
+A `tool-result-entry` represents the output returned by a tool after execution.
+It is linked to its corresponding tool-call-entry via the `call-id` field.
+The result carries the tool's response data and optional status metadata indicating success or failure.
+
+The following describes each member of this map.
+
+type:
+: Fixed discriminator value "tool-result".
+
+output:
+: The tool's response, preserved in native structure.
+
+call-id:
+: Links this result to its corresponding call.
+
+status:
+: Outcome status of the tool execution, such as "success", "error", or "completed".
+
+is-error:
+: Boolean error flag, present when the tool execution failed.
+
+timestamp:
+: When this tool result was returned.
+
+id:
+: Unique identifier for this entry.
+
+children:
+: Nested entries within this tool result.
+
+### The reasoning-entry Map
+
+The CDDL definition for the `reasoning-entry` map is specified as follows:
+
+~~~ cddl
+reasoning-entry = {
+    type: "reasoning"
+    content: any
+    ? encrypted: tstr
+    ? subject: tstr
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+~~~
+
+A reasoning-entry captures CoT, thinking, or internal reasoning content from the agent.
+Not all agents expose reasoning traces; when they do, the content may be plaintext, structured blocks, or encrypted.
+Reasoning entries are valuable for auditing decision-making processes and understanding why an agent took particular actions.
+
+The following describes each member of this map.
+
+type:
+: Fixed discriminator value "reasoning".
+
+content:
+: The reasoning text or structured content.
+  May be an empty string when only encrypted content is available.
+
+encrypted:
+: Encrypted reasoning content.
+  Used where the model provider encrypts chain-of-thought output.
+
+subject:
+: A topic label for the reasoning block.
+
+timestamp:
+: When this reasoning was produced.
+
+id:
+: Unique identifier for this entry.
+
+children:
+: Nested entries within the reasoning block.
+
+### The event-entry Map
+
+The CDDL definition for the `event-entry` map is specified as follows:
+
+~~~ cddl
+event-entry = {
+    type: "system-event"
+    event-type: tstr
+    ? data: { * tstr => any }
+    ? timestamp: abstract-timestamp
+    ? id: entry-id
+    ? children: [* entry]
+    * tstr => any
+}
+~~~
+
+An `event-entry` records system lifecycle events that are not part of the conversation dialogue but are relevant for understanding the session context.
+Examples include session start/end markers, token usage summaries, permission changes, and configuration events.
+
+The following describes each member of this map.
+
+type:
+: Fixed discriminator value "system-event".
+
+event-type:
+: Classifies the event, such as "session-start", "session-end", "token-count", or "permission-change".
+  The values are not enumerated in the schema to accommodate vendor-specific event types.
+
+data:
+: Event-specific payload.
+  The structure varies by event type.
+
+timestamp:
+: When this event occurred.
+
+id:
+: Unique identifier for this entry.
+
+children:
+: Nested entries within this event.
+
+## The token-usage Map
+
+The CDDL definition for the `token-usage` map is specified as follows:
+
+~~~ cddl
+token-usage = {
+    ? input: uint
+    ? output: uint
+    ? cached: uint
+    ? reasoning: uint
+    ? total: uint
+    ? cost: number
+    * tstr => any
+}
+~~~
+
+The `token-usage` type captures token consumption metrics for a model response.
+Token usage data is essential for cost tracking, quota management, and understanding model behavior.
+All fields are optional because different agents report different subsets of token metrics.
+
+Editor's Note: add a non-empty generic here
+
+The following describes each member of this map.
+
+input:
+: The number of input tokens consumed by this response.
+
+output:
+: The number of output tokens generated.
+
+cached:
+: The number of input tokens served from cache rather than reprocessed.
+
+reasoning:
+: Tokens consumed by chain-of-thought or reasoning computation.
+
+total:
+: The total token count.
+
+cost:
+: The monetary cost in US dollars for this response.
+
+## File Attribution Types
+
+NOTE: This section is specified but not yet validated against real session data.
+Implementation is pending.
+
+File attribution captures what code was produced: which files were modified, which line ranges were changed, and who authored them.
+
+### The file-attribution-record Map
+
+The CDDL definition for the `file-attribution-record` map is specified as follows:
+
+~~~ cddl
+file-attribution-record = {
+    files: [* file]
+}
+~~~
+
+The `file-attribution-record` is the top-level container for file attribution data.
+It holds an array of files, each with their attributed line ranges and contributor information.
+
+The following describes each member of this map.
+
+files:
+: Array of files with attributed ranges.
+
+### The file Map
+
+The CDDL definition for the `file` map is specified as follows:
+
+~~~ cddl
+file = {
+    path: tstr
+    conversations: [* conversation]
+}
+~~~
+
+A `file` represents a single source file that was modified during the conversation.
+It groups all conversations that contributed changes to this file.
+
+The following describes each member of this map.
+
+path:
+: The file path relative to the repository root.
+
+conversations:
+: The conversations that contributed modifications to this file.
+
+### The conversation Map
+
+The CDDL definition for the `conversation` map is specified as follows:
+
+~~~ cddl
+conversation = {
+    ? url: tstr .regexp uri-regexp
+    ? contributor: contributor
+    ranges: [* range]
+    ? related: [* resource]
+}
+~~~
+
+A `conversation` links a specific session to the line ranges it produced in a file.
+This enables tracing from a line of code back to the conversation that generated it.
+
+The following describes each member of this map.
+
+url:
+: A URL pointing to the conversation source (e.g., a web UI permalink).
+
+contributor:
+: The default contributor for all ranges in this conversation.
+  Can be overridden per-range.
+
+ranges:
+: The line ranges in the file that were produced by this conversation.
+
+related:
+: External resources related to this conversation (e.g., issue trackers, documentation).
+
+### The range Map
+
+The CDDL definition for the `range` map is specified as follows:
+
+~~~ cddl
+range = {
+    start-line: uint
+    end-line: uint
+    ? content-hash: tstr
+    ? content-hash-alg: tstr
+    ? contributor: contributor
+}
+~~~
+
+A `range` identifies a contiguous block of lines in a file that were produced by a specific conversation.
+Line numbers are 1-indexed and inclusive.
+The optional content hash enables position-independent tracking when lines move due to later edits.
+
+The following describes each member of this map.
+
+start-line:
+: The first line of the range (1-indexed).
+
+end-line:
+: The last line of the range (1-indexed, inclusive).
+
+content-hash:
+: A hash of the range content for position-independent identification.
+
+content-hash-alg:
+: The hash algorithm used (default: "sha-256").
+
+contributor:
+: Overrides the conversation-level contributor for this specific range.
+
+### The contributor Map
+
+The CDDL definition for the `contributor` map is specified as follows:
+
+~~~ cddl
+contributor = {
+    type: "human" / "ai" / "mixed" / "unknown"
+    ? model-id: tstr
+}
+~~~
+
+A `contributor` identifies who authored a range of code.
+The type field distinguishes between human-authored, AI-generated, mixed, and unknown authorship.
+
+The following describes each member of this map.
+
+type:
+: The authorship category.
+
+model-id:
+: The model identifier for AI-authored ranges.
+
+### The resource Map
+
+The CDDL definition for the `resource` map is specified as follows:
+
+~~~ cddl
+resource = {
+    type: tstr
+    url: tstr .regexp uri-regexp
+}
+~~~
+
+A `resource` represents an external reference related to a conversation, such as an issue tracker entry, a pull request, or a documentation page.
+
+The following describes each member of this map.
+
+type:
+: The resource type (e.g., "issue", "pr", "documentation").
+
+url:
+: The URL of the resource.
+
+## Signing Envelope Types
+
+The signing envelope provides cryptographic integrity protection for verifiable agent records using COSE_Sign1 ({{STD96}}).
+
+### The signed-agent-record Structure
+
+The CDDL definition for a `signed-agent-record` structure is specified as follows:
+
+~~~ cddl
+signed-agent-record = #6.18([
+    protected: bstr .cbor protected-header
+    unprotected: unprotected-header
+    payload: bstr / null
+    signature: bstr
+])
+~~~
+
+A `signed-agent-record` is a COSE_Sign1 envelope (CBOR Tag 18) that wraps a verifiable agent record with a cryptographic signature.
+Signing provides data provenance and tamper evidence, satisfying some requirements of RATS Evidence generation ({{-rats-arch}}) and SCITT auditability ({{-scitt-arch}}) requirements.
+The payload may be included or detached (null); in detached mode, the record is supplied separately during verification.
+
+The following describes each element of this structure.
+
+protected:
+: The serialized protected header containing the algorithm identifier, content type, and CWT claims.
+
+unprotected:
+: The unprotected header carrying trace metadata at label 100.
+
+payload:
+: The serialized record bytes, or null for detached payloads.
+
+signature:
+: The cryptographic signature over the protected header and payload.
+
+### The trace-metadata Map
+
+The CDDL definition for the `trace-metadata` map is specified as follows:
+
+~~~ cddl
+trace-metadata = {
+    session-id: session-id
+    agent-vendor: tstr
+    trace-format: trace-format-id
+    timestamp-start: abstract-timestamp
+    ? timestamp-end: abstract-timestamp
+    ? content-hash: tstr
+    ? content-hash-alg: tstr
+}
+~~~
+
+The `trace-metadata` type carries summary information about the signed record in the COSE_Sign1 unprotected header.
+This enables consumers to inspect key properties of a signed record without deserializing the full payload.
+
+The following describes each member of this map.
+
+session-id:
+: The session identifier from the signed record.
+
+agent-vendor:
+: The agent provider name (e.g., "anthropic", "google").
+
+trace-format:
+: Identifies the format of the signed payload (e.g., "ietf-vac-v3.0" for canonical records).
+
+timestamp-start:
+: When the session began.
+
+timestamp-end:
+: When the session ended.
+
+content-hash:
+: SHA-256 hex digest of the payload bytes, enabling integrity checking independent of the COSE signature.
+
+content-hash-alg:
+: The hash algorithm used (default: "sha-256").
+
+# Collated CDDL Definition for generic Agent Conversations
 
 ~~~ cddl
 {::include agent-conversation.cddl}
