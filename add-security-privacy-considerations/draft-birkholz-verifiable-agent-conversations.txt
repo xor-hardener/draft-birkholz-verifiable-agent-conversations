@@ -2119,7 +2119,8 @@ COSE_Sign1 = [
 
 5.6.  Reasoning Trace Confidentiality
 
-   CoT and reasoning content presents unique privacy considerations.
+   Chain of thought and reasoning content presents unique privacy
+   considerations.
 
 5.6.1.  Sensitivity of Reasoning
 
