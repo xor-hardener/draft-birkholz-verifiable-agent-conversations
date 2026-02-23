@@ -44,6 +44,7 @@ normative:
     =: RFC8126
 
 informative:
+  RFC6973:
   STD96:
     -: cose
     =: RFC9052
