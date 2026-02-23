@@ -60,7 +60,7 @@ Demonstrating that recorded agent behavior faithfully represents actual behavior
 This document defines a data format for verifiable agent conversation records using CDDL, with representations in both JSON and CBOR.
 The format captures session metadata, message exchanges, tool invocations, reasoning traces, and system events in a structured, extensible CDDL definition for verifiable agent conversation records.
 COSE is used as the signing method to allow for native interoperability in SCITT Transparency Services and the CDDL definition allows for seemless integration in Evidence as specified in RFC 9334.
-The specification supports cross-vendor interoperability by defining a common representation that accommodates translation from multiple existing agent implementations with distinct native formats.
+The specification supports cross-vendor interoperability by defining a common representation that accommodates translation from multiple existing agent implementations with distinct data structure layouts that are typically represented in JSON.
 
 --- middle
 
