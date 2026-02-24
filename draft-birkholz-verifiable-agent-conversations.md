@@ -54,6 +54,17 @@ normative:
       Official Journal of the European Union: L 2024/1689
       CELEX:: 32024R1689
     target: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+  EU_CRA_2024:
+    title: >
+      Regulation (EU) 2024/2847 (Cyber Resilience Act)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2024-11
+    seriesinfo:
+      Official Journal of the European Union: L 2024/2847
+      CELEX:: 32024R2847
+    target: https://eur-lex.europa.eu/eli/reg/2024/2847/oj
 
 informative:
   STD96:
