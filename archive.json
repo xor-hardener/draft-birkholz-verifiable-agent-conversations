@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-22T00:36:09.059840+00:00",
+  "timestamp": "2026-02-24T00:34:25.834615+00:00",
   "repo": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
   "labels": [
     {
@@ -317,7 +317,7 @@
       "id": "PR_kwDORG4n7s7EpgJD",
       "title": "docs: Add compliance requirements section with multi-framework analysis",
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -326,14 +326,14 @@
       ],
       "body": "## Summary\n\nAdds a comprehensive compliance requirements analysis section identifying the intersection of requirements across 11 major compliance frameworks applicable to AI agent traceability and session logging.\n\n### Frameworks Analyzed\n\n| Framework | Jurisdiction | Sector |\n|-----------|-------------|--------|\n| EU AI Act (2024/1689) | EU | Cross-sector |\n| Cyber Resilience Act | EU | Digital products |\n| NIS2 Directive | EU | Essential entities |\n| ETSI TS 104 223 | EU/Intl | AI systems |\n| SOC 2 | US/Intl | Service orgs |\n| FedRAMP Rev. 5 | US | Federal cloud |\n| PCI DSS v4.0 | Intl | Payments |\n| ISO/IEC 42001 | Intl | AI management |\n| FFIEC IT Handbook | US | Financial |\n| BSI AI Finance | DE | Financial AI |\n| NIST AI 100-2 | US | Cross-sector |\n\n### Key Finding: 11 Universal Requirements\n\nAll frameworks require these capabilities:\n\n1. **Automatic event logging** - System-generated records\n2. **Timestamps** - Precise temporal ordering\n3. **Actor identification** - Who performed actions\n4. **Action/event recording** - What was done\n5. **Input/output recording** (AI-specific) - Prompts and responses\n6. **Retention periods** - 6-18 months depending on framework\n7. **Tamper-evidence** - Integrity protection\n8. **Incident response** - Support investigation\n9. **Anomaly detection** - Risk identification\n10. **Human oversight** - Enable review\n11. **Traceability** - Reconstruct behavior\n\n### Mapping to This Specification\n\nEach requirement is mapped to specific CDDL data elements.\n\n## Files Added\n\n- `compliance-requirements.md` - Full analysis document (300+ lines)\n- `compliance-research/README.md` - Research methodology and sources\n- `compliance-research/downloads/` - Reference documents (PDFs gitignored)\n\n## Test plan\n\n- [ ] Review compliance mapping accuracy\n- [ ] Verify CDDL element references match current schema\n- [ ] Consider incorporating into main draft as new section\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-18T15:27:12Z",
-      "updatedAt": "2026-02-20T14:10:01Z",
+      "updatedAt": "2026-02-23T15:20:11Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "feat/update-cddl-schema",
       "baseRefOid": "1e5f09161f8eaa18836e4012eef5bd2860f1aa00",
       "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "headRefName": "feat/compliance-requirements-v2",
       "headRefOid": "e31323bd1f101991d007eaebdf265057677e664e",
-      "closedAt": null,
+      "closedAt": "2026-02-23T15:20:11Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -897,24 +897,26 @@
       "id": "PR_kwDORG4n7s7FLqH6",
       "title": "Removed clutter from CDDL Definition and fixed some types (e.g., posix time -> uint)",
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/15",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "henkbirkholz",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-02-20T14:37:20Z",
-      "updatedAt": "2026-02-20T14:40:42Z",
+      "updatedAt": "2026-02-23T12:22:51Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "main",
-      "baseRefOid": "6bf42b982dd2cf486d7d7ba1a41c556d831cebfe",
+      "baseRefOid": "b373755eab09e85b9dc5a6e023fa022bc0ed3618",
       "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "headRefName": "cddl-cleanup",
-      "headRefOid": "44886fcdaff55aae606059c2cf3c693e86d3cf8c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "32ee4d69028d12b98f2b85c2e54acf4513f424c3",
+      "closedAt": "2026-02-23T12:22:50Z",
+      "mergedAt": "2026-02-23T12:22:50Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "0c341912a2f820af47df7cad9a530c4761c9e84a"
+      },
       "comments": [],
       "reviews": [
         {
@@ -992,26 +994,351 @@
       "id": "PR_kwDORG4n7s7FRmt3",
       "title": "Add RFC 9393-style data structure definitions",
       "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "kittyandrew",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "## Summary\n\n- Adds a new `# Data Structure Definitions` section documenting all 22 CDDL types following the RFC 9393 \u00a72.3 pattern (CDDL fragment \u2192 prose \u2192 definition-list member descriptions)\n- Covers common types, root, session, environment, entry types, token usage, file attribution, and signing envelope\n- JSON-only (no integer indices), per Henk's guidance\n\n## Test plan\n\n- [ ] Verify kramdown-rfc renders the definition lists correctly (`make`)\n- [ ] Spot-check CDDL fragments against `agent-conversation.cddl`\n- [ ] Review prose descriptions for accuracy and completeness\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
       "createdAt": "2026-02-20T22:42:59Z",
-      "updatedAt": "2026-02-20T22:42:59Z",
+      "updatedAt": "2026-02-23T12:17:41Z",
       "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "baseRefName": "main",
       "baseRefOid": "e9da35fcfcb5fc4f95dd7b770adba0ecc95dbbaa",
       "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
       "headRefName": "add-data-definitions",
-      "headRefOid": "42e4a965e35ac10c1a79598494deef0a8bc899be",
+      "headRefOid": "2b1a92a9c5ff794aa2042ea76b1e6c74cf7f4c0a",
+      "closedAt": "2026-02-23T12:17:41Z",
+      "mergedAt": "2026-02-23T12:17:41Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "b373755eab09e85b9dc5a6e023fa022bc0ed3618"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7k6Idz",
+          "commit": {
+            "abbreviatedOid": "2b1a92a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-23T11:09:13Z",
+          "updatedAt": "2026-02-23T11:09:13Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k6t00",
+          "commit": {
+            "abbreviatedOid": "2b1a92a"
+          },
+          "author": "0xAverageUser",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-23T11:43:24Z",
+          "updatedAt": "2026-02-23T11:43:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDORG4n7s7FpMZB",
+      "title": "Initial IANA considerations",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/18",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-23T13:04:52Z",
+      "updatedAt": "2026-02-23T15:09:27Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "0c341912a2f820af47df7cad9a530c4761c9e84a",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "initial-iana-con",
+      "headRefOid": "0d520dec4ca4ca3273481dd5c27cf3cc0f225fa5",
+      "closedAt": "2026-02-23T15:09:27Z",
+      "mergedAt": "2026-02-23T15:09:27Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "813221f0b3dc4571963d7bbc6ef9f75717a17498"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7k9Kfu",
+          "commit": {
+            "abbreviatedOid": "0d520de"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-23T14:03:38Z",
+          "updatedAt": "2026-02-23T14:03:38Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDORG4n7s7Fp6hT",
+      "title": "Add Privacy Considerations and Security Considerations sections",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/19",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\n- Add Privacy Considerations section\n- Add Security Considerations section\n- Add IANA Considerations placeholder\n\nSection order: Privacy, Security, IANA.\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)",
+      "createdAt": "2026-02-23T13:54:39Z",
+      "updatedAt": "2026-02-23T15:15:52Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "0c341912a2f820af47df7cad9a530c4761c9e84a",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "add-security-privacy-considerations",
+      "headRefOid": "9ce2b00db4c685f2611150ae1efb413ce256f4c7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7k9Rc0",
+          "commit": {
+            "abbreviatedOid": "a251a01"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:09:06Z",
+          "updatedAt": "2026-02-23T14:09:06Z",
+          "comments": [
+            {
+              "originalPosition": 169,
+              "body": "```suggestion\nChain of thought and reasoning content presents unique privacy considerations.\n```",
+              "createdAt": "2026-02-23T14:09:06Z",
+              "updatedAt": "2026-02-23T14:09:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k9W40",
+          "commit": {
+            "abbreviatedOid": "a251a01"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:13:32Z",
+          "updatedAt": "2026-02-23T14:13:32Z",
+          "comments": [
+            {
+              "originalPosition": 405,
+              "body": "this is weird to see for JSON or CBOR.",
+              "createdAt": "2026-02-23T14:13:32Z",
+              "updatedAt": "2026-02-23T14:13:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k9XQx",
+          "commit": {
+            "abbreviatedOid": "a251a01"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:13:50Z",
+          "updatedAt": "2026-02-23T14:13:50Z",
+          "comments": [
+            {
+              "originalPosition": 405,
+              "body": "also what does MUST NOT assume mean",
+              "createdAt": "2026-02-23T14:13:50Z",
+              "updatedAt": "2026-02-23T14:13:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k9a5R",
+          "commit": {
+            "abbreviatedOid": "a251a01"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:16:46Z",
+          "updatedAt": "2026-02-23T14:16:46Z",
+          "comments": [
+            {
+              "originalPosition": 486,
+              "body": "what is incremental signing?",
+              "createdAt": "2026-02-23T14:16:46Z",
+              "updatedAt": "2026-02-23T14:16:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k9bRu",
+          "commit": {
+            "abbreviatedOid": "a251a01"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:17:04Z",
+          "updatedAt": "2026-02-23T14:17:05Z",
+          "comments": [
+            {
+              "originalPosition": 486,
+              "body": "nesting or content addressing and back pointing",
+              "createdAt": "2026-02-23T14:17:04Z",
+              "updatedAt": "2026-02-23T14:17:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k9z7J",
+          "commit": {
+            "abbreviatedOid": "e11b01f"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:33:51Z",
+          "updatedAt": "2026-02-23T14:33:51Z",
+          "comments": [
+            {
+              "originalPosition": 405,
+              "body": "```suggestion\nFields that are not defined by this specification or by updates to this specification have to be either dismissed by implementations or processed with significant caution.\n```",
+              "createdAt": "2026-02-23T14:33:51Z",
+              "updatedAt": "2026-02-23T14:33:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k95ZR",
+          "commit": {
+            "abbreviatedOid": "46ff539"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T14:37:16Z",
+          "updatedAt": "2026-02-23T14:37:17Z",
+          "comments": [
+            {
+              "originalPosition": 405,
+              "body": "```suggestion\n```",
+              "createdAt": "2026-02-23T14:37:17Z",
+              "updatedAt": "2026-02-23T14:37:17Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDORG4n7s7FqIQs",
+      "title": "First Abstract Draft",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/pull/20",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-02-23T14:09:34Z",
+      "updatedAt": "2026-02-23T15:15:21Z",
+      "baseRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "0c341912a2f820af47df7cad9a530c4761c9e84a",
+      "headRepository": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "add-abstract",
+      "headRefOid": "2fb2c739f509e0260df844199d515d2968c93d59",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s7k-w_Q",
+          "commit": {
+            "abbreviatedOid": "7e39526"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T15:10:49Z",
+          "updatedAt": "2026-02-23T15:10:49Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\nThe format captures session metadata, message exchanges, tool invocations, reasoning traces, and system events in a structured, extensible CDDL definition for verifiable agent conversation records.\n```",
+              "createdAt": "2026-02-23T15:10:49Z",
+              "updatedAt": "2026-02-23T15:10:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k-2Nu",
+          "commit": {
+            "abbreviatedOid": "82a390b"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T15:14:04Z",
+          "updatedAt": "2026-02-23T15:14:04Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "```suggestion\nCOSE is used as the signing method to allow for native interoperability in SCITT Transparency Services and the CDDL definition allows for seemless integration in Evidence as specified in RFC 9334.\n```",
+              "createdAt": "2026-02-23T15:14:04Z",
+              "updatedAt": "2026-02-23T15:14:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDORG4n7s7k-39w",
+          "commit": {
+            "abbreviatedOid": "ccfa705"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-23T15:15:15Z",
+          "updatedAt": "2026-02-23T15:15:15Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\nThe specification supports cross-vendor interoperability by defining a common representation that accommodates translation from multiple existing agent implementations with distinct data structure layouts that are typically represented in JSON.\n```",
+              "createdAt": "2026-02-23T15:15:15Z",
+              "updatedAt": "2026-02-23T15:15:15Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
