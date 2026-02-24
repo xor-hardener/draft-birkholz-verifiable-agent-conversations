@@ -1901,8 +1901,8 @@ COSE_Sign1 = [
    [EU_AI_ACT_2024]
               European Parliament and Council of the European Union,
               "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
-              Official Journal of the European Union, L 2024/1689,
-              CELEX: 32024R1689 , 2024,
+              Official Journal of the European Union L 2024/1689,
+              CELEX 32024R1689, 2024,
               <https://eur-lex.europa.eu/eli/reg/2024/1689/oj>.
 
    [IANA.cbor-tags]
