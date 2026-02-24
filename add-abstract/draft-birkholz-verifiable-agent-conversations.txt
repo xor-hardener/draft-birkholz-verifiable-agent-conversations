@@ -5,9 +5,9 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 27 August 2026                                                 
+Expires: 28 August 2026                                                 
                                                                O. Steele
-                                                        23 February 2026
+                                                        24 February 2026
 
 
                      Verifiable Agent Conversations
@@ -17,7 +17,7 @@ Abstract
 
    Autonomous agents based on large language models increasingly perform
    consequential tasks on behalf of humans and other agents.
-   Demonstrating that recorded agent behavior faithfully represents
+   Demonstrating that recorded agent behavior truthfully represents
    actual behavior is essential for accountability, compliance, and
    human oversight.  This document defines a data format for verifiable
    agent conversation records using CDDL, with representations in both
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2026.
+   This Internet-Draft will expire on 28 August 2026.
 
 Copyright Notice
 
