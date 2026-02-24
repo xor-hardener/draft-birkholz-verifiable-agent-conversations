@@ -49,11 +49,10 @@ normative:
     author:
     - org: European Parliament
     - org: Council of the European Union
-    date: 2024
-    month: July
+    date: 2024-07
     seriesinfo:
       Official Journal of the European Union: L 2024/1689
-      CELEX: 32024R1689
+      CELEX:: 32024R1689
     target: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
 
 informative:
