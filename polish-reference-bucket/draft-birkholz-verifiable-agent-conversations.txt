@@ -1905,6 +1905,13 @@ COSE_Sign1 = [
               CELEX: 32024R1689, July 2024,
               <https://eur-lex.europa.eu/eli/reg/2024/1689/oj>.
 
+   [EU_CRA_2024]
+              European Parliament and Council of the European Union,
+              "Regulation (EU) 2024/2847 (Cyber Resilience Act)",
+              Official Journal of the European Union L 2024/2847,
+              CELEX: 32024R2847, November 2024,
+              <https://eur-lex.europa.eu/eli/reg/2024/2847/oj>.
+
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
               <https://www.iana.org/assignments/cbor-tags>.
