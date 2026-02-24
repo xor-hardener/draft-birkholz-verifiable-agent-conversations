@@ -43,6 +43,19 @@ normative:
   BCP26:
     -: ianacons
     =: RFC8126
+  EU_AI_ACT_2024:
+    title: >
+      Regulation (EU) 2024/1689 (Artificial Intelligence Act)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2024
+    month: July
+    refcontent: >
+      Official Journal of the European Union, L 2024/1689
+    target: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+    seriesinfo: >
+      CELEX: 32024R1689
 
 informative:
   STD96:
