@@ -43,6 +43,121 @@ normative:
   BCP26:
     -: ianacons
     =: RFC8126
+  EU_AI_ACT_2024:
+    title: >
+      Regulation (EU) 2024/1689 (Artificial Intelligence Act)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2024-07
+    seriesinfo:
+      Official Journal of the European Union: L 2024/1689
+      CELEX:: 32024R1689
+    target: https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+  EU_CRA_2024:
+    title: >
+      Regulation (EU) 2024/2847 (Cyber Resilience Act)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2024-11
+    seriesinfo:
+      Official Journal of the European Union: L 2024/2847
+      CELEX:: 32024R2847
+    target: https://eur-lex.europa.eu/eli/reg/2024/2847/oj
+  EU_NIS2_2022:
+    title: >
+      Directive (EU) 2022/2555 (NIS 2 Directive)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2022-12
+    seriesinfo:
+      Official Journal of the European Union: L 333
+      CELEX:: 32022L2555
+  ETSI_TS_104223_2025:
+    title: >
+      Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems
+    author:
+    - org: European Telecommunications Standards Institute
+    date: 2025-04
+    seriesinfo:
+      ETSI TS: 104 223, V1.1.1
+    target: https://www.etsi.org/deliver/etsi_ts/104200_104299/104223/01.01.01_60/ts_104223v010101p.pdf
+  AICPA_TSC_2017:
+    title: >
+      Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy (With Revised Points of Focus - 2022)
+    author:
+    - org: American Institute of Certified Public Accountants
+    - org: Chartered Institute of Management Accountants
+    date: 2017
+    seriesinfo:
+      AICPA: Trust Services Criteria
+    target: https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022
+  NIST_SP_800_53_R5:
+    title: >
+      Security and Privacy Controls for Information Systems and Organizations
+    author:
+    - org: National Institute of Standards and Technology
+    date: 2020-09
+    seriesinfo:
+      NIST Special Publication: 800-53, Revision 5
+    target: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
+  OMB_M_21_31:
+    title: >
+      Improving the Federal Government's Investigative and Remediation Capabilities Related to Cybersecurity Incidents
+    author:
+    - org: Office of Management and Budget
+    date: 2021-08
+    seriesinfo:
+      OMB Memorandum: M-21-31
+    target: https://www.whitehouse.gov/wp-content/uploads/2021/08/M-21-31-Improving-the-Federal-Governments-Investigative-and-Remediation-Capabilities-Related-to-Cybersecurity-Incidents.pdf
+  PCI_DSS_V4_0_1:
+    title: >
+      Payment Card Industry Data Security Standard
+    author:
+    - org: PCI Security Standards Council
+    date: 2024-06
+    seriesinfo:
+      PCI DSS: Version 4.0.1
+    target: https://www.pcisecuritystandards.org/document_library/
+  ISO_IEC_42001_2023:
+    title: >
+      Information technology - Artificial intelligence - Management system
+    author:
+    - org: International Organization for Standardization
+    - org: International Electrotechnical Commission
+    date: 2023-12
+    seriesinfo:
+      ISO/IEC: 42001:2023
+    target: https://www.iso.org/standard/42001
+  FFIEC_IT_HANDBOOK_2024:
+    title: >
+      Information Technology Examination Handbook
+    author:
+    - org: Federal Financial Institutions Examination Council
+    date: 2024-08
+    seriesinfo:
+      FFIEC: IT Examination Handbook
+    target: https://ithandbook.ffiec.gov/
+  BSI_AI_FINANCE_2024:
+    title: >
+      Test Criteria Catalogue for AI Systems in Finance
+    author:
+    - org: Bundesamt fuer Sicherheit in der Informationstechnik
+    date: 2024
+    seriesinfo:
+      BSI: AI Finance Test Criteria
+    target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/AI-Finance_Test-Criteria.pdf
+  NIST_AI_100_2_E2025:
+    title: >
+      Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations
+    author:
+    - org: National Institute of Standards and Technology
+    date: 2025-03
+    seriesinfo:
+      NIST AI: 100-2 E2025
+    target: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
 
 informative:
   STD96:
@@ -50,6 +165,33 @@ informative:
     =: RFC9052
   RFC9334: rats-arch
   I-D.ietf-scitt-architecture: scitt-arch
+  EMERGENT_MISALIGNMENT_2025:
+    title: >
+      Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs
+    author:
+    - name: Jan Betley
+    - name: Daniel Tan
+    - name: Niels Warncke
+    - name: Anna Sztyber-Betley
+    - name: Xuchan Bao
+    - name: Martin Soto
+    - name: Nathan Labenz
+    - name: Owain Evans
+    date: 2025-02
+    seriesinfo:
+      arXiv: "2502.17424"
+      PMLR: "267:4043-4068"
+    target: https://arxiv.org/abs/2502.17424
+  ISO_IEC_DIS_24970:
+    title: >
+      Artificial intelligence - AI system logging
+    author:
+    - org: International Organization for Standardization
+    - org: International Electrotechnical Commission
+    date: 2025
+    seriesinfo:
+      ISO/IEC DIS: "24970"
+    target: https://www.iso.org/standard/88723.html
 
 entity:
   SELF: "RFCthis"
@@ -133,17 +275,17 @@ The following frameworks were analyzed for their requirements on AI agent tracea
 
 | Framework | Jurisdiction | Sector | Status |
 |-----------|-------------|--------|--------|
-| EU AI Act (Regulation 2024/1689) | EU | Cross-sector | In force Aug 2024 |
-| Cyber Resilience Act (CRA) | EU | Products with digital elements | In force Dec 2024 |
-| NIS2 Directive | EU | Essential/important entities | Transposed Oct 2024 |
-| ETSI TS 104 223 | EU/International | AI systems | Published Apr 2025 |
-| SOC 2 Trust Services Criteria | US/International | Service organizations | Active |
-| FedRAMP Rev. 5 | US | Federal cloud services | Active |
-| PCI DSS v4.0 | International | Payment card industry | Mandatory Mar 2025 |
-| ISO/IEC 42001:2023 | International | AI management systems | Published 2023 |
-| FFIEC IT Handbook | US | Financial institutions | Updated 2024 |
-| BSI AI Finance Test Criteria | Germany | Financial sector AI | Published 2024 |
-| NIST AI 100-2 | US | Cross-sector | Published 2025 |
+| EU AI Act {{EU_AI_ACT_2024}} | EU | Cross-sector | In force Aug 2024 |
+| Cyber Resilience Act {{EU_CRA_2024}} | EU | Products with digital elements | In force Dec 2024 |
+| NIS2 Directive {{EU_NIS2_2022}} | EU | Essential/important entities | Transposed Oct 2024 |
+| ETSI TS 104 223 {{ETSI_TS_104223_2025}} | EU/International | AI systems | Published Apr 2025 |
+| SOC 2 Trust Services Criteria {{AICPA_TSC_2017}} | US/International | Service organizations | Active |
+| FedRAMP {{NIST_SP_800_53_R5}} {{OMB_M_21_31}} | US | Federal cloud services | Active |
+| PCI DSS {{PCI_DSS_V4_0_1}} | International | Payment card industry | Mandatory Mar 2025 |
+| ISO/IEC 42001 {{ISO_IEC_42001_2023}} | International | AI management systems | Published 2023 |
+| FFIEC IT Handbook {{FFIEC_IT_HANDBOOK_2024}} | US | Financial institutions | Updated 2024 |
+| BSI AI Finance Test Criteria {{BSI_AI_FINANCE_2024}} | Germany | Financial sector AI | Published 2024 |
+| NIST AI 100-2 {{NIST_AI_100_2_E2025}} | US | Cross-sector | Published 2025 |
 
 ## Common Requirements Intersection
 
@@ -338,9 +480,9 @@ Mapping to this specification:
 
 ## Framework-Specific Requirements
 
-### EU AI Act (High-Risk Systems)
+### EU AI Act (High-Risk Systems) {#eu-ai-act-high-risk}
 
-For AI systems classified as high-risk under Annex III, additional requirements apply:
+For AI systems classified as high-risk under Annex III of the EU AI Act {{EU_AI_ACT_2024}}, additional requirements apply:
 
 1. Biometric identification systems (Annex III, 1(a)) require logging of:
    - Precise timestamps for start/end of each usage session
@@ -350,11 +492,11 @@ For AI systems classified as high-risk under Annex III, additional requirements 
 
 2. Log retention: Minimum 6 months; financial services may require longer per sector-specific regulation.
 
-3. Authority Access: Art. 19 requires provision of logs to competent authorities upon reasoned request.
+3. Authority Access: Art. 19 of {{EU_AI_ACT_2024}} requires provision of logs to competent authorities upon reasoned request.
 
-### ETSI TS 104 223 Session Logging Requirements
+### ETSI TS 104 223 Session Logging Requirements {#etsi-logging}
 
-ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging requirements:
+ETSI TS 104 223 {{ETSI_TS_104223_2025}} provides the most detailed AI-specific logging requirements:
 
 | Provision | Requirement | This Spec Mapping |
 |-----------|-------------|-------------------|
@@ -365,9 +507,9 @@ ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-specific logging 
 | 5.4.2-2 | "Analyse their logs to ensure...desired outputs and to detect anomalies" | Structured format enables analysis |
 | 5.4.2-3 | "Monitor internal states of their AI systems" | `reasoning-entry`, `token-usage` |
 
-### PCI DSS v4.0 AI-Specific Guidance
+### PCI DSS AI-Specific Guidance {#pci-dss-ai}
 
-The PCI Security Standards Council has published guidance on AI in payment environments:
+The PCI Security Standards Council has published guidance on AI in payment environments {{PCI_DSS_V4_0_1}}:
 "Where possible, logging should be sufficient to audit the prompt inputs and reasoning process used by the AI system that led to the output provided."
 
 This specification directly addresses this requirement through:
@@ -377,9 +519,9 @@ This specification directly addresses this requirement through:
 - `message-entry` (type: "assistant"): Captures model outputs
 - `tool-call-entry` / `tool-result-entry`: Captures agentic actions
 
-### Financial Sector Requirements (FFIEC, BSI)
+### Financial Sector Requirements (FFIEC, BSI) {#financial-sector}
 
-Financial institutions face additional scrutiny for AI systems:
+Financial institutions face additional scrutiny for AI systems per {{FFIEC_IT_HANDBOOK_2024}} and {{BSI_AI_FINANCE_2024}}:
 
 | Requirement Area | FFIEC | BSI AI Finance |
 |------------------|-------|----------------|
@@ -408,7 +550,7 @@ The following table maps this specification's data elements to compliance requir
 
 ### Log Integrity
 
-Per PCI DSS 4.0 Req 10.5 and FedRAMP AU-9, logs MUST be protected against modification.
+Per PCI DSS {{PCI_DSS_V4_0_1}} Req 10.5 and FedRAMP {{NIST_SP_800_53_R5}} AU-9, logs MUST be protected against modification.
 Implementations SHOULD:
 
 1. Use the `signed-agent-record` envelope for cryptographic integrity
@@ -417,7 +559,7 @@ Implementations SHOULD:
 
 ### Access Control
 
-Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs MUST be controlled:
+Per FedRAMP {{NIST_SP_800_53_R5}} AC-3 and ETSI {{ETSI_TS_104223_2025}} 5.2.2-1, access to logs MUST be controlled:
 
 1. Logs containing sensitive prompts or outputs require access control
 2. Reasoning content may contain confidential information
@@ -431,24 +573,12 @@ Logs may contain personal data subject to GDPR/privacy regulations:
 2. `tool-result-entry.output` may contain query results with PII
 3. Retention periods must balance compliance requirements with data minimization
 
-## Normative References for Compliance Bucket (TBD)
+## Related Standards and Emerging Work
 
-- EU AI Act: Regulation (EU) 2024/1689 (Artificial Intelligence Act)
-- CRA: Regulation (EU) 2024/2847 (Cyber Resilience Act)
-- NIS2: Directive (EU) 2022/2555
-- ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)
-- SOC 2: AICPA Trust Services Criteria (2017)
-- FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31
-- PCI DSS: PCI DSS v4.0.1 (March 2024)
-- ISO 42001: ISO/IEC 42001:2023
-- FFIEC: FFIEC IT Examination Handbook (2024)
-- BSI: BSI AI Finance Test Criteria (2024)
-- NIST AI: NIST AI 100-2 E2025
+The ISO/IEC JTC 1/SC 42 committee is developing {{ISO_IEC_DIS_24970}}, a draft international standard specifically addressing AI system logging requirements.
+This work aligns with and complements the verifiable agent conversation format defined in this document.
 
-## Informative References Bucket (TBD)
-
-- Anthropic: "Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs" (2025)
-- ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)
+Research on emergent misalignment {{EMERGENT_MISALIGNMENT_2025}} demonstrates that narrow fine-tuning can produce broadly misaligned LLMs, underscoring the importance of comprehensive conversation logging for detecting behavioral anomalies that may not be apparent from individual interactions.
 
 # Data Structure Definitions
 
