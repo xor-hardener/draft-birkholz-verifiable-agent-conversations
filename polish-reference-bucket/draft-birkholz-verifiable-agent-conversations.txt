@@ -5,9 +5,9 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 28 August 2026                                                 
+Expires: 29 August 2026                                                 
                                                                O. Steele
-                                                        24 February 2026
+                                                        25 February 2026
 
 
                      Verifiable Agent Conversations
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 August 2026.
+   This Internet-Draft will expire on 29 August 2026.
 
 Copyright Notice
 
@@ -1893,10 +1893,35 @@ COSE_Sign1 = [
 
 6.1.  Normative References
 
+   [AICPA_TSC_2017]
+              American Institute of Certified Public Accountants and
+              Chartered Institute of Management Accountants, "Trust
+              Services Criteria for Security, Availability, Processing
+              Integrity, Confidentiality, and Privacy (With Revised
+              Points of Focus - 2022)", AICPA Trust Services Criteria,
+              2017, <https://www.aicpa-cima.com/resources/download/2017-
+              trust-services-criteria-with-revised-points-of-focus-
+              2022>.
+
    [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [BSI_AI_FINANCE_2024]
+              Bundesamt fuer Sicherheit in der Informationstechnik,
+              "Test Criteria Catalogue for AI Systems in Finance",
+              BSI AI Finance Test Criteria, 2024,
+              <https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/
+              AI-Finance_Test-Criteria.pdf>.
+
+   [ETSI_TS_104223_2025]
+              European Telecommunications Standards Institute, "Securing
+              Artificial Intelligence (SAI); Baseline Cyber Security
+              Requirements for AI Models and Systems", ETSI TS 104 223,
+              V1.1.1, April 2025, <https://www.etsi.org/deliver/
+              etsi_ts/104200_104299/104223/01.01.01_60/
+              ts_104223v010101p.pdf>.
 
    [EU_AI_ACT_2024]
               European Parliament and Council of the European Union,
@@ -1911,6 +1936,18 @@ COSE_Sign1 = [
               Official Journal of the European Union L 2024/2847,
               CELEX: 32024R2847, November 2024,
               <https://eur-lex.europa.eu/eli/reg/2024/2847/oj>.
+
+   [EU_NIS2_2022]
+              European Parliament and Council of the European Union,
+              "Directive (EU) 2022/2555 (NIS 2 Directive)", Official
+              Journal of the European Union L 333, CELEX: 32022L2555,
+              December 2022.
+
+   [FFIEC_IT_HANDBOOK_2024]
+              Federal Financial Institutions Examination Council,
+              "Information Technology Examination Handbook", FFIEC IT
+              Examination Handbook, August 2024,
+              <https://ithandbook.ffiec.gov/>.
 
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
@@ -1930,6 +1967,41 @@ COSE_Sign1 = [
    [IANA.media-types]
               IANA, "Media Types",
               <https://www.iana.org/assignments/media-types>.
+
+   [ISO_IEC_42001_2023]
+              International Organization for Standardization and
+              International Electrotechnical Commission, "Information
+              technology - Artificial intelligence - Management system",
+              ISO/IEC 42001:2023, December 2023,
+              <https://www.iso.org/standard/42001>.
+
+   [NIST_AI_100_2_E2025]
+              National Institute of Standards and Technology,
+              "Adversarial Machine Learning: A Taxonomy and Terminology
+              of Attacks and Mitigations", NIST AI 100-2 E2025, March
+              2025, <https://csrc.nist.gov/pubs/ai/100/2/e2025/final>.
+
+   [NIST_SP_800_53_R5]
+              National Institute of Standards and Technology, "Security
+              and Privacy Controls for Information Systems and
+              Organizations", NIST Special Publication 800-53, Revision
+              5, September 2020,
+              <https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final>.
+
+   [OMB_M_21_31]
+              Office of Management and Budget, "Improving the Federal
+              Government's Investigative and Remediation Capabilities
+              Related to Cybersecurity Incidents", OMB
+              Memorandum M-21-31, August 2021,
+              <https://www.whitehouse.gov/wp-content/uploads/2021/08/
+              M-21-31-Improving-the-Federal-Governments-Investigative-
+              and-Remediation-Capabilities-Related-to-Cybersecurity-
+              Incidents.pdf>.
+
+   [PCI_DSS_V4_0_1]
+              PCI Security Standards Council, "Payment Card Industry
+              Data Security Standard", PCI DSS Version 4.0.1, June 2024,
+              <https://www.pcisecuritystandards.org/document_library/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1986,6 +2058,13 @@ COSE_Sign1 = [
 
 6.2.  Informative References
 
+   [EMERGENT_MISALIGNMENT_2025]
+              Betley, J., Tan, D., Warncke, N., Sztyber-Betley, A., Bao,
+              X., Soto, M., Labenz, N., and O. Evans, "Emergent
+              Misalignment: Narrow finetuning can produce broadly
+              misaligned LLMs", arXiv 2502.17424, PMLR 267:4043-4068,
+              February 2025, <https://arxiv.org/abs/2502.17424>.
+
    [I-D.ietf-scitt-architecture]
               Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
               Y., and S. Lasker, "An Architecture for Trustworthy and
@@ -1993,6 +2072,12 @@ COSE_Sign1 = [
               Internet-Draft, draft-ietf-scitt-architecture-22, 10
               October 2025, <https://datatracker.ietf.org/doc/html/
               draft-ietf-scitt-architecture-22>.
+
+   [ISO_IEC_DIS_24970]
+              International Organization for Standardization and
+              International Electrotechnical Commission, "Artificial
+              intelligence - AI system logging", ISO/IEC DIS 24970,
+              2025, <https://www.iso.org/standard/88723.html>.
 
    [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote ATtestation procedureS (RATS)
