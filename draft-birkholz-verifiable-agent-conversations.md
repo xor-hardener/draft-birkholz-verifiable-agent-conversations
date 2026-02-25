@@ -160,6 +160,7 @@ normative:
     target: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
 
 informative:
+  RFC6973:
   STD96:
     -: cose
     =: RFC9052
@@ -1336,6 +1337,107 @@ content-hash-alg:
 ~~~
 {: #fig-cddl-record artwork-align="left"
    title="CDDL definition of an Agent Conversation"}
+
+# Privacy Considerations
+
+Verifiable agent conversation records reveal substantial information about agent behavior, system state, and user interactions.
+The privacy considerations of {{RFC6973}} apply.
+
+## Information Disclosure
+
+User prompts captured in message entries may contain personal identifiers, business confidential information, credentials inadvertently included in prompts, or behavioral patterns.
+Agent responses and reasoning traces may reveal inference results that expose information about users not explicitly provided, confidential information retrieved by tools, or system architecture details through tool names and parameters.
+Implementations MUST treat user-provided content as potentially containing personally identifiable information.
+
+Record metadata exposes operational details that may have privacy implications.
+Model identifiers reveal AI capabilities, CLI versions enable targeted attacks against known vulnerabilities, working directories expose file system structure, and VCS context discloses repository names and commit timing.
+Token usage patterns may enable inference about conversation content even when the content itself is protected.
+
+## Sensitive Content in Records
+
+Reasoning entries may contain inferences that constitute special category data, including health-related inferences from user queries, political opinions derived from conversation context, or biometric data processed by AI systems.
+The `reasoning-entry.encrypted` field reflects that some model providers encrypt chain-of-thought content; when reasoning is encrypted, audit capabilities depend on the provider's cooperation.
+
+Tool inputs and outputs warrant particular attention.
+Tool call inputs may contain credentials, API keys, or file contents.
+Tool results may contain query results with personal data from databases or external services.
+Implementations SHOULD provide configurable redaction rules for common patterns and support selective entry type recording based on deployment requirements.
+
+## Retention Considerations
+
+Multiple frameworks impose retention requirements that may conflict with data minimization principles.
+Organizations must balance compliance obligations requiring extended retention against privacy principles requiring timely deletion.
+
+Compliant data management may require separating raw personal data from audit trail metadata, implementing automated deletion for personal data after compliance-minimum periods, and maintaining cryptographic commitments enabling verification without retaining content.
+
+## Correlation and Inference
+
+Presentations of the same record to multiple parties can be correlated by matching on the signature component.
+Session identifiers enable linking of records across time, potentially revealing long-term behavioral patterns or organizational structure.
+Implementations SHOULD use unlinkable session identifiers where correlation is not required.
+
+Without accessing record content, observers may infer conversation frequency and duration patterns, types of tools used, error rates, or timing correlations with external events.
+Metadata exposure in unprotected headers warrants careful consideration; the `trace-metadata` in the COSE unprotected header reveals session identifiers, agent vendor, and timestamps even when the payload is encrypted.
+
+## Authority Access
+
+Regulatory frameworks may require provision of records to authorities upon request.
+Access to records has to be logged, capturing who accessed which records, when access occurred, what legal basis justified access, and what data was disclosed.
+This creates a recursive consideration: access logs may themselves contain personal data requiring protection.
+
+# Security Considerations
+
+## Record Integrity
+
+The `signed-agent-record` envelope provides cryptographic integrity protection for the serialized record payload.
+A valid signature establishes that the claimed signer produced the record but does not guarantee the truthfulness of its contents.
+Modifications to the record structure after signing invalidate the signature, but modifications before signing cannot be detected.
+Implementations generating records incrementally during a conversation MUST sign only after the conversation concludes or at defined checkpoints.
+
+## Signing Key Protection
+
+The security of signed records depends critically on the protection of private signing keys.
+If an attacker obtains a signing key, they can forge records indistinguishable from genuine ones.
+Protection mechanisms range from operating system process isolation in development environments to hardware security modules with physical tampering resistance in high-assurance deployments.
+Compromised signing keys require rejection of records signed after the compromise date and notification to Relying Parties.
+
+Key provisioning processes must guarantee that exclusively valid attestation key material is established.
+Off-device key generation requires confidentiality protection during transmission, creating recursive security dependencies.
+On-device key generation eliminates transmission risks but requires chain-of-custody integrity to prevent attackers from obtaining endorsement for keys they control.
+
+## Timestamp Integrity
+
+Timestamps establish temporal ordering of events within records.
+Attackers who can manipulate timestamps can backdate records, freeze participants in chosen time periods to evade freshness checks, or manipulate perceived temporal relationships between entries.
+Timestamps within records are attested by the signer, not independently verified.
+Implementations requiring independent timestamp verification SHOULD use external timestamping services or transparency logs such as those defined in {{-scitt-arch}}.
+
+## Adversarial Content
+
+Processing verifiable agent conversation records involves parsing content that may be produced by adversaries.
+This applies both to user-supplied prompts and to model outputs that may have been influenced by adversarial inputs.
+The open extensibility (`* tstr => any`) in record types allows arbitrary additional fields; implementations MUST NOT assume that unrecognized fields are safe to process or display.
+
+Records may contain content designed to exploit downstream systems.
+Malicious prompts preserved in records may execute if records are subsequently processed by AI systems.
+Tool results may contain executable content that executes if rendered unsafely in web interfaces.
+File paths in tool calls or file attribution entries may attempt directory traversal.
+Implementations MUST apply appropriate sanitization before rendering content, executing it in agent contexts, or using paths for file system operations.
+
+## Non-Repudiation
+
+The `signed-agent-record` envelope alone provides authenticity and integrity, not non-repudiation.
+A signer can claim key compromise or dispute the signing time without independent evidence.
+Non-repudiation requires additional infrastructure such as transparency services {{-scitt-arch}} that provide independent timestamp proof via registration receipts, append-only logs preventing retroactive denial, and third-party witnesses to the signing event.
+
+## Detection and Trust Boundaries
+
+Verifiable agent conversation records primarily enable detection of anomalous behavior rather than prevention.
+Detection requires that records accurately reflect actual agent behavior; an agent that controls its own recording can omit or falsify entries.
+The `recording-agent` field distinguishes the recording tool from the conversing agent, enabling Relying Parties to assess trust in the recording process.
+
+Trust boundaries exist between the agent runtime and recording system, between the recording system and storage, between storage and verification, and between verification and decision-making.
+Attacks at any boundary may compromise record integrity or confidentiality.
 
 # IANA Considerations
 
