@@ -10,7 +10,7 @@ Expires: 29 August 2026
                                                         25 February 2026
 
 
-                     Verifiable Agent Conversations
+                 Verifiable Agent Conversation Records
           draft-birkholz-verifiable-agent-conversations-latest
 
 Abstract
