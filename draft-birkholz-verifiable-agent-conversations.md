@@ -249,7 +249,7 @@ This document defines verifiable records of agent conversations as a building bl
 
 Most agent conversations today are represented in "human-readable" text formats.
 For example, JSON {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-The Concise Binary Object Representation (CBOR {{STD94}}) is used as an alternative representation next to the established representation that is JSON. 
+The Concise Binary Object Representation (CBOR {{STD94}}) is used as an alternative representation next to the established representation that is JSON.
 
 In this version of the document the signing of JSON payloads is done via {{STD90}}.
 Using {{STD90}} enables interoperability with Transparency Services specified by the IETF {{-scitt-arch}} and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.
