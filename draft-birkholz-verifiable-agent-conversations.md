@@ -1335,7 +1335,7 @@ content-hash-alg:
 ~~~ cddl
 {::include agent-conversation.cddl}
 ~~~
-{: #fig-cddl-record artwork-align="left"
+{: #fig-cddl-record
    title="CDDL definition of an Agent Conversation Record"}
 
 # Privacy Considerations
