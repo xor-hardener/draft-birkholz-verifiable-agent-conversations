@@ -248,10 +248,10 @@ This document defines verifiable records of agent conversations as a building bl
 7. The seventh goal is to produce records suitable for demonstrating compliance with emerging regulatory requirements for AI system documentation, traceability, and human oversight.
 
 Most agent conversations today are represented in "human-readable" text formats.
-For example, {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-The Concise Binary Object Representation (CBOR {{STD94}}) is used as the primary representation next to the established representation that is JSON.
+For example, JSON {{STD90}} is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
+The Concise Binary Object Representation (CBOR {{STD94}}) is used as an alternative representation next to the established representation that is JSON. 
 
-In this version of the document the signing portion of JSON content is done via {{STD90}}.
+In this version of the document the signing of JSON payloads is done via {{STD90}}.
 Using {{STD90}} enables interoperability with Transparency Services specified by the IETF {{-scitt-arch}} and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.
 
 Note: further improvements in support of in-memory processing, further compacting human-readable text strings, and using CBOR as an alternative representation for verifiable records of agent conversations will follow.
@@ -269,7 +269,7 @@ The reader is assumed to be familiar with the vocabulary and concepts defined in
 This section identifies the intersection of logging, traceability, and record-keeping requirements across major compliance frameworks applicable to AI systems.
 The verifiable agent conversation format defined in this document addresses these requirements by providing a standardized, cryptographically verifiable record of AI agent interactions.
 
-## Applicable Frameworks Analyzed
+## Applicable Requirement Frameworks
 
 The following frameworks were analyzed for their requirements on AI agent traceability and session logging:
 
@@ -580,10 +580,10 @@ This work aligns with and complements the verifiable agent conversation format d
 
 Research on emergent misalignment {{EMERGENT_MISALIGNMENT_2025}} demonstrates that narrow fine-tuning can produce broadly misaligned LLMs, underscoring the importance of comprehensive conversation logging for detecting behavioral anomalies that may not be apparent from individual interactions.
 
-# Data Structure Definitions
+# CDDL Definitions for Agent Conversations Records
 
-This section defines each complex data type in the verifiable agent conversation CDDL data definition.
-Each subsection presents a CDDL fragment for one type, a brief description, and per-member documentation.
+This section defines each complex data type specified in the verifiable agent conversation record CDDL data definition.
+Each subsection illustrates a CDDL fragment for one type, a brief description, and per-member documentation.
 
 ## Common Types
 
@@ -1429,3 +1429,9 @@ IANA is requested to allocate a tag for Verifiable Agent Conversation Records in
 {: #tbl-tag-reg title="Verifiable Agent Conversation Record CBOR Tag"}
 
 --- back
+
+# Acknowledgments
+{:numbered="false"}
+
+The authors would like to thank
+xor-hardener
