@@ -77,7 +77,7 @@ Table of Contents
    1.  Introduction
      1.1.  Conventions and Definitions
    2.  Compliance Requirements for AI Agent Conversation Records
-     2.1.  Applicable Frameworks Analyzed
+     2.1.  Applicable Requirement Frameworks
      2.2.  Common Requirements Intersection
        2.2.1.  REQ-1: Automatic Event Logging
        2.2.2.  REQ-2: Timestamp Requirements
@@ -101,7 +101,7 @@ Table of Contents
        2.5.2.  Access Control
        2.5.3.  Data Protection
      2.6.  Related Standards and Emerging Work
-   3.  Data Structure Definitions
+   3.  CDDL Definitions for Agent Conversations Records
      3.1.  Common Types
      3.2.  The verifiable-agent-record Map
      3.3.  The session-trace Map
@@ -134,6 +134,7 @@ Table of Contents
    6.  References
      6.1.  Normative References
      6.2.  Informative References
+   Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -225,16 +226,16 @@ Table of Contents
        documentation, traceability, and human oversight.
 
    Most agent conversations today are represented in "human-readable"
-   text formats.  For example, [STD90] is considered to be "human-
+   text formats.  For example, JSON [STD90] is considered to be "human-
    readable" as it can be presented to humans in human-computer-
    interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
    editors that allow such data to be consumed or modified by humans.
-   The Concise Binary Object Representation (CBOR [STD94]) is used as
-   the primary representation next to the established representation
+   The Concise Binary Object Representation (CBOR [STD94]) is used as an
+   alternative representation next to the established representation
    that is JSON.
 
-   In this version of the document the signing portion of JSON content
-   is done via [STD90].  Using [STD90] enables interoperability with
+   In this version of the document the signing of JSON payloads is done
+   via [STD90].  Using [STD90] enables interoperability with
    Transparency Services specified by the IETF
    [I-D.ietf-scitt-architecture] and enables low-threshold cross-
    application and cross-stakeholder interoperability across the
@@ -269,7 +270,7 @@ Table of Contents
    standardized, cryptographically verifiable record of AI agent
    interactions.
 
-2.1.  Applicable Frameworks Analyzed
+2.1.  Applicable Requirement Frameworks
 
    The following frameworks were analyzed for their requirements on AI
    agent traceability and session logging:
@@ -835,12 +836,12 @@ Table of Contents
    logging for detecting behavioral anomalies that may not be apparent
    from individual interactions.
 
-3.  Data Structure Definitions
+3.  CDDL Definitions for Agent Conversations Records
 
-   This section defines each complex data type in the verifiable agent
-   conversation CDDL data definition.  Each subsection presents a CDDL
-   fragment for one type, a brief description, and per-member
-   documentation.
+   This section defines each complex data type specified in the
+   verifiable agent conversation record CDDL data definition.  Each
+   subsection illustrates a CDDL fragment for one type, a brief
+   description, and per-member documentation.
 
 3.1.  Common Types
 
@@ -2088,6 +2089,10 @@ COSE_Sign1 = [
               Structures and Process", STD 96, RFC 9052,
               DOI 10.17487/RFC9052, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Acknowledgments
+
+   The authors would like to thank xor-hardener
 
 Authors' Addresses
 

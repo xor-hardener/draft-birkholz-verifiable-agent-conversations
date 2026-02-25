@@ -1171,7 +1171,7 @@ The specification supports cross-vendor interoperability by defining a common re
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-compliance-requirements-for" class="internal xref">Compliance Requirements for AI Agent Conversation Records</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-applicable-frameworks-analy" class="internal xref">Applicable Frameworks Analyzed</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-applicable-requirement-fram" class="internal xref">Applicable Requirement Frameworks</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-common-requirements-interse" class="internal xref">Common Requirements Intersection</a></p>
@@ -1251,7 +1251,7 @@ The specification supports cross-vendor interoperability by defining a common re
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-data-structure-definitions" class="internal xref">Data Structure Definitions</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cddl-definitions-for-agent-" class="internal xref">CDDL Definitions for Agent Conversations Records</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-common-types" class="internal xref">Common Types</a></p>
@@ -1362,7 +1362,10 @@ The specification supports cross-vendor interoperability by defining a common re
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1421,9 +1424,9 @@ These increasingly complex interactions between multiple actors that can also be
 </li>
       </ol>
 <p id="section-1-8">Most agent conversations today are represented in "human-readable" text formats.
-For example, <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
-The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as the primary representation next to the established representation that is JSON.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9">In this version of the document the signing portion of JSON content is done via <span>[<a href="#STD90" class="cite xref">STD90</a>]</span>.
+For example, JSON <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> is considered to be "human-readable" as it can be presented to humans in human-computer-interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text editors that allow such data to be consumed or modified by humans.
+The Concise Binary Object Representation (CBOR <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) is used as an alternative representation next to the established representation that is JSON.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">In this version of the document the signing of JSON payloads is done via <span>[<a href="#STD90" class="cite xref">STD90</a>]</span>.
 Using <span>[<a href="#STD90" class="cite xref">STD90</a>]</span> enables interoperability with Transparency Services specified by the IETF <span>[<a href="#I-D.ietf-scitt-architecture" class="cite xref">I-D.ietf-scitt-architecture</a>]</span> and enables low-threshold cross-application and cross-stakeholder interoperability across the Internet.<a href="#section-1-9" class="pilcrow">¶</a></p>
 <p id="section-1-10">Note: further improvements in support of in-memory processing, further compacting human-readable text strings, and using CBOR as an alternative representation for verifiable records of agent conversations will follow.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <div id="conventions-and-definitions">
@@ -1448,10 +1451,10 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       </h2>
 <p id="section-2-1">This section identifies the intersection of logging, traceability, and record-keeping requirements across major compliance frameworks applicable to AI systems.
 The verifiable agent conversation format defined in this document addresses these requirements by providing a standardized, cryptographically verifiable record of AI agent interactions.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<div id="applicable-frameworks-analyzed">
+<div id="applicable-requirement-frameworks">
 <section id="section-2.1">
-        <h3 id="name-applicable-frameworks-analy">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-applicable-frameworks-analy" class="section-name selfRef">Applicable Frameworks Analyzed</a>
+        <h3 id="name-applicable-requirement-fram">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-applicable-requirement-fram" class="section-name selfRef">Applicable Requirement Frameworks</a>
         </h3>
 <p id="section-2.1-1">The following frameworks were analyzed for their requirements on AI agent traceability and session logging:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
@@ -2409,13 +2412,13 @@ This work aligns with and complements the verifiable agent conversation format d
 </div>
 </section>
 </div>
-<div id="data-structure-definitions">
+<div id="cddl-definitions-for-agent-conversations-records">
 <section id="section-3">
-      <h2 id="name-data-structure-definitions">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-data-structure-definitions" class="section-name selfRef">Data Structure Definitions</a>
+      <h2 id="name-cddl-definitions-for-agent-">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cddl-definitions-for-agent-" class="section-name selfRef">CDDL Definitions for Agent Conversations Records</a>
       </h2>
-<p id="section-3-1">This section defines each complex data type in the verifiable agent conversation CDDL data definition.
-Each subsection presents a CDDL fragment for one type, a brief description, and per-member documentation.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">This section defines each complex data type specified in the verifiable agent conversation record CDDL data definition.
+Each subsection illustrates a CDDL fragment for one type, a brief description, and per-member documentation.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div id="common-types">
 <section id="section-3.1">
         <h3 id="name-common-types">
@@ -4120,8 +4123,17 @@ COSE_Sign1 = [
 </div>
 </section>
 </div>
-<div id="authors-addresses">
+<div id="acknowledgments">
 <section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">The authors would like to thank
+xor-hardener<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
