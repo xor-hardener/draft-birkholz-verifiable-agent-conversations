@@ -1,7 +1,7 @@
 ---
 v: 3
 
-title: "Verifiable Agent Conversations"
+title: "Verifiable Agent Conversation Records"
 abbrev: "Verifiable ACRs"
 docname: draft-birkholz-verifiable-agent-conversations-latest
 category: std
