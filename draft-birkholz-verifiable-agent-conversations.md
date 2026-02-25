@@ -210,12 +210,12 @@ The specification supports cross-vendor interoperability by defining a common re
 
 # Introduction
 
-The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.
+The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agents increases rapidly.
 Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
 This creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.
 In essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
-The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
+The number of interactions between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
 These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts (CoT) of autonomous agents, retroactively (i.e., accountability and auditability after the fact).
@@ -324,7 +324,7 @@ Explicit requirements are listed as follows:
 | NIS2 | "Precise logging of when an incident was first detected" |
 
 Mapping to this specification:
-The `timestamp` field in each entry uses `abstract-timestamp` which accepts both RFC 3339 strings and epoch milliseconds, ensuring interoperability across implementations.
+The `timestamp` field in each entry uses `abstract-timestamp` which accepts both RFC 3339 strings and POSIX Seconds since Epoch, ensuring interoperability across implementations.
 
 ### REQ-3: Actor Identification
 
@@ -1288,7 +1288,7 @@ payload:
 signature:
 : The cryptographic signature over the protected header and payload.
 
-### The trace-metadata Map
+### The trace-metadata Map {#trace-metadata}
 
 The CDDL definition for the `trace-metadata` map is specified as follows:
 
@@ -1336,7 +1336,7 @@ content-hash-alg:
 {::include agent-conversation.cddl}
 ~~~
 {: #fig-cddl-record artwork-align="left"
-   title="CDDL definition of an Agent Conversation"}
+   title="CDDL definition of an Agent Conversation Record"}
 
 # Privacy Considerations
 
@@ -1463,7 +1463,7 @@ Optional parameters:
 : N/A
 
 Encoding considerations:
-: binary
+: byte string
 
 Security considerations:
 : See Security Considerations {secconsec}
@@ -1530,10 +1530,18 @@ IANA is requested to allocate a tag for Verifiable Agent Conversation Records in
 | 4149 | binary | Verifiable Agent Conversation Records as defined in {{&SELF}} |
 {: #tbl-tag-reg title="Verifiable Agent Conversation Record CBOR Tag"}
 
+## COSE Header Parameter
+
+IANA is requested to allocated the COSE header parameter defined in {{tbl-new-hdrs}} in the "COSE Header Parameters" registry {{!IANA.cose_header-parameters}}.
+
+| Name | Label | Value Type | Value Registry | Description | Reference |
+| `trace-metadata` | TBD | CBOR map | - | A metadata summary of an Agent Conversation Record | {{&SELF}}, {{trace-metadata}} |
+{: #tbl-new-hdrs align="left" title="New COSE Header Parameters"}
+
 --- back
 
 # Acknowledgments
 {:numbered="false"}
 
-The authors would like to thank
+The authors would like to thank:
 xor-hardener
