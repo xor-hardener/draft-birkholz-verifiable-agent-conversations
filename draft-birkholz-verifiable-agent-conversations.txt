@@ -144,6 +144,7 @@ Table of Contents
      7.1.  Media Type
      7.2.  CoAP Content Format
      7.3.  CBOR Tag
+     7.4.  COSE Header Parameter
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -155,7 +156,7 @@ Table of Contents
    The question of whether the recorded output of an autonomous agent
    faithfully represents an agent's actual behavior has found new
    urgency as the number of consequential tasks that are delegated to
-   agent increases rapidly.  Autonomous Agents--typically workload
+   agents increases rapidly.  Autonomous Agents--typically workload
    instances of agentic artificial intelligence (AI) based on large
    language models (LLM)--interact with other actors by design.  This
    creates an interconnected web of agent interactions and conversations
@@ -163,7 +164,7 @@ Table of Contents
    essence, the two main types of actors interacting with autonomous
    agents are humans and machines (e.g., other autonomous agents), or a
    mix of them.  In agentic AI systems, machine actors interact with
-   other machine actors.  The number of interaction between machine
+   other machine actors.  The number of interactions between machine
    actors grows significantly more than the number of interactions
    between human actors and machine actors.  While the responsible
    parties for agent actions ultimately are humans--whether a natural
@@ -396,8 +397,9 @@ Table of Contents
                                   Table 3
 
    Mapping to this specification: The timestamp field in each entry uses
-   abstract-timestamp which accepts both RFC 3339 strings and epoch
-   milliseconds, ensuring interoperability across implementations.
+   abstract-timestamp which accepts both RFC 3339 strings and POSIX
+   Seconds since Epoch, ensuring interoperability across
+   implementations.
 
 2.2.3.  REQ-3: Actor Identification
 
@@ -1809,7 +1811,7 @@ COSE_Sign1 = [
   signature   : bstr
 ]
 
-          Figure 1: CDDL definition of an Agent Conversation
+      Figure 1: CDDL definition of an Agent Conversation Record
 
 5.  Privacy Considerations
 
@@ -2004,7 +2006,7 @@ COSE_Sign1 = [
 
    Optional parameters:  N/A
 
-   Encoding considerations:  binary
+   Encoding considerations:  byte string
 
    Security considerations:  See Security Considerations {secconsec}
 
@@ -2071,6 +2073,25 @@ COSE_Sign1 = [
 
               Table 18: Verifiable Agent Conversation Record
                                  CBOR Tag
+
+7.4.  COSE Header Parameter
+
+   IANA is requested to allocated the COSE header parameter defined in
+   Table 19 in the "COSE Header Parameters" registry
+   [IANA.cose_header-parameters].
+
+   +================+=====+=====+==========+==============+===========+
+   | Name           |Label|Value| Value    | Description  | Reference |
+   |                |     |Type | Registry |              |           |
+   +================+=====+=====+==========+==============+===========+
+   | trace-metadata |TBD  |CBOR | -        | A metadata   | RFCthis,  |
+   |                |     |map  |          | summary of   | Section   |
+   |                |     |     |          | an Agent     | 3.11.2    |
+   |                |     |     |          | Conversation |           |
+   |                |     |     |          | Record       |           |
+   +----------------+-----+-----+----------+--------------+-----------+
+
+                   Table 19: New COSE Header Parameters
 
 8.  References
 
@@ -2140,6 +2161,10 @@ COSE_Sign1 = [
               IANA, "Constrained RESTful Environments (CoRE)
               Parameters",
               <https://www.iana.org/assignments/core-parameters>.
+
+   [IANA.cose_header-parameters]
+              IANA, "COSE Header Parameters",
+              <https://www.iana.org/assignments/cose>.
 
    [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
               <https://www.iana.org/assignments/cwt>.
@@ -2280,7 +2305,7 @@ COSE_Sign1 = [
 
 Acknowledgments
 
-   The authors would like to thank xor-hardener
+   The authors would like to thank: xor-hardener
 
 Authors' Addresses
 

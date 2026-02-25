@@ -1391,6 +1391,9 @@ The specification supports cross-vendor interoperability by defining a common re
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-cbor-tag" class="internal xref">CBOR Tag</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-cose-header-parameter" class="internal xref">COSE Header Parameter</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
@@ -1419,12 +1422,12 @@ The specification supports cross-vendor interoperability by defining a common re
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agent increases rapidly.
+<p id="section-1-1">The question of whether the recorded output of an autonomous agent faithfully represents an agent's actual behavior has found new urgency as the number of consequential tasks that are delegated to agents increases rapidly.
 Autonomous Agents--typically workload instances of agentic artificial intelligence (AI) based on large language models (LLM)--interact with other actors by design.
 This creates an interconnected web of agent interactions and conversations that is currently rarely supervised in a systemic manner.
 In essence, the two main types of actors interacting with autonomous agents are humans and machines (e.g., other autonomous agents), or a mix of them.
 In agentic AI systems, machine actors interact with other machine actors.
-The number of interaction between machine actors grows significantly more than the number of interactions between human actors and machine actors.
+The number of interactions between machine actors grows significantly more than the number of interactions between human actors and machine actors.
 While the responsible parties for agent actions ultimately are humans--whether a natural legal entity or an organization--agents act on behalf of humans and on behalf of other agents.
 To demonstrate due diligence, responsible human parties require records of agent behavior to demonstrate policy compliant behavior for agents acting under their authority.
 These increasingly complex interactions between multiple actors that can also be triggered by machines (recursively) increase the need to understand decision making and the chain of thoughts (CoT) of autonomous agents, retroactively (i.e., accountability and auditability after the fact).<a href="#section-1-1" class="pilcrow">¶</a></p>
@@ -1681,7 +1684,7 @@ Explicit requirements are listed as follows:<a href="#section-2.2.2-1" class="pi
             </tbody>
           </table>
 <p id="section-2.2.2-3">Mapping to this specification:
-The <code>timestamp</code> field in each entry uses <code>abstract-timestamp</code> which accepts both RFC 3339 strings and epoch milliseconds, ensuring interoperability across implementations.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+The <code>timestamp</code> field in each entry uses <code>abstract-timestamp</code> which accepts both RFC 3339 strings and POSIX Seconds since Epoch, ensuring interoperability across implementations.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="req-3-actor-identification">
@@ -3460,7 +3463,7 @@ The payload may be included or detached (null); in detached mode, the record is 
 </dl>
 </section>
 </div>
-<div id="the-trace-metadata-map">
+<div id="trace-metadata">
 <section id="section-3.11.2">
           <h4 id="name-the-trace-metadata-map">
 <a href="#section-3.11.2" class="section-number selfRef">3.11.2. </a><a href="#name-the-trace-metadata-map" class="section-name selfRef">The trace-metadata Map</a>
@@ -3788,7 +3791,7 @@ COSE_Sign1 = [
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-cddl-definition-of-an-agent" class="selfRef">CDDL definition of an Agent Conversation</a>
+<a href="#name-cddl-definition-of-an-agent" class="selfRef">CDDL definition of an Agent Conversation Record</a>
         </figcaption></figure>
 </div>
 </section>
@@ -4000,7 +4003,7 @@ Attacks at any boundary may compromise record integrity or confidentiality.<a hr
           <dd class="break"></dd>
 <dt id="section-7.1-3.9">Encoding considerations:</dt>
           <dd style="margin-left: 1.5em" id="section-7.1-3.10">
-            <p id="section-7.1-3.10.1">binary<a href="#section-7.1-3.10.1" class="pilcrow">¶</a></p>
+            <p id="section-7.1-3.10.1">byte string<a href="#section-7.1-3.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-7.1-3.11">Security considerations:</dt>
@@ -4150,6 +4153,45 @@ Attacks at any boundary may compromise record integrity or confidentiality.<a hr
 </div>
 </section>
 </div>
+<div id="cose-header-parameter">
+<section id="section-7.4">
+        <h3 id="name-cose-header-parameter">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-cose-header-parameter" class="section-name selfRef">COSE Header Parameter</a>
+        </h3>
+<p id="section-7.4-1">IANA is requested to allocated the COSE header parameter defined in <a href="#tbl-new-hdrs" class="auto internal xref">Table 19</a> in the "COSE Header Parameters" registry <span>[<a href="#IANA.cose_header-parameters" class="cite xref">IANA.cose_header-parameters</a>]</span>.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<span id="name-new-cose-header-parameters"></span><div id="tbl-new-hdrs">
+<table class="left" id="table-19">
+          <caption>
+<a href="#table-19" class="selfRef">Table 19</a>:
+<a href="#name-new-cose-header-parameters" class="selfRef">New COSE Header Parameters</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Label</th>
+              <th class="text-left" rowspan="1" colspan="1">Value Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Value Registry</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>trace-metadata</code>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD</td>
+              <td class="text-left" rowspan="1" colspan="1">CBOR map</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">A metadata summary of an Agent Conversation Record</td>
+              <td class="text-left" rowspan="1" colspan="1">RFCthis, <a href="#trace-metadata" class="auto internal xref">Section 3.11.2</a>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -4202,6 +4244,10 @@ Attacks at any boundary may compromise record integrity or confidentiality.<a hr
 <dt id="IANA.core-parameters">[IANA.core-parameters]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"Constrained RESTful Environments (CoRE) Parameters"</span>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters">https://www.iana.org/assignments/core-parameters</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.cose_header-parameters">[IANA.cose_header-parameters]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Header Parameters"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA.cwt">[IANA.cwt]</dt>
         <dd>
@@ -4322,7 +4368,7 @@ Attacks at any boundary may compromise record integrity or confidentiality.<a hr
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">The authors would like to thank
+<p id="appendix-A-1">The authors would like to thank:
 xor-hardener<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
