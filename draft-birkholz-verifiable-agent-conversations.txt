@@ -1561,257 +1561,257 @@ Table of Contents
 
 4.  Collated CDDL Definition for generic Agent Conversations
 
-start = verifiable-agent-record / signed-agent-record
+   start = verifiable-agent-record / signed-agent-record
 
-; RFC 3339 string OR epoch milliseconds (for interop).
-abstract-timestamp = tstr .regexp date-time-regexp / uint
+   ; RFC 3339 string OR epoch milliseconds (for interop).
+   abstract-timestamp = tstr .regexp date-time-regexp / uint
 
-; Opaque string: UUID, SHA-256 hash in base64url, etc.
-session-id = tstr / bstr
+   ; Opaque string: UUID, SHA-256 hash in base64url, etc.
+   session-id = tstr / bstr
 
-; Per-entry unique reference within a session.
-entry-id = tstr
+   ; Per-entry unique reference within a session.
+   entry-id = tstr
 
-; RFC 3339 date-time pattern
-date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+   ; RFC 3339 date-time pattern
+   date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
 
-; URI pattern (RFC 3986)
-uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+   ; URI pattern (RFC 3986)
+   uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
 
-verifiable-agent-record = {
-    version: tstr                       ; Schema version (semver)
-    id: tstr                            ; Record identifier
-    session: session-trace              ; Conversation trace (required)
-    ? created: abstract-timestamp       ; Record creation time
-    ? file-attribution: file-attribution-record
-    ? vcs: vcs-context                  ; Record-level VCS context
-    ? recording-agent: recording-agent  ; Tool that generated this record
-    * tstr => any
-}
+   verifiable-agent-record = {
+       version: tstr                       ; Schema version (semver)
+       id: tstr                            ; Record identifier
+       session: session-trace              ; Conversation trace (required)
+       ? created: abstract-timestamp       ; Record creation time
+       ? file-attribution: file-attribution-record
+       ? vcs: vcs-context                  ; Record-level VCS context
+       ? recording-agent: recording-agent  ; Tool that generated this record
+       * tstr => any
+   }
 
-session-trace = {
-    ? format: tstr                      ; "interactive" / "autonomous" / vendor
-    session-id: session-id
-    ? session-start: abstract-timestamp
-    ? session-end: abstract-timestamp
-    agent-meta: agent-meta
-    ? environment: environment
-    entries: [* entry]
-    * tstr => any
-}
+   session-trace = {
+       ? format: tstr                      ; "interactive" / "autonomous" / vendor
+       session-id: session-id
+       ? session-start: abstract-timestamp
+       ? session-end: abstract-timestamp
+       agent-meta: agent-meta
+       ? environment: environment
+       entries: [* entry]
+       * tstr => any
+   }
 
-agent-meta = {
-    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
-    model-provider: tstr                ; e.g., "anthropic", "google"
-    ? models: [ * tstr ]                  ; All models (multi-model sessions)
-    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
-    ? cli-version: tstr
-    * tstr => any
-}
+   agent-meta = {
+       model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+       model-provider: tstr                ; e.g., "anthropic", "google"
+       ? models: [ * tstr ]                  ; All models (multi-model sessions)
+       ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+       ? cli-version: tstr
+       * tstr => any
+   }
 
-recording-agent = {
-    name: tstr
-    ? version: tstr
-    * tstr => any
-}
+   recording-agent = {
+       name: tstr
+       ? version: tstr
+       * tstr => any
+   }
 
-environment = {
-    working-dir: tstr
-    ? vcs: vcs-context
-    ? sandboxes: [ * tstr ]               ; Sandbox mount paths
-    * tstr => any
-}
+   environment = {
+       working-dir: tstr
+       ? vcs: vcs-context
+       ? sandboxes: [ * tstr ]               ; Sandbox mount paths
+       * tstr => any
+   }
 
-vcs-context = {
-    type: tstr                          ; "git" / "jj" / "hg" / "svn"
-    ? revision: tstr                    ; Commit SHA or change ID
-    ? branch: tstr
-    ? repository: tstr                  ; Repository URL
-    * tstr => any
-}
+   vcs-context = {
+       type: tstr                          ; "git" / "jj" / "hg" / "svn"
+       ? revision: tstr                    ; Commit SHA or change ID
+       ? branch: tstr
+       ? repository: tstr                  ; Repository URL
+       * tstr => any
+   }
 
-entry = message-entry
-      / tool-call-entry
-      / tool-result-entry
-      / reasoning-entry
-      / event-entry
+   entry = message-entry
+         / tool-call-entry
+         / tool-result-entry
+         / reasoning-entry
+         / event-entry
 
-message-entry = {
-    type: "user" / "assistant"
-    ? content: any                      ; Text string or structured content blocks
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? model-id: tstr                    ; Model (assistant only)
-    ? parent-id: entry-id              ; Parent message reference
-    ? token-usage: token-usage
-    ? children: [ * entry ]
-    * tstr => any
-}
+   message-entry = {
+       type: "user" / "assistant"
+       ? content: any                      ; Text string or structured content blocks
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? model-id: tstr                    ; Model (assistant only)
+       ? parent-id: entry-id              ; Parent message reference
+       ? token-usage: token-usage
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-tool-call-entry = {
-    type: "tool-call"
-    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
-    input: any                          ; Tool arguments
-    ? call-id: tstr                     ; Links call ↔ result
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   tool-call-entry = {
+       type: "tool-call"
+       name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+       input: any                          ; Tool arguments
+       ? call-id: tstr                     ; Links call ↔ result
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-tool-result-entry = {
-    type: "tool-result"
-    output: any                         ; Tool output
-    ? call-id: tstr                     ; Links call ↔ result
-    ? status: tstr                      ; "success" / "error" / "completed"
-    ? is-error: bool
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   tool-result-entry = {
+       type: "tool-result"
+       output: any                         ; Tool output
+       ? call-id: tstr                     ; Links call ↔ result
+       ? status: tstr                      ; "success" / "error" / "completed"
+       ? is-error: bool
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-reasoning-entry = {
-    type: "reasoning"
-    content: any                        ; Plaintext reasoning or structured
-    ? encrypted: tstr                   ; Encrypted content (provider-protected)
-    ? subject: tstr                     ; Topic label
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   reasoning-entry = {
+       type: "reasoning"
+       content: any                        ; Plaintext reasoning or structured
+       ? encrypted: tstr                   ; Encrypted content (provider-protected)
+       ? subject: tstr                     ; Topic label
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-event-entry = {
-    type: "system-event"
-    event-type: tstr                    ; Event classifier
-    ? data: { * tstr => any }           ; Event-specific payload
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   event-entry = {
+       type: "system-event"
+       event-type: tstr                    ; Event classifier
+       ? data: { * tstr => any }           ; Event-specific payload
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-token-usage = {
-    ? input: uint                       ; Input tokens
-    ? output: uint                      ; Output tokens
-    ? cached: uint                      ; Cached input tokens
-    ? reasoning: uint                   ; Reasoning/thinking tokens
-    ? total: uint                       ; Total tokens
-    ? cost: number                      ; Dollar cost
-    * tstr => any
-}
+   token-usage = {
+       ? input: uint                       ; Input tokens
+       ? output: uint                      ; Output tokens
+       ? cached: uint                      ; Cached input tokens
+       ? reasoning: uint                   ; Reasoning/thinking tokens
+       ? total: uint                       ; Total tokens
+       ? cost: number                      ; Dollar cost
+       * tstr => any
+   }
 
-file-attribution-record = {
-    files: [* file]
-}
+   file-attribution-record = {
+       files: [* file]
+   }
 
-file = {
-    path: tstr                          ; Relative path from repo root
-    conversations: [* conversation]
-}
+   file = {
+       path: tstr                          ; Relative path from repo root
+       conversations: [* conversation]
+   }
 
-conversation = {
-    ? url: tstr .regexp uri-regexp
-    ? contributor: contributor          ; Default contributor for ranges
-    ranges: [* range]
-    ? related: [* resource]
-}
+   conversation = {
+       ? url: tstr .regexp uri-regexp
+       ? contributor: contributor          ; Default contributor for ranges
+       ranges: [* range]
+       ? related: [* resource]
+   }
 
-range = {
-    start-line: uint                    ; 1-indexed
-    end-line: uint                      ; 1-indexed, inclusive
-    ? content-hash: tstr
-    ? content-hash-alg: tstr            ; Default: "sha-256"
-    ? contributor: contributor          ; Override for this range
-}
+   range = {
+       start-line: uint                    ; 1-indexed
+       end-line: uint                      ; 1-indexed, inclusive
+       ? content-hash: tstr
+       ? content-hash-alg: tstr            ; Default: "sha-256"
+       ? contributor: contributor          ; Override for this range
+   }
 
-contributor = {
-    type: "human" / "ai" / "mixed" / "unknown"
-    ? model-id: tstr
-}
+   contributor = {
+       type: "human" / "ai" / "mixed" / "unknown"
+       ? model-id: tstr
+   }
 
-resource = {
-    type: tstr
-    url: tstr .regexp uri-regexp
-}
+   resource = {
+       type: tstr
+       url: tstr .regexp uri-regexp
+   }
 
-; SCITT-interoperable COSE Envelope
-; including from draft-ietf-cose-merkle-tree-proofs and
-; draft-ietf-scitt-architecture for validation
+   ; SCITT-interoperable COSE Envelope
+   ; including from draft-ietf-cose-merkle-tree-proofs and
+   ; draft-ietf-scitt-architecture for validation
 
-signed-agent-record = #6.18([           ; COSE_Sign1 tag
-    protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
-    unprotected: unprotected-header     ; Trace metadata
-    payload: bstr / null                ; Detached if null
-    signature: bstr
-])
+   signed-agent-record = #6.18([           ; COSE_Sign1 tag
+       protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
+       unprotected: unprotected-header     ; Trace metadata
+       payload: bstr / null                ; Detached if null
+       signature: bstr
+   ])
 
-protected-header = {
-  &(CWT_Claims: 15) => CWT_Claims
-  ? &(alg: 1) => int
-  ? &(content_type: 3) => tstr / uint
-  ? &(kid: 4) => bstr
-  ? &(x5t: 34) => COSE_CertHash
-  ? &(x5chain: 33) => COSE_X509
-  * label => any
-}
+   protected-header = {
+     &(CWT_Claims: 15) => CWT_Claims
+     ? &(alg: 1) => int
+     ? &(content_type: 3) => tstr / uint
+     ? &(kid: 4) => bstr
+     ? &(x5t: 34) => COSE_CertHash
+     ? &(x5chain: 33) => COSE_X509
+     * label => any
+   }
 
-CWT_Claims = {
-  &(iss: 1) => tstr
-  &(sub: 2) => tstr
-  * label => any
-}
+   CWT_Claims = {
+     &(iss: 1) => tstr
+     &(sub: 2) => tstr
+     * label => any
+   }
 
-unprotected-header = {
-  ? &(trace-metadata-key: 100) => trace-metadata ; 100 is placeholder
-  ? &(x5chain: 33) => COSE_X509
-  ? &(receipts: 394)  => [ + Receipt ]
-  * label => any
-}
+   unprotected-header = {
+     ? &(trace-metadata-key: 100) => trace-metadata ; 100 is placeholder
+     ? &(x5chain: 33) => COSE_X509
+     ? &(receipts: 394)  => [ + Receipt ]
+     * label => any
+   }
 
-trace-metadata = {
-    session-id: session-id
-    agent-vendor: tstr
-    trace-format: trace-format-id
-    timestamp-start: abstract-timestamp
-    ? timestamp-end: abstract-timestamp
-    ? content-hash: tstr                ; SHA-256 hex digest of payload
-    ? content-hash-alg: tstr
-}
+   trace-metadata = {
+       session-id: session-id
+       agent-vendor: tstr
+       trace-format: trace-format-id
+       timestamp-start: abstract-timestamp
+       ? timestamp-end: abstract-timestamp
+       ? content-hash: tstr                ; SHA-256 hex digest of payload
+       ? content-hash-alg: tstr
+   }
 
-; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
-; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
-trace-format-id = tstr
+   ; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+   ; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+   trace-format-id = tstr
 
-COSE_X509 = bstr / [ 2*certs: bstr ]
-COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
-label = int / tstr
+   COSE_X509 = bstr / [ 2*certs: bstr ]
+   COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
+   label = int / tstr
 
-; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
+   ; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
 
-Receipt = #6.18(COSE_Sign1)
+   Receipt = #6.18(COSE_Sign1)
 
-cose-label = int / tstr
-cose-value = any
+   cose-label = int / tstr
+   cose-value = any
 
-Protected_Header = {
-  * cose-label => cose-value
-}
+   Protected_Header = {
+     * cose-label => cose-value
+   }
 
-Unprotected_Header = {
-  &(receipts: 394)  => [+ bstr .cbor Receipt]
-  * cose-label => cose-value
-}
+   Unprotected_Header = {
+     &(receipts: 394)  => [+ bstr .cbor Receipt]
+     * cose-label => cose-value
+   }
 
-COSE_Sign1 = [
-  protected   : bstr .cbor Protected_Header,
-  unprotected : Unprotected_Header,
-  payload     : bstr / null,
-  signature   : bstr
-]
+   COSE_Sign1 = [
+     protected   : bstr .cbor Protected_Header,
+     unprotected : Unprotected_Header,
+     payload     : bstr / null,
+     signature   : bstr
+   ]
 
-      Figure 1: CDDL definition of an Agent Conversation Record
+         Figure 1: CDDL definition of an Agent Conversation Record
 
 5.  Privacy Considerations
 
