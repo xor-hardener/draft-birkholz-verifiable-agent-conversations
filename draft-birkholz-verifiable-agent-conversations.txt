@@ -127,13 +127,26 @@ Table of Contents
        3.11.1.  The signed-agent-record Structure
        3.11.2.  The trace-metadata Map
    4.  Collated CDDL Definition for generic Agent Conversations
-   5.  IANA Considerations
-     5.1.  Media Type
-     5.2.  CoAP Content Format
-     5.3.  CBOR Tag
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   5.  Privacy Considerations
+     5.1.  Information Disclosure
+     5.2.  Sensitive Content in Records
+     5.3.  Retention Considerations
+     5.4.  Correlation and Inference
+     5.5.  Authority Access
+   6.  Security Considerations
+     6.1.  Record Integrity
+     6.2.  Signing Key Protection
+     6.3.  Timestamp Integrity
+     6.4.  Adversarial Content
+     6.5.  Non-Repudiation
+     6.6.  Detection and Trust Boundaries
+   7.  IANA Considerations
+     7.1.  Media Type
+     7.2.  CoAP Content Format
+     7.3.  CBOR Tag
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -1798,9 +1811,178 @@ COSE_Sign1 = [
 
           Figure 1: CDDL definition of an Agent Conversation
 
-5.  IANA Considerations
+5.  Privacy Considerations
 
-5.1.  Media Type
+   Verifiable agent conversation records reveal substantial information
+   about agent behavior, system state, and user interactions.  The
+   privacy considerations of [RFC6973] apply.
+
+5.1.  Information Disclosure
+
+   User prompts captured in message entries may contain personal
+   identifiers, business confidential information, credentials
+   inadvertently included in prompts, or behavioral patterns.  Agent
+   responses and reasoning traces may reveal inference results that
+   expose information about users not explicitly provided, confidential
+   information retrieved by tools, or system architecture details
+   through tool names and parameters.  Implementations MUST treat user-
+   provided content as potentially containing personally identifiable
+   information.
+
+   Record metadata exposes operational details that may have privacy
+   implications.  Model identifiers reveal AI capabilities, CLI versions
+   enable targeted attacks against known vulnerabilities, working
+   directories expose file system structure, and VCS context discloses
+   repository names and commit timing.  Token usage patterns may enable
+   inference about conversation content even when the content itself is
+   protected.
+
+5.2.  Sensitive Content in Records
+
+   Reasoning entries may contain inferences that constitute special
+   category data, including health-related inferences from user queries,
+   political opinions derived from conversation context, or biometric
+   data processed by AI systems.  The reasoning-entry.encrypted field
+   reflects that some model providers encrypt chain-of-thought content;
+   when reasoning is encrypted, audit capabilities depend on the
+   provider's cooperation.
+
+   Tool inputs and outputs warrant particular attention.  Tool call
+   inputs may contain credentials, API keys, or file contents.  Tool
+   results may contain query results with personal data from databases
+   or external services.  Implementations SHOULD provide configurable
+   redaction rules for common patterns and support selective entry type
+   recording based on deployment requirements.
+
+5.3.  Retention Considerations
+
+   Multiple frameworks impose retention requirements that may conflict
+   with data minimization principles.  Organizations must balance
+   compliance obligations requiring extended retention against privacy
+   principles requiring timely deletion.
+
+   Compliant data management may require separating raw personal data
+   from audit trail metadata, implementing automated deletion for
+   personal data after compliance-minimum periods, and maintaining
+   cryptographic commitments enabling verification without retaining
+   content.
+
+5.4.  Correlation and Inference
+
+   Presentations of the same record to multiple parties can be
+   correlated by matching on the signature component.  Session
+   identifiers enable linking of records across time, potentially
+   revealing long-term behavioral patterns or organizational structure.
+   Implementations SHOULD use unlinkable session identifiers where
+   correlation is not required.
+
+   Without accessing record content, observers may infer conversation
+   frequency and duration patterns, types of tools used, error rates, or
+   timing correlations with external events.  Metadata exposure in
+   unprotected headers warrants careful consideration; the trace-
+   metadata in the COSE unprotected header reveals session identifiers,
+   agent vendor, and timestamps even when the payload is encrypted.
+
+5.5.  Authority Access
+
+   Regulatory frameworks may require provision of records to authorities
+   upon request.  Access to records has to be logged, capturing who
+   accessed which records, when access occurred, what legal basis
+   justified access, and what data was disclosed.  This creates a
+   recursive consideration: access logs may themselves contain personal
+   data requiring protection.
+
+6.  Security Considerations
+
+6.1.  Record Integrity
+
+   The signed-agent-record envelope provides cryptographic integrity
+   protection for the serialized record payload.  A valid signature
+   establishes that the claimed signer produced the record but does not
+   guarantee the truthfulness of its contents.  Modifications to the
+   record structure after signing invalidate the signature, but
+   modifications before signing cannot be detected.  Implementations
+   generating records incrementally during a conversation MUST sign only
+   after the conversation concludes or at defined checkpoints.
+
+6.2.  Signing Key Protection
+
+   The security of signed records depends critically on the protection
+   of private signing keys.  If an attacker obtains a signing key, they
+   can forge records indistinguishable from genuine ones.  Protection
+   mechanisms range from operating system process isolation in
+   development environments to hardware security modules with physical
+   tampering resistance in high-assurance deployments.  Compromised
+   signing keys require rejection of records signed after the compromise
+   date and notification to Relying Parties.
+
+   Key provisioning processes must guarantee that exclusively valid
+   attestation key material is established.  Off-device key generation
+   requires confidentiality protection during transmission, creating
+   recursive security dependencies.  On-device key generation eliminates
+   transmission risks but requires chain-of-custody integrity to prevent
+   attackers from obtaining endorsement for keys they control.
+
+6.3.  Timestamp Integrity
+
+   Timestamps establish temporal ordering of events within records.
+   Attackers who can manipulate timestamps can backdate records, freeze
+   participants in chosen time periods to evade freshness checks, or
+   manipulate perceived temporal relationships between entries.
+   Timestamps within records are attested by the signer, not
+   independently verified.  Implementations requiring independent
+   timestamp verification SHOULD use external timestamping services or
+   transparency logs such as those defined in
+   [I-D.ietf-scitt-architecture].
+
+6.4.  Adversarial Content
+
+   Processing verifiable agent conversation records involves parsing
+   content that may be produced by adversaries.  This applies both to
+   user-supplied prompts and to model outputs that may have been
+   influenced by adversarial inputs.  The open extensibility (* tstr =>
+   any) in record types allows arbitrary additional fields;
+   implementations MUST NOT assume that unrecognized fields are safe to
+   process or display.
+
+   Records may contain content designed to exploit downstream systems.
+   Malicious prompts preserved in records may execute if records are
+   subsequently processed by AI systems.  Tool results may contain
+   executable content that executes if rendered unsafely in web
+   interfaces.  File paths in tool calls or file attribution entries may
+   attempt directory traversal.  Implementations MUST apply appropriate
+   sanitization before rendering content, executing it in agent
+   contexts, or using paths for file system operations.
+
+6.5.  Non-Repudiation
+
+   The signed-agent-record envelope alone provides authenticity and
+   integrity, not non-repudiation.  A signer can claim key compromise or
+   dispute the signing time without independent evidence.  Non-
+   repudiation requires additional infrastructure such as transparency
+   services [I-D.ietf-scitt-architecture] that provide independent
+   timestamp proof via registration receipts, append-only logs
+   preventing retroactive denial, and third-party witnesses to the
+   signing event.
+
+6.6.  Detection and Trust Boundaries
+
+   Verifiable agent conversation records primarily enable detection of
+   anomalous behavior rather than prevention.  Detection requires that
+   records accurately reflect actual agent behavior; an agent that
+   controls its own recording can omit or falsify entries.  The
+   recording-agent field distinguishes the recording tool from the
+   conversing agent, enabling Relying Parties to assess trust in the
+   recording process.
+
+   Trust boundaries exist between the agent runtime and recording
+   system, between the recording system and storage, between storage and
+   verification, and between verification and decision-making.  Attacks
+   at any boundary may compromise record integrity or confidentiality.
+
+7.  IANA Considerations
+
+7.1.  Media Type
 
    IANA is requested to add "application/agent-conversation" as a new
    media type for Verifiable Agent Conversation Records to the "Media
@@ -1855,7 +2037,7 @@ COSE_Sign1 = [
 
    Provisional registration:  no
 
-5.2.  CoAP Content Format
+7.2.  CoAP Content Format
 
    IANA is requested to assign a Content-Format ID for Verifiable Agent
    Conversation Records in the "CoAP Content-Formats" registry, within
@@ -1874,7 +2056,7 @@ COSE_Sign1 = [
 
    If possible, TBD1 should be assigned in the 256...9999 range.
 
-5.3.  CBOR Tag
+7.3.  CBOR Tag
 
    IANA is requested to allocate a tag for Verifiable Agent Conversation
    Records in the "CBOR Tags" registry [IANA.cbor-tags], preferably with
@@ -1890,9 +2072,9 @@ COSE_Sign1 = [
               Table 18: Verifiable Agent Conversation Record
                                  CBOR Tag
 
-6.  References
+8.  References
 
-6.1.  Normative References
+8.1.  Normative References
 
    [AICPA_TSC_2017]
               American Institute of Certified Public Accountants and
@@ -2057,7 +2239,7 @@ COSE_Sign1 = [
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-6.2.  Informative References
+8.2.  Informative References
 
    [EMERGENT_MISALIGNMENT_2025]
               Betley, J., Tan, D., Warncke, N., Sztyber-Betley, A., Bao,
@@ -2079,6 +2261,12 @@ COSE_Sign1 = [
               International Electrotechnical Commission, "Artificial
               intelligence - AI system logging", ISO/IEC DIS 24970,
               2025, <https://www.iso.org/standard/88723.html>.
+
+   [RFC6973]  Cooper, A., Tschofenig, H., Aboba, B., Peterson, J.,
+              Morris, J., Hansen, M., and R. Smith, "Privacy
+              Considerations for Internet Protocols", RFC 6973,
+              DOI 10.17487/RFC6973, July 2013,
+              <https://www.rfc-editor.org/rfc/rfc6973>.
 
    [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote ATtestation procedureS (RATS)
