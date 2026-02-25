@@ -65,6 +65,99 @@ normative:
       Official Journal of the European Union: L 2024/2847
       CELEX:: 32024R2847
     target: https://eur-lex.europa.eu/eli/reg/2024/2847/oj
+  EU_NIS2_2022:
+    title: >
+      Directive (EU) 2022/2555 (NIS 2 Directive)
+    author:
+    - org: European Parliament
+    - org: Council of the European Union
+    date: 2022-12
+    seriesinfo:
+      Official Journal of the European Union: L 333
+      CELEX:: 32022L2555
+  ETSI_TS_104223_2025:
+    title: >
+      Securing Artificial Intelligence (SAI); Baseline Cyber Security Requirements for AI Models and Systems
+    author:
+    - org: European Telecommunications Standards Institute
+    date: 2025-04
+    seriesinfo:
+      ETSI TS: 104 223, V1.1.1
+    target: https://www.etsi.org/deliver/etsi_ts/104200_104299/104223/01.01.01_60/ts_104223v010101p.pdf
+  AICPA_TSC_2017:
+    title: >
+      Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy (With Revised Points of Focus - 2022)
+    author:
+    - org: American Institute of Certified Public Accountants
+    - org: Chartered Institute of Management Accountants
+    date: 2017
+    seriesinfo:
+      AICPA: Trust Services Criteria
+    target: https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022
+  NIST_SP_800_53_R5:
+    title: >
+      Security and Privacy Controls for Information Systems and Organizations
+    author:
+    - org: National Institute of Standards and Technology
+    date: 2020-09
+    seriesinfo:
+      NIST Special Publication: 800-53, Revision 5
+    target: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
+  OMB_M_21_31:
+    title: >
+      Improving the Federal Government's Investigative and Remediation Capabilities Related to Cybersecurity Incidents
+    author:
+    - org: Office of Management and Budget
+    date: 2021-08
+    seriesinfo:
+      OMB Memorandum: M-21-31
+    target: https://www.whitehouse.gov/wp-content/uploads/2021/08/M-21-31-Improving-the-Federal-Governments-Investigative-and-Remediation-Capabilities-Related-to-Cybersecurity-Incidents.pdf
+  PCI_DSS_V4_0_1:
+    title: >
+      Payment Card Industry Data Security Standard
+    author:
+    - org: PCI Security Standards Council
+    date: 2024-06
+    seriesinfo:
+      PCI DSS: Version 4.0.1
+    target: https://www.pcisecuritystandards.org/document_library/
+  ISO_IEC_42001_2023:
+    title: >
+      Information technology - Artificial intelligence - Management system
+    author:
+    - org: International Organization for Standardization
+    - org: International Electrotechnical Commission
+    date: 2023-12
+    seriesinfo:
+      ISO/IEC: 42001:2023
+    target: https://www.iso.org/standard/42001
+  FFIEC_IT_HANDBOOK_2024:
+    title: >
+      Information Technology Examination Handbook
+    author:
+    - org: Federal Financial Institutions Examination Council
+    date: 2024-08
+    seriesinfo:
+      FFIEC: IT Examination Handbook
+    target: https://ithandbook.ffiec.gov/
+  BSI_AI_FINANCE_2024:
+    title: >
+      Test Criteria Catalogue for AI Systems in Finance
+    author:
+    - org: Bundesamt fuer Sicherheit in der Informationstechnik
+    date: 2024
+    seriesinfo:
+      BSI: AI Finance Test Criteria
+    target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/AI-Finance_Test-Criteria.pdf
+  NIST_AI_100_2_E2025:
+    title: >
+      Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations
+    author:
+    - org: National Institute of Standards and Technology
+    date: 2025-03
+    seriesinfo:
+      NIST AI: 100-2 E2025
+    target: https://csrc.nist.gov/pubs/ai/100/2/e2025/final
 
 informative:
   STD96:
@@ -72,6 +165,33 @@ informative:
     =: RFC9052
   RFC9334: rats-arch
   I-D.ietf-scitt-architecture: scitt-arch
+  EMERGENT_MISALIGNMENT_2025:
+    title: >
+      Emergent Misalignment: Narrow finetuning can produce broadly misaligned LLMs
+    author:
+    - name: Jan Betley
+    - name: Daniel Tan
+    - name: Niels Warncke
+    - name: Anna Sztyber-Betley
+    - name: Xuchan Bao
+    - name: Martin Soto
+    - name: Nathan Labenz
+    - name: Owain Evans
+    date: 2025-02
+    seriesinfo:
+      arXiv: "2502.17424"
+      PMLR: "267:4043-4068"
+    target: https://arxiv.org/abs/2502.17424
+  ISO_IEC_DIS_24970:
+    title: >
+      Artificial intelligence - AI system logging
+    author:
+    - org: International Organization for Standardization
+    - org: International Electrotechnical Commission
+    date: 2025
+    seriesinfo:
+      ISO/IEC DIS: "24970"
+    target: https://www.iso.org/standard/88723.html
 
 entity:
   SELF: "RFCthis"
