@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-02-26T00:33:36.294097+00:00",
+  "timestamp": "2026-04-05T00:42:33.831600+00:00",
   "repo": "xor-hardener/draft-birkholz-verifiable-agent-conversations",
   "labels": [
     {
@@ -100,6 +100,22 @@
       "body": "Relation to WIMSE / OAuth... MCP Auth / DCR... Any of this relevant?",
       "createdAt": "2026-02-20T04:35:41Z",
       "updatedAt": "2026-02-20T04:35:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 25,
+      "id": "I_kwDORG4n7s76bXiv",
+      "title": "Chronicle?",
+      "url": "https://github.com/xor-hardener/draft-birkholz-verifiable-agent-conversations/issues/25",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://github.com/geekmuse/chronicle",
+      "createdAt": "2026-04-03T17:27:00Z",
+      "updatedAt": "2026-04-03T17:27:00Z",
       "closedAt": null,
       "comments": []
     }
