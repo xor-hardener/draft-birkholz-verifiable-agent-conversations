@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-04-14T00:45:55.095677+00:00",
+  "timestamp": "2026-05-03T00:53:05.277213+00:00",
   "repo": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
   "labels": [
     {
@@ -116,6 +116,22 @@
       "body": "https://github.com/geekmuse/chronicle",
       "createdAt": "2026-04-03T17:27:00Z",
       "updatedAt": "2026-04-03T17:27:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 26,
+      "id": "I_kwDORG4n7s8AAAABBDlGyw",
+      "title": "Editors calls",
+      "url": "https://github.com/xor-sciences/draft-birkholz-verifiable-agent-conversations/issues/26",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "we should set them up if we want this to move faster.",
+      "createdAt": "2026-05-01T17:48:12Z",
+      "updatedAt": "2026-05-01T17:48:12Z",
       "closedAt": null,
       "comments": []
     }
