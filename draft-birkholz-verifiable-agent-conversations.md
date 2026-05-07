@@ -24,6 +24,11 @@ author:
  - name: Orie Steele
    email: orie@or13.io
 
+contributor:
+ - name: Jaime Jimenez
+   organization: Ericsson
+   email: jaime@iki.fi
+
 normative:
   RFC4648: base64
   RFC5280: pkix
