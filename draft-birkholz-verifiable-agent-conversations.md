@@ -28,7 +28,7 @@ contributor:
  - name: Thomas Fossati
    organization: Linaro
    email: thomas.fossati@linaro.org
-- name: Jaime Jimenez
+ - name: Jaime Jimenez
    organization: Ericsson
    email: jaime@iki.fi
 
