@@ -24,6 +24,11 @@ author:
  - name: Orie Steele
    email: orie@or13.io
 
+contributor:
+ - name: Thomas Fossati
+   organization: Linaro
+   email: thomas.fossati@linaro.org
+
 normative:
   RFC4648: base64
   RFC5280: pkix
