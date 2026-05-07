@@ -25,7 +25,10 @@ author:
    email: orie@or13.io
 
 contributor:
- - name: Jaime Jimenez
+ - name: Thomas Fossati
+   organization: Linaro
+   email: thomas.fossati@linaro.org
+- name: Jaime Jimenez
    organization: Ericsson
    email: jaime@iki.fi
 
