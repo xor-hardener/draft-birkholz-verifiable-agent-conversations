@@ -2315,6 +2315,11 @@ Contributors
    Email: thomas.fossati@linaro.org
 
 
+   Jaime Jimenez
+   Ericsson
+   Email: jaime@iki.fi
+
+
 Authors' Addresses
 
    Henk Birkholz
