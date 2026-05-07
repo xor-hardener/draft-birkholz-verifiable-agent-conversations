@@ -5,9 +5,9 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 29 August 2026                                                 
+Expires: 8 November 2026                                                
                                                                O. Steele
-                                                        25 February 2026
+                                                              7 May 2026
 
 
                  Verifiable Agent Conversation Records
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2026.
+   This Internet-Draft will expire on 8 November 2026.
 
 Copyright Notice
 
@@ -149,6 +149,7 @@ Table of Contents
      8.1.  Normative References
      8.2.  Informative References
    Acknowledgments
+   Contributors
    Authors' Addresses
 
 1.  Introduction
@@ -2306,6 +2307,13 @@ Table of Contents
 Acknowledgments
 
    The authors would like to thank: xor-hardener
+
+Contributors
+
+   Thomas Fossati
+   Linaro
+   Email: thomas.fossati@linaro.org
+
 
 Authors' Addresses
 
