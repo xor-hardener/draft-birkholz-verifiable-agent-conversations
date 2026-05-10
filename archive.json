@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-03T00:53:05.277213+00:00",
+  "timestamp": "2026-05-10T00:54:46.169686+00:00",
   "repo": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
   "labels": [
     {
@@ -60,15 +60,15 @@
       "id": "I_kwDORG4n7s7npIN4",
       "title": "XOR Evergreen Issue",
       "url": "https://github.com/xor-sciences/draft-birkholz-verifiable-agent-conversations/issues/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "xor-hardener-dev",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "## XOR Security_AppSec Abilities\n\n| Ability                                                         | Trigger comment (top of Issue/PR) + Preview                                                                                                                                                                                                                                                                                                       | Required input (templates / context)                                                              | What XOR does                                                                                                                       |\n| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |\n| **CVE/GHSA \u2192 Autopatch PR**                                     | **@xor-hardener** Minimal autopatch for advisory; add failing test; keep CI green.<br>**Preview:** [Advisory Issue](https://github.com/get-xor/langchain-ai-XOR-langchain/issues/385#issuecomment-3507710488) \u00b7 [Fix PR #386](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/386) \u00b7 [PR #389](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/389) | Issue using **XOR: Autopatch request** with GHSA/CVE/OSV link, repro/failing test, target branch. | Creates **branch + PR** with **minimal fix**, updates/adds test, links advisory + short risk note; ensures **CI passes**.           |\n| **PR audit packet (evidence-linked)**                           | **@xor-hardener** Compile audit packet for this PR after checks; link SHAs, tests, CI, reviewers.<br>**Preview:** [PR Review #387](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387#issuecomment-3507725866)                                                                                                                        | Run on the autopatch PR after CI/checks complete.                                                 | Posts **single evidence packet** (comment/artifact) linking files/SHAs, tests added, CI/checks URLs, Issue ref, reviewers.          |\n| **Harden GitHub Actions (pin + least-privilege)**               | **@xor-hardener** Pin actions by SHA and reduce workflow permissions per job; keep CI green.<br>**Preview:** [Issue #388](https://github.com/get-xor/langchain-ai-XOR-langchain/issues/388#issuecomment-3507728669) \u00b7 [PR #389](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/389/files)                                             | PR that modifies `.github/workflows/*.yml` + note runners/secrets actually needed.                | Reviews and proposes/commits **SHA-pinned actions** and **least-privilege permissions** per job with rationale; **keeps CI green**. |\n| **Guardrail review (stop on low confidence)** | **@xor-hardener** Review risky refactor; flag unsafe changes; don't flag risks if confidence is low.<br>**Preview: [PR-Review + fix suggestions](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387#issuecomment-3507725866)** \u2013                                                                                                                                                                                                                                        | PR that deletes/refactors something potentially risky.                                            | Leaves **inline review** with risk call-outs and **uncertainty stop**, concrete next steps; **no writes** unless clearly safe.      |\n\n---\n\n## XOR DevSecOps_Platform Abilities\n\n| Ability                                                            | Trigger comment (top of Issue/PR) + Preview                                                                       | Required input (templates / context)                                                          | What XOR does                                                                                                                                 |\n| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |\n| **Green-build autopatch (fix failing CI)** **(coming soon)**       | **@xor-hardener** Diagnose failing test and restore green CI with the smallest safe diff.<br>**Preview:** \u2013       | PR with one failing test; include failing job log snippet in PR body.                         | Produces **small diff** to restore **green CI**, plus comment explaining **root cause** and why the fix is minimal, with link to passing run. |\n| **OSV dependency review \u2192 patch plan** **(coming soon)**           | **@xor-hardener** Summarize OSV scan; triage exploitable vs not; propose minimal version bumps.<br>**Preview:** \u2013 | Issue using **XOR: OSV dependency review**; attach/paste `osv-scanner` JSON; note ecosystems. | Posts **triage table** and **prioritized patch plan**; if safe, opens **minimal bump PR(s)** referencing the Issue.                           |\n| **Workflow permissions audit (least-privilege)** **(coming soon)** | **@xor-hardener** Audit workflow permissions; propose per-job least-privilege YAML patch.<br>**Preview:** \u2013       | PR that adds/changes a workflow with broad permissions.                                       | Proposes **YAML patch** with per-job `permissions` map + rationale; optionally commits; **CI remains green**.                                 |\n\n---\n\n## XOR Compliance_GRC Abilities\n\n| Ability                                                 | Trigger comment (top of Issue/PR) + Preview                                                                                                                                                                      | Required input (templates / context)                                                       | What XOR does                                                                                                                  |\n| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |\n| **PR audit packet (evidence-linked)**                   | **@xor-hardener** Compile audit packet for this PR after checks; link SHAs, tests, CI, reviewers.<br>**Preview:** [PR #387](https://github.com/get-xor/langchain-ai-XOR-langchain/pull/387) *(also #386 / #389)* | Run on the autopatch PR after CI/checks complete.                                          | Posts **single evidence packet** linking files/SHAs, tests added, CI/checks URLs, Issue ref, reviewers.                        |\n| **Repo controls \u2192 live evidence map** **(coming soon)** | **@xor-hardener** Map repo controls to evidence (tests, pipelines, scanners); list gaps and next steps.<br>**Preview:** \u2013                                                                                        | Issue using **XOR: Map controls to evidence** listing tests/build/code-scanning pipelines. | Publishes **control \u2192 evidence table** with live links to jobs, suites, scanners, artifacts; adds **gap list** + next actions. |\n",
       "createdAt": "2026-02-02T14:44:02Z",
-      "updatedAt": "2026-02-02T14:44:02Z",
-      "closedAt": null,
+      "updatedAt": "2026-05-07T18:18:55Z",
+      "closedAt": "2026-05-07T18:18:55Z",
       "comments": []
     },
     {
@@ -99,9 +99,17 @@
       "labels": [],
       "body": "Relation to WIMSE / OAuth... MCP Auth / DCR... Any of this relevant?",
       "createdAt": "2026-02-20T04:35:41Z",
-      "updatedAt": "2026-02-20T04:35:41Z",
+      "updatedAt": "2026-05-07T18:21:40Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[edit: commented on wrong issue]. If we open a trajectory record up to authentication context, it should be limited to resource, authentication method, auth outcome, maybe api definition, and maybe maybe intent?",
+          "createdAt": "2026-05-07T18:17:43Z",
+          "updatedAt": "2026-05-07T18:21:40Z"
+        }
+      ]
     },
     {
       "number": 25,
@@ -115,9 +123,17 @@
       "labels": [],
       "body": "https://github.com/geekmuse/chronicle",
       "createdAt": "2026-04-03T17:27:00Z",
-      "updatedAt": "2026-04-03T17:27:00Z",
+      "updatedAt": "2026-05-07T18:22:24Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We have to sieve through the capabilities and might need #26 resolved for this issue.",
+          "createdAt": "2026-05-07T18:22:23Z",
+          "updatedAt": "2026-05-07T18:22:23Z"
+        }
+      ]
     },
     {
       "number": 26,
@@ -131,9 +147,17 @@
       "labels": [],
       "body": "we should set them up if we want this to move faster.",
       "createdAt": "2026-05-01T17:48:12Z",
-      "updatedAt": "2026-05-01T17:48:12Z",
+      "updatedAt": "2026-05-07T18:18:28Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Absolutely, we should agree on a few time-slot candidates next week!",
+          "createdAt": "2026-05-07T18:18:27Z",
+          "updatedAt": "2026-05-07T18:18:27Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1611,6 +1635,110 @@
           "createdAt": "2026-02-25T18:35:05Z",
           "updatedAt": "2026-02-25T18:35:05Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDORG4n7s7ZDcli",
+      "title": "Adding Thomas as Endorser",
+      "url": "https://github.com/xor-sciences/draft-birkholz-verifiable-agent-conversations/pull/27",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-05-07T07:47:04Z",
+      "updatedAt": "2026-05-07T18:07:40Z",
+      "baseRepository": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "41fdeee86317090a35852f3120a33d15e7ed27cf",
+      "headRepository": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "adding-thomas",
+      "headRefOid": "c3e215081802f11ddfd548033d4992713a8c7e88",
+      "closedAt": "2026-05-07T18:07:40Z",
+      "mergedAt": "2026-05-07T18:07:40Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "5d9b04d5399e7bd2ac2dd15ac071d312299a5472"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s79Av5u",
+          "commit": {
+            "abbreviatedOid": "c3e2150"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2026-05-07T14:26:58Z",
+          "updatedAt": "2026-05-07T14:26:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDORG4n7s7ZDjHp",
+      "title": "Adding Jaime as Endorser",
+      "url": "https://github.com/xor-sciences/draft-birkholz-verifiable-agent-conversations/pull/28",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-05-07T07:52:50Z",
+      "updatedAt": "2026-05-07T18:15:12Z",
+      "baseRepository": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
+      "baseRefName": "main",
+      "baseRefOid": "5d9b04d5399e7bd2ac2dd15ac071d312299a5472",
+      "headRepository": "xor-sciences/draft-birkholz-verifiable-agent-conversations",
+      "headRefName": "adding-jaime",
+      "headRefOid": "9bc571e9966f4732d0adb0d4168b6612fb0c522b",
+      "closedAt": "2026-05-07T18:15:12Z",
+      "mergedAt": "2026-05-07T18:15:12Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "2b8a903e5ef9941c02347edf5b9a48c546777617"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDORG4n7s787oMg",
+          "commit": {
+            "abbreviatedOid": "0d5100d"
+          },
+          "author": "jaimejim",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-05-07T11:20:39Z",
+          "updatedAt": "2026-05-07T11:20:39Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDORG4n7s79HgwF",
+          "commit": {
+            "abbreviatedOid": "9610047"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-05-07T18:13:16Z",
+          "updatedAt": "2026-05-07T18:13:17Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\n - name: Jaime Jimenez\n```",
+              "createdAt": "2026-05-07T18:13:16Z",
+              "updatedAt": "2026-05-07T18:13:17Z"
+            }
+          ]
         }
       ]
     }
