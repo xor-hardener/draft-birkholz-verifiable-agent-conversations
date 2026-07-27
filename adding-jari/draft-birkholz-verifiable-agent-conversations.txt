@@ -5,17 +5,33 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 27 August 2026                                                 
+Expires: 28 January 2027                                                
                                                                O. Steele
-                                                        23 February 2026
+                                                            27 July 2026
 
 
-                     Verifiable Agent Conversations
+                 Verifiable Agent Conversation Records
           draft-birkholz-verifiable-agent-conversations-latest
 
 Abstract
 
-   Abstract
+   Autonomous agents based on large language models increasingly perform
+   consequential tasks on behalf of humans and other agents.
+   Demonstrating that recorded agent behavior truthfully represents
+   actual behavior is essential for accountability, compliance, and
+   human oversight.  This document defines a data format for verifiable
+   agent conversation records using CDDL, with representations in both
+   JSON and CBOR.  The format captures session metadata, message
+   exchanges, tool invocations, reasoning traces, and system events in a
+   structured, extensible CDDL definition for verifiable agent
+   conversation records.  COSE is used as the signing method to allow
+   for native interoperability in SCITT Transparency Services and the
+   CDDL definition allows for seemless integration in Evidence as
+   specified in RFC 9334.  The specification supports cross-vendor
+   interoperability by defining a common representation that
+   accommodates translation from multiple existing agent implementations
+   with distinct data structure layouts that are typically represented
+   in JSON.
 
 Discussion Venues
 
@@ -40,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2026.
+   This Internet-Draft will expire on 28 January 2027.
 
 Copyright Notice
 
@@ -61,7 +77,7 @@ Table of Contents
    1.  Introduction
      1.1.  Conventions and Definitions
    2.  Compliance Requirements for AI Agent Conversation Records
-     2.1.  Applicable Frameworks Analyzed
+     2.1.  Applicable Requirement Frameworks
      2.2.  Common Requirements Intersection
        2.2.1.  REQ-1: Automatic Event Logging
        2.2.2.  REQ-2: Timestamp Requirements
@@ -77,16 +93,15 @@ Table of Contents
      2.3.  Framework-Specific Requirements
        2.3.1.  EU AI Act (High-Risk Systems)
        2.3.2.  ETSI TS 104 223 Session Logging Requirements
-       2.3.3.  PCI DSS v4.0 AI-Specific Guidance
+       2.3.3.  PCI DSS AI-Specific Guidance
        2.3.4.  Financial Sector Requirements (FFIEC, BSI)
      2.4.  Compliance Mapping Table
      2.5.  Security Requirements addressing Regulatory Compliance
        2.5.1.  Log Integrity
        2.5.2.  Access Control
        2.5.3.  Data Protection
-     2.6.  Normative References for Compliance Bucket (TBD)
-     2.7.  Informative References Bucket (TBD)
-   3.  Data Structure Definitions
+     2.6.  Related Standards and Emerging Work
+   3.  CDDL Definitions for Agent Conversations Records
      3.1.  Common Types
      3.2.  The verifiable-agent-record Map
      3.3.  The session-trace Map
@@ -112,13 +127,29 @@ Table of Contents
        3.11.1.  The signed-agent-record Structure
        3.11.2.  The trace-metadata Map
    4.  Collated CDDL Definition for generic Agent Conversations
-   5.  IANA Considerations
-     5.1.  Media Type
-     5.2.  CoAP Content Format
-     5.3.  CBOR Tag
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   5.  Privacy Considerations
+     5.1.  Information Disclosure
+     5.2.  Sensitive Content in Records
+     5.3.  Retention Considerations
+     5.4.  Correlation and Inference
+     5.5.  Authority Access
+   6.  Security Considerations
+     6.1.  Record Integrity
+     6.2.  Signing Key Protection
+     6.3.  Timestamp Integrity
+     6.4.  Adversarial Content
+     6.5.  Non-Repudiation
+     6.6.  Detection and Trust Boundaries
+   7.  IANA Considerations
+     7.1.  Media Type
+     7.2.  CoAP Content Format
+     7.3.  CBOR Tag
+     7.4.  COSE Header Parameter
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Acknowledgments
+   Contributors
    Authors' Addresses
 
 1.  Introduction
@@ -126,7 +157,7 @@ Table of Contents
    The question of whether the recorded output of an autonomous agent
    faithfully represents an agent's actual behavior has found new
    urgency as the number of consequential tasks that are delegated to
-   agent increases rapidly.  Autonomous Agents--typically workload
+   agents increases rapidly.  Autonomous Agents--typically workload
    instances of agentic artificial intelligence (AI) based on large
    language models (LLM)--interact with other actors by design.  This
    creates an interconnected web of agent interactions and conversations
@@ -134,7 +165,7 @@ Table of Contents
    essence, the two main types of actors interacting with autonomous
    agents are humans and machines (e.g., other autonomous agents), or a
    mix of them.  In agentic AI systems, machine actors interact with
-   other machine actors.  The number of interaction between machine
+   other machine actors.  The number of interactions between machine
    actors grows significantly more than the number of interactions
    between human actors and machine actors.  While the responsible
    parties for agent actions ultimately are humans--whether a natural
@@ -210,16 +241,16 @@ Table of Contents
        documentation, traceability, and human oversight.
 
    Most agent conversations today are represented in "human-readable"
-   text formats.  For example, [STD90] is considered to be "human-
+   text formats.  For example, JSON [STD90] is considered to be "human-
    readable" as it can be presented to humans in human-computer-
    interfaces (HCI) via off-the-shelf tools, e.g., pre-installed text
    editors that allow such data to be consumed or modified by humans.
-   The Concise Binary Object Representation (CBOR [STD94]) is used as
-   the primary representation next to the established representation
+   The Concise Binary Object Representation (CBOR [STD94]) is used as an
+   alternative representation next to the established representation
    that is JSON.
 
-   In this version of the document the signing portion of JSON content
-   is done via [STD90].  Using [STD90] enables interoperability with
+   In this version of the document the signing of JSON payloads is done
+   via [STD90].  Using [STD90] enables interoperability with
    Transparency Services specified by the IETF
    [I-D.ietf-scitt-architecture] and enables low-threshold cross-
    application and cross-stakeholder interoperability across the
@@ -254,52 +285,52 @@ Table of Contents
    standardized, cryptographically verifiable record of AI agent
    interactions.
 
-2.1.  Applicable Frameworks Analyzed
+2.1.  Applicable Requirement Frameworks
 
    The following frameworks were analyzed for their requirements on AI
    agent traceability and session logging:
 
-       +==============+===============+===============+============+
-       | Framework    | Jurisdiction  | Sector        | Status     |
-       +==============+===============+===============+============+
-       | EU AI Act    | EU            | Cross-sector  | In force   |
-       | (Regulation  |               |               | Aug 2024   |
-       | 2024/1689)   |               |               |            |
-       +--------------+---------------+---------------+------------+
-       | Cyber        | EU            | Products with | In force   |
-       | Resilience   |               | digital       | Dec 2024   |
-       | Act (CRA)    |               | elements      |            |
-       +--------------+---------------+---------------+------------+
-       | NIS2         | EU            | Essential/    | Transposed |
-       | Directive    |               | important     | Oct 2024   |
-       |              |               | entities      |            |
-       +--------------+---------------+---------------+------------+
-       | ETSI TS 104  | EU/           | AI systems    | Published  |
-       | 223          | International |               | Apr 2025   |
-       +--------------+---------------+---------------+------------+
-       | SOC 2 Trust  | US/           | Service       | Active     |
-       | Services     | International | organizations |            |
-       | Criteria     |               |               |            |
-       +--------------+---------------+---------------+------------+
-       | FedRAMP Rev. | US            | Federal cloud | Active     |
-       | 5            |               | services      |            |
-       +--------------+---------------+---------------+------------+
-       | PCI DSS v4.0 | International | Payment card  | Mandatory  |
-       |              |               | industry      | Mar 2025   |
-       +--------------+---------------+---------------+------------+
-       | ISO/IEC      | International | AI management | Published  |
-       | 42001:2023   |               | systems       | 2023       |
-       +--------------+---------------+---------------+------------+
-       | FFIEC IT     | US            | Financial     | Updated    |
-       | Handbook     |               | institutions  | 2024       |
-       +--------------+---------------+---------------+------------+
-       | BSI AI       | Germany       | Financial     | Published  |
-       | Finance Test |               | sector AI     | 2024       |
-       | Criteria     |               |               |            |
-       +--------------+---------------+---------------+------------+
-       | NIST AI      | US            | Cross-sector  | Published  |
-       | 100-2        |               |               | 2025       |
-       +--------------+---------------+---------------+------------+
+    +==========================+=============+=============+==========+
+    | Framework                |Jurisdiction |Sector       |Status    |
+    +==========================+=============+=============+==========+
+    | EU AI Act                |EU           |Cross-sector |In force  |
+    | [EU_AI_ACT_2024]         |             |             |Aug 2024  |
+    +--------------------------+-------------+-------------+----------+
+    | Cyber Resilience Act     |EU           |Products with|In force  |
+    | [EU_CRA_2024]            |             |digital      |Dec 2024  |
+    |                          |             |elements     |          |
+    +--------------------------+-------------+-------------+----------+
+    | NIS2 Directive           |EU           |Essential/   |Transposed|
+    | [EU_NIS2_2022]           |             |important    |Oct 2024  |
+    |                          |             |entities     |          |
+    +--------------------------+-------------+-------------+----------+
+    | ETSI TS 104 223          |EU/          |AI systems   |Published |
+    | [ETSI_TS_104223_2025]    |International|             |Apr 2025  |
+    +--------------------------+-------------+-------------+----------+
+    | SOC 2 Trust Services     |US/          |Service      |Active    |
+    | Criteria                 |International|organizations|          |
+    | [AICPA_TSC_2017]         |             |             |          |
+    +--------------------------+-------------+-------------+----------+
+    | FedRAMP                  |US           |Federal cloud|Active    |
+    | [NIST_SP_800_53_R5]      |             |services     |          |
+    | [OMB_M_21_31]            |             |             |          |
+    +--------------------------+-------------+-------------+----------+
+    | PCI DSS [PCI_DSS_V4_0_1] |International|Payment card |Mandatory |
+    |                          |             |industry     |Mar 2025  |
+    +--------------------------+-------------+-------------+----------+
+    | ISO/IEC 42001            |International|AI management|Published |
+    | [ISO_IEC_42001_2023]     |             |systems      |2023      |
+    +--------------------------+-------------+-------------+----------+
+    | FFIEC IT Handbook        |US           |Financial    |Updated   |
+    | [FFIEC_IT_HANDBOOK_2024] |             |institutions |2024      |
+    +--------------------------+-------------+-------------+----------+
+    | BSI AI Finance Test      |Germany      |Financial    |Published |
+    | Criteria                 |             |sector AI    |2024      |
+    | [BSI_AI_FINANCE_2024]    |             |             |          |
+    +--------------------------+-------------+-------------+----------+
+    | NIST AI 100-2            |US           |Cross-sector |Published |
+    | [NIST_AI_100_2_E2025]    |             |             |2025      |
+    +--------------------------+-------------+-------------+----------+
 
                                   Table 1
 
@@ -367,8 +398,9 @@ Table of Contents
                                   Table 3
 
    Mapping to this specification: The timestamp field in each entry uses
-   abstract-timestamp which accepts both RFC 3339 strings and epoch
-   milliseconds, ensuring interoperability across implementations.
+   abstract-timestamp which accepts both RFC 3339 strings and POSIX
+   Seconds since Epoch, ensuring interoperability across
+   implementations.
 
 2.2.3.  REQ-3: Actor Identification
 
@@ -635,8 +667,8 @@ Table of Contents
 
 2.3.1.  EU AI Act (High-Risk Systems)
 
-   For AI systems classified as high-risk under Annex III, additional
-   requirements apply:
+   For AI systems classified as high-risk under Annex III of the EU AI
+   Act [EU_AI_ACT_2024], additional requirements apply:
 
    1.  Biometric identification systems (Annex III, 1(a)) require
        logging of:
@@ -652,12 +684,12 @@ Table of Contents
    2.  Log retention: Minimum 6 months; financial services may require
        longer per sector-specific regulation.
 
-   3.  Authority Access: Art. 19 requires provision of logs to competent
-       authorities upon reasoned request.
+   3.  Authority Access: Art. 19 of [EU_AI_ACT_2024] requires provision
+       of logs to competent authorities upon reasoned request.
 
 2.3.2.  ETSI TS 104 223 Session Logging Requirements
 
-   ETSI TS 104 223 V1.1.1 (2025-04) provides the most detailed AI-
+   ETSI TS 104 223 [ETSI_TS_104223_2025] provides the most detailed AI-
    specific logging requirements:
 
     +===========+=================================+==================+
@@ -690,12 +722,12 @@ Table of Contents
 
                                  Table 13
 
-2.3.3.  PCI DSS v4.0 AI-Specific Guidance
+2.3.3.  PCI DSS AI-Specific Guidance
 
    The PCI Security Standards Council has published guidance on AI in
-   payment environments: "Where possible, logging should be sufficient
-   to audit the prompt inputs and reasoning process used by the AI
-   system that led to the output provided."
+   payment environments [PCI_DSS_V4_0_1]: "Where possible, logging
+   should be sufficient to audit the prompt inputs and reasoning process
+   used by the AI system that led to the output provided."
 
    This specification directly addresses this requirement through:
 
@@ -709,7 +741,8 @@ Table of Contents
 
 2.3.4.  Financial Sector Requirements (FFIEC, BSI)
 
-   Financial institutions face additional scrutiny for AI systems:
+   Financial institutions face additional scrutiny for AI systems per
+   [FFIEC_IT_HANDBOOK_2024] and [BSI_AI_FINANCE_2024]:
 
     +================+===========================+===================+
     | Requirement    | FFIEC                     | BSI AI Finance    |
@@ -772,8 +805,9 @@ Table of Contents
 
 2.5.1.  Log Integrity
 
-   Per PCI DSS 4.0 Req 10.5 and FedRAMP AU-9, logs MUST be protected
-   against modification.  Implementations SHOULD:
+   Per PCI DSS [PCI_DSS_V4_0_1] Req 10.5 and FedRAMP [NIST_SP_800_53_R5]
+   AU-9, logs MUST be protected against modification.  Implementations
+   SHOULD:
 
    1.  Use the signed-agent-record envelope for cryptographic integrity
 
@@ -783,7 +817,8 @@ Table of Contents
 
 2.5.2.  Access Control
 
-   Per FedRAMP AC-3 and ETSI 5.2.2-1, access to logs MUST be controlled:
+   Per FedRAMP [NIST_SP_800_53_R5] AC-3 and ETSI [ETSI_TS_104223_2025]
+   5.2.2-1, access to logs MUST be controlled:
 
    1.  Logs containing sensitive prompts or outputs require access
        control
@@ -804,43 +839,25 @@ Table of Contents
    3.  Retention periods must balance compliance requirements with data
        minimization
 
-2.6.  Normative References for Compliance Bucket (TBD)
+2.6.  Related Standards and Emerging Work
 
-   *  EU AI Act: Regulation (EU) 2024/1689 (Artificial Intelligence Act)
+   The ISO/IEC JTC 1/SC 42 committee is developing [ISO_IEC_DIS_24970],
+   a draft international standard specifically addressing AI system
+   logging requirements.  This work aligns with and complements the
+   verifiable agent conversation format defined in this document.
 
-   *  CRA: Regulation (EU) 2024/2847 (Cyber Resilience Act)
+   Research on emergent misalignment [EMERGENT_MISALIGNMENT_2025]
+   demonstrates that narrow fine-tuning can produce broadly misaligned
+   LLMs, underscoring the importance of comprehensive conversation
+   logging for detecting behavioral anomalies that may not be apparent
+   from individual interactions.
 
-   *  NIS2: Directive (EU) 2022/2555
+3.  CDDL Definitions for Agent Conversations Records
 
-   *  ETSI TS 104 223: ETSI TS 104 223 V1.1.1 (2025-04)
-
-   *  SOC 2: AICPA Trust Services Criteria (2017)
-
-   *  FedRAMP: NIST SP 800-53 Rev. 5; OMB M-21-31
-
-   *  PCI DSS: PCI DSS v4.0.1 (March 2024)
-
-   *  ISO 42001: ISO/IEC 42001:2023
-
-   *  FFIEC: FFIEC IT Examination Handbook (2024)
-
-   *  BSI: BSI AI Finance Test Criteria (2024)
-
-   *  NIST AI: NIST AI 100-2 E2025
-
-2.7.  Informative References Bucket (TBD)
-
-   *  Anthropic: "Emergent Misalignment: Narrow finetuning can produce
-      broadly misaligned LLMs" (2025)
-
-   *  ISO 24970: ISO/IEC DIS 24970:2025 "AI system logging" (draft)
-
-3.  Data Structure Definitions
-
-   This section defines each complex data type in the verifiable agent
-   conversation CDDL data definition.  Each subsection presents a CDDL
-   fragment for one type, a brief description, and per-member
-   documentation.
+   This section defines each complex data type specified in the
+   verifiable agent conversation record CDDL data definition.  Each
+   subsection illustrates a CDDL fragment for one type, a brief
+   description, and per-member documentation.
 
 3.1.  Common Types
 
@@ -1545,261 +1562,430 @@ Table of Contents
 
 4.  Collated CDDL Definition for generic Agent Conversations
 
-start = verifiable-agent-record / signed-agent-record
+   start = verifiable-agent-record / signed-agent-record
 
-; RFC 3339 string OR epoch milliseconds (for interop).
-abstract-timestamp = tstr .regexp date-time-regexp / uint
+   ; RFC 3339 string OR epoch milliseconds (for interop).
+   abstract-timestamp = tstr .regexp date-time-regexp / uint
 
-; Opaque string: UUID, SHA-256 hash in base64url, etc.
-session-id = tstr / bstr
+   ; Opaque string: UUID, SHA-256 hash in base64url, etc.
+   session-id = tstr / bstr
 
-; Per-entry unique reference within a session.
-entry-id = tstr
+   ; Per-entry unique reference within a session.
+   entry-id = tstr
 
-; RFC 3339 date-time pattern
-date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
+   ; RFC 3339 date-time pattern
+   date-time-regexp = "([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):(60|[0-5][0-9])([.][0-9]+)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])"
 
-; URI pattern (RFC 3986)
-uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+   ; URI pattern (RFC 3986)
+   uri-regexp = "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
 
-verifiable-agent-record = {
-    version: tstr                       ; Schema version (semver)
-    id: tstr                            ; Record identifier
-    session: session-trace              ; Conversation trace (required)
-    ? created: abstract-timestamp       ; Record creation time
-    ? file-attribution: file-attribution-record
-    ? vcs: vcs-context                  ; Record-level VCS context
-    ? recording-agent: recording-agent  ; Tool that generated this record
-    * tstr => any
-}
+   verifiable-agent-record = {
+       version: tstr                       ; Schema version (semver)
+       id: tstr                            ; Record identifier
+       session: session-trace              ; Conversation trace (required)
+       ? created: abstract-timestamp       ; Record creation time
+       ? file-attribution: file-attribution-record
+       ? vcs: vcs-context                  ; Record-level VCS context
+       ? recording-agent: recording-agent  ; Tool that generated this record
+       * tstr => any
+   }
 
-session-trace = {
-    ? format: tstr                      ; "interactive" / "autonomous" / vendor
-    session-id: session-id
-    ? session-start: abstract-timestamp
-    ? session-end: abstract-timestamp
-    agent-meta: agent-meta
-    ? environment: environment
-    entries: [* entry]
-    * tstr => any
-}
+   session-trace = {
+       ? format: tstr                      ; "interactive" / "autonomous" / vendor
+       session-id: session-id
+       ? session-start: abstract-timestamp
+       ? session-end: abstract-timestamp
+       agent-meta: agent-meta
+       ? environment: environment
+       entries: [* entry]
+       * tstr => any
+   }
 
-agent-meta = {
-    model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
-    model-provider: tstr                ; e.g., "anthropic", "google"
-    ? models: [ * tstr ]                  ; All models (multi-model sessions)
-    ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
-    ? cli-version: tstr
-    * tstr => any
-}
+   agent-meta = {
+       model-id: tstr                      ; e.g., "claude-opus-4-5-20251101"
+       model-provider: tstr                ; e.g., "anthropic", "google"
+       ? models: [ * tstr ]                  ; All models (multi-model sessions)
+       ? cli-name: tstr                    ; e.g., "claude-code", "gemini-cli"
+       ? cli-version: tstr
+       * tstr => any
+   }
 
-recording-agent = {
-    name: tstr
-    ? version: tstr
-    * tstr => any
-}
+   recording-agent = {
+       name: tstr
+       ? version: tstr
+       * tstr => any
+   }
 
-environment = {
-    working-dir: tstr
-    ? vcs: vcs-context
-    ? sandboxes: [ * tstr ]               ; Sandbox mount paths
-    * tstr => any
-}
+   environment = {
+       working-dir: tstr
+       ? vcs: vcs-context
+       ? sandboxes: [ * tstr ]               ; Sandbox mount paths
+       * tstr => any
+   }
 
-vcs-context = {
-    type: tstr                          ; "git" / "jj" / "hg" / "svn"
-    ? revision: tstr                    ; Commit SHA or change ID
-    ? branch: tstr
-    ? repository: tstr                  ; Repository URL
-    * tstr => any
-}
+   vcs-context = {
+       type: tstr                          ; "git" / "jj" / "hg" / "svn"
+       ? revision: tstr                    ; Commit SHA or change ID
+       ? branch: tstr
+       ? repository: tstr                  ; Repository URL
+       * tstr => any
+   }
 
-entry = message-entry
-      / tool-call-entry
-      / tool-result-entry
-      / reasoning-entry
-      / event-entry
+   entry = message-entry
+         / tool-call-entry
+         / tool-result-entry
+         / reasoning-entry
+         / event-entry
 
-message-entry = {
-    type: "user" / "assistant"
-    ? content: any                      ; Text string or structured content blocks
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? model-id: tstr                    ; Model (assistant only)
-    ? parent-id: entry-id              ; Parent message reference
-    ? token-usage: token-usage
-    ? children: [ * entry ]
-    * tstr => any
-}
+   message-entry = {
+       type: "user" / "assistant"
+       ? content: any                      ; Text string or structured content blocks
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? model-id: tstr                    ; Model (assistant only)
+       ? parent-id: entry-id              ; Parent message reference
+       ? token-usage: token-usage
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-tool-call-entry = {
-    type: "tool-call"
-    name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
-    input: any                          ; Tool arguments
-    ? call-id: tstr                     ; Links call ↔ result
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   tool-call-entry = {
+       type: "tool-call"
+       name: tstr                          ; Tool name (e.g., "Bash", "Edit", "Read")
+       input: any                          ; Tool arguments
+       ? call-id: tstr                     ; Links call ↔ result
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-tool-result-entry = {
-    type: "tool-result"
-    output: any                         ; Tool output
-    ? call-id: tstr                     ; Links call ↔ result
-    ? status: tstr                      ; "success" / "error" / "completed"
-    ? is-error: bool
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   tool-result-entry = {
+       type: "tool-result"
+       output: any                         ; Tool output
+       ? call-id: tstr                     ; Links call ↔ result
+       ? status: tstr                      ; "success" / "error" / "completed"
+       ? is-error: bool
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-reasoning-entry = {
-    type: "reasoning"
-    content: any                        ; Plaintext reasoning or structured
-    ? encrypted: tstr                   ; Encrypted content (provider-protected)
-    ? subject: tstr                     ; Topic label
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   reasoning-entry = {
+       type: "reasoning"
+       content: any                        ; Plaintext reasoning or structured
+       ? encrypted: tstr                   ; Encrypted content (provider-protected)
+       ? subject: tstr                     ; Topic label
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-event-entry = {
-    type: "system-event"
-    event-type: tstr                    ; Event classifier
-    ? data: { * tstr => any }           ; Event-specific payload
-    ? timestamp: abstract-timestamp
-    ? id: entry-id
-    ? children: [ * entry ]
-    * tstr => any
-}
+   event-entry = {
+       type: "system-event"
+       event-type: tstr                    ; Event classifier
+       ? data: { * tstr => any }           ; Event-specific payload
+       ? timestamp: abstract-timestamp
+       ? id: entry-id
+       ? children: [ * entry ]
+       * tstr => any
+   }
 
-token-usage = {
-    ? input: uint                       ; Input tokens
-    ? output: uint                      ; Output tokens
-    ? cached: uint                      ; Cached input tokens
-    ? reasoning: uint                   ; Reasoning/thinking tokens
-    ? total: uint                       ; Total tokens
-    ? cost: number                      ; Dollar cost
-    * tstr => any
-}
+   token-usage = {
+       ? input: uint                       ; Input tokens
+       ? output: uint                      ; Output tokens
+       ? cached: uint                      ; Cached input tokens
+       ? reasoning: uint                   ; Reasoning/thinking tokens
+       ? total: uint                       ; Total tokens
+       ? cost: number                      ; Dollar cost
+       * tstr => any
+   }
 
-file-attribution-record = {
-    files: [* file]
-}
+   file-attribution-record = {
+       files: [* file]
+   }
 
-file = {
-    path: tstr                          ; Relative path from repo root
-    conversations: [* conversation]
-}
+   file = {
+       path: tstr                          ; Relative path from repo root
+       conversations: [* conversation]
+   }
 
-conversation = {
-    ? url: tstr .regexp uri-regexp
-    ? contributor: contributor          ; Default contributor for ranges
-    ranges: [* range]
-    ? related: [* resource]
-}
+   conversation = {
+       ? url: tstr .regexp uri-regexp
+       ? contributor: contributor          ; Default contributor for ranges
+       ranges: [* range]
+       ? related: [* resource]
+   }
 
-range = {
-    start-line: uint                    ; 1-indexed
-    end-line: uint                      ; 1-indexed, inclusive
-    ? content-hash: tstr
-    ? content-hash-alg: tstr            ; Default: "sha-256"
-    ? contributor: contributor          ; Override for this range
-}
+   range = {
+       start-line: uint                    ; 1-indexed
+       end-line: uint                      ; 1-indexed, inclusive
+       ? content-hash: tstr
+       ? content-hash-alg: tstr            ; Default: "sha-256"
+       ? contributor: contributor          ; Override for this range
+   }
 
-contributor = {
-    type: "human" / "ai" / "mixed" / "unknown"
-    ? model-id: tstr
-}
+   contributor = {
+       type: "human" / "ai" / "mixed" / "unknown"
+       ? model-id: tstr
+   }
 
-resource = {
-    type: tstr
-    url: tstr .regexp uri-regexp
-}
+   resource = {
+       type: tstr
+       url: tstr .regexp uri-regexp
+   }
 
-; SCITT-interoperable COSE Envelope
-; including from draft-ietf-cose-merkle-tree-proofs and
-; draft-ietf-scitt-architecture for validation
+   ; SCITT-interoperable COSE Envelope
+   ; including from draft-ietf-cose-merkle-tree-proofs and
+   ; draft-ietf-scitt-architecture for validation
 
-signed-agent-record = #6.18([           ; COSE_Sign1 tag
-    protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
-    unprotected: unprotected-header     ; Trace metadata
-    payload: bstr / null                ; Detached if null
-    signature: bstr
-])
+   signed-agent-record = #6.18([           ; COSE_Sign1 tag
+       protected: bstr .cbor protected-header ; {alg, content-type, scitt-stuff}
+       unprotected: unprotected-header     ; Trace metadata
+       payload: bstr / null                ; Detached if null
+       signature: bstr
+   ])
 
-protected-header = {
-  &(CWT_Claims: 15) => CWT_Claims
-  ? &(alg: 1) => int
-  ? &(content_type: 3) => tstr / uint
-  ? &(kid: 4) => bstr
-  ? &(x5t: 34) => COSE_CertHash
-  ? &(x5chain: 33) => COSE_X509
-  * label => any
-}
+   protected-header = {
+     &(CWT_Claims: 15) => CWT_Claims
+     ? &(alg: 1) => int
+     ? &(content_type: 3) => tstr / uint
+     ? &(kid: 4) => bstr
+     ? &(x5t: 34) => COSE_CertHash
+     ? &(x5chain: 33) => COSE_X509
+     * label => any
+   }
 
-CWT_Claims = {
-  &(iss: 1) => tstr
-  &(sub: 2) => tstr
-  * label => any
-}
+   CWT_Claims = {
+     &(iss: 1) => tstr
+     &(sub: 2) => tstr
+     * label => any
+   }
 
-unprotected-header = {
-  ? &(trace-metadata-key: 100) => trace-metadata ; 100 is placeholder
-  ? &(x5chain: 33) => COSE_X509
-  ? &(receipts: 394)  => [ + Receipt ]
-  * label => any
-}
+   unprotected-header = {
+     ? &(trace-metadata-key: 100) => trace-metadata ; 100 is placeholder
+     ? &(x5chain: 33) => COSE_X509
+     ? &(receipts: 394)  => [ + Receipt ]
+     * label => any
+   }
 
-trace-metadata = {
-    session-id: session-id
-    agent-vendor: tstr
-    trace-format: trace-format-id
-    timestamp-start: abstract-timestamp
-    ? timestamp-end: abstract-timestamp
-    ? content-hash: tstr                ; SHA-256 hex digest of payload
-    ? content-hash-alg: tstr
-}
+   trace-metadata = {
+       session-id: session-id
+       agent-vendor: tstr
+       trace-format: trace-format-id
+       timestamp-start: abstract-timestamp
+       ? timestamp-end: abstract-timestamp
+       ? content-hash: tstr                ; SHA-256 hex digest of payload
+       ? content-hash-alg: tstr
+   }
 
-; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
-; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
-trace-format-id = tstr
+   ; Known values: "ietf-vac-v3.0" (canonical), "claude-jsonl", "gemini-json",
+   ; "codex-jsonl", "opencode-json", "cursor-jsonl". Extensible via tstr.
+   trace-format-id = tstr
 
-COSE_X509 = bstr / [ 2*certs: bstr ]
-COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
-label = int / tstr
+   COSE_X509 = bstr / [ 2*certs: bstr ]
+   COSE_CertHash = [ hashAlg: (int / tstr), hashValue: bstr ]
+   label = int / tstr
 
-; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
+   ; COSE Receipt CDDL for use in SCITT compliant COSE Envelope
 
-Receipt = #6.18(COSE_Sign1)
+   Receipt = #6.18(COSE_Sign1)
 
-cose-label = int / tstr
-cose-value = any
+   cose-label = int / tstr
+   cose-value = any
 
-Protected_Header = {
-  * cose-label => cose-value
-}
+   Protected_Header = {
+     * cose-label => cose-value
+   }
 
-Unprotected_Header = {
-  &(receipts: 394)  => [+ bstr .cbor Receipt]
-  * cose-label => cose-value
-}
+   Unprotected_Header = {
+     &(receipts: 394)  => [+ bstr .cbor Receipt]
+     * cose-label => cose-value
+   }
 
-COSE_Sign1 = [
-  protected   : bstr .cbor Protected_Header,
-  unprotected : Unprotected_Header,
-  payload     : bstr / null,
-  signature   : bstr
-]
+   COSE_Sign1 = [
+     protected   : bstr .cbor Protected_Header,
+     unprotected : Unprotected_Header,
+     payload     : bstr / null,
+     signature   : bstr
+   ]
 
-          Figure 1: CDDL definition of an Agent Conversation
+         Figure 1: CDDL definition of an Agent Conversation Record
 
-5.  IANA Considerations
+5.  Privacy Considerations
 
-5.1.  Media Type
+   Verifiable agent conversation records reveal substantial information
+   about agent behavior, system state, and user interactions.  The
+   privacy considerations of [RFC6973] apply.
+
+5.1.  Information Disclosure
+
+   User prompts captured in message entries may contain personal
+   identifiers, business confidential information, credentials
+   inadvertently included in prompts, or behavioral patterns.  Agent
+   responses and reasoning traces may reveal inference results that
+   expose information about users not explicitly provided, confidential
+   information retrieved by tools, or system architecture details
+   through tool names and parameters.  Implementations MUST treat user-
+   provided content as potentially containing personally identifiable
+   information.
+
+   Record metadata exposes operational details that may have privacy
+   implications.  Model identifiers reveal AI capabilities, CLI versions
+   enable targeted attacks against known vulnerabilities, working
+   directories expose file system structure, and VCS context discloses
+   repository names and commit timing.  Token usage patterns may enable
+   inference about conversation content even when the content itself is
+   protected.
+
+5.2.  Sensitive Content in Records
+
+   Reasoning entries may contain inferences that constitute special
+   category data, including health-related inferences from user queries,
+   political opinions derived from conversation context, or biometric
+   data processed by AI systems.  The reasoning-entry.encrypted field
+   reflects that some model providers encrypt chain-of-thought content;
+   when reasoning is encrypted, audit capabilities depend on the
+   provider's cooperation.
+
+   Tool inputs and outputs warrant particular attention.  Tool call
+   inputs may contain credentials, API keys, or file contents.  Tool
+   results may contain query results with personal data from databases
+   or external services.  Implementations SHOULD provide configurable
+   redaction rules for common patterns and support selective entry type
+   recording based on deployment requirements.
+
+5.3.  Retention Considerations
+
+   Multiple frameworks impose retention requirements that may conflict
+   with data minimization principles.  Organizations must balance
+   compliance obligations requiring extended retention against privacy
+   principles requiring timely deletion.
+
+   Compliant data management may require separating raw personal data
+   from audit trail metadata, implementing automated deletion for
+   personal data after compliance-minimum periods, and maintaining
+   cryptographic commitments enabling verification without retaining
+   content.
+
+5.4.  Correlation and Inference
+
+   Presentations of the same record to multiple parties can be
+   correlated by matching on the signature component.  Session
+   identifiers enable linking of records across time, potentially
+   revealing long-term behavioral patterns or organizational structure.
+   Implementations SHOULD use unlinkable session identifiers where
+   correlation is not required.
+
+   Without accessing record content, observers may infer conversation
+   frequency and duration patterns, types of tools used, error rates, or
+   timing correlations with external events.  Metadata exposure in
+   unprotected headers warrants careful consideration; the trace-
+   metadata in the COSE unprotected header reveals session identifiers,
+   agent vendor, and timestamps even when the payload is encrypted.
+
+5.5.  Authority Access
+
+   Regulatory frameworks may require provision of records to authorities
+   upon request.  Access to records has to be logged, capturing who
+   accessed which records, when access occurred, what legal basis
+   justified access, and what data was disclosed.  This creates a
+   recursive consideration: access logs may themselves contain personal
+   data requiring protection.
+
+6.  Security Considerations
+
+6.1.  Record Integrity
+
+   The signed-agent-record envelope provides cryptographic integrity
+   protection for the serialized record payload.  A valid signature
+   establishes that the claimed signer produced the record but does not
+   guarantee the truthfulness of its contents.  Modifications to the
+   record structure after signing invalidate the signature, but
+   modifications before signing cannot be detected.  Implementations
+   generating records incrementally during a conversation MUST sign only
+   after the conversation concludes or at defined checkpoints.
+
+6.2.  Signing Key Protection
+
+   The security of signed records depends critically on the protection
+   of private signing keys.  If an attacker obtains a signing key, they
+   can forge records indistinguishable from genuine ones.  Protection
+   mechanisms range from operating system process isolation in
+   development environments to hardware security modules with physical
+   tampering resistance in high-assurance deployments.  Compromised
+   signing keys require rejection of records signed after the compromise
+   date and notification to Relying Parties.
+
+   Key provisioning processes must guarantee that exclusively valid
+   attestation key material is established.  Off-device key generation
+   requires confidentiality protection during transmission, creating
+   recursive security dependencies.  On-device key generation eliminates
+   transmission risks but requires chain-of-custody integrity to prevent
+   attackers from obtaining endorsement for keys they control.
+
+6.3.  Timestamp Integrity
+
+   Timestamps establish temporal ordering of events within records.
+   Attackers who can manipulate timestamps can backdate records, freeze
+   participants in chosen time periods to evade freshness checks, or
+   manipulate perceived temporal relationships between entries.
+   Timestamps within records are attested by the signer, not
+   independently verified.  Implementations requiring independent
+   timestamp verification SHOULD use external timestamping services or
+   transparency logs such as those defined in
+   [I-D.ietf-scitt-architecture].
+
+6.4.  Adversarial Content
+
+   Processing verifiable agent conversation records involves parsing
+   content that may be produced by adversaries.  This applies both to
+   user-supplied prompts and to model outputs that may have been
+   influenced by adversarial inputs.  The open extensibility (* tstr =>
+   any) in record types allows arbitrary additional fields;
+   implementations MUST NOT assume that unrecognized fields are safe to
+   process or display.
+
+   Records may contain content designed to exploit downstream systems.
+   Malicious prompts preserved in records may execute if records are
+   subsequently processed by AI systems.  Tool results may contain
+   executable content that executes if rendered unsafely in web
+   interfaces.  File paths in tool calls or file attribution entries may
+   attempt directory traversal.  Implementations MUST apply appropriate
+   sanitization before rendering content, executing it in agent
+   contexts, or using paths for file system operations.
+
+6.5.  Non-Repudiation
+
+   The signed-agent-record envelope alone provides authenticity and
+   integrity, not non-repudiation.  A signer can claim key compromise or
+   dispute the signing time without independent evidence.  Non-
+   repudiation requires additional infrastructure such as transparency
+   services [I-D.ietf-scitt-architecture] that provide independent
+   timestamp proof via registration receipts, append-only logs
+   preventing retroactive denial, and third-party witnesses to the
+   signing event.
+
+6.6.  Detection and Trust Boundaries
+
+   Verifiable agent conversation records primarily enable detection of
+   anomalous behavior rather than prevention.  Detection requires that
+   records accurately reflect actual agent behavior; an agent that
+   controls its own recording can omit or falsify entries.  The
+   recording-agent field distinguishes the recording tool from the
+   conversing agent, enabling Relying Parties to assess trust in the
+   recording process.
+
+   Trust boundaries exist between the agent runtime and recording
+   system, between the recording system and storage, between storage and
+   verification, and between verification and decision-making.  Attacks
+   at any boundary may compromise record integrity or confidentiality.
+
+7.  IANA Considerations
+
+7.1.  Media Type
 
    IANA is requested to add "application/agent-conversation" as a new
    media type for Verifiable Agent Conversation Records to the "Media
@@ -1821,7 +2007,7 @@ COSE_Sign1 = [
 
    Optional parameters:  N/A
 
-   Encoding considerations:  binary
+   Encoding considerations:  byte string
 
    Security considerations:  See Security Considerations {secconsec}
 
@@ -1854,7 +2040,7 @@ COSE_Sign1 = [
 
    Provisional registration:  no
 
-5.2.  CoAP Content Format
+7.2.  CoAP Content Format
 
    IANA is requested to assign a Content-Format ID for Verifiable Agent
    Conversation Records in the "CoAP Content-Formats" registry, within
@@ -1873,7 +2059,7 @@ COSE_Sign1 = [
 
    If possible, TBD1 should be assigned in the 256...9999 range.
 
-5.3.  CBOR Tag
+7.3.  CBOR Tag
 
    IANA is requested to allocate a tag for Verifiable Agent Conversation
    Records in the "CBOR Tags" registry [IANA.cbor-tags], preferably with
@@ -1889,14 +2075,84 @@ COSE_Sign1 = [
               Table 18: Verifiable Agent Conversation Record
                                  CBOR Tag
 
-6.  References
+7.4.  COSE Header Parameter
 
-6.1.  Normative References
+   IANA is requested to allocated the COSE header parameter defined in
+   Table 19 in the "COSE Header Parameters" registry
+   [IANA.cose_header-parameters].
+
+   +================+=====+=====+==========+==============+===========+
+   | Name           |Label|Value| Value    | Description  | Reference |
+   |                |     |Type | Registry |              |           |
+   +================+=====+=====+==========+==============+===========+
+   | trace-metadata |TBD  |CBOR | -        | A metadata   | RFCthis,  |
+   |                |     |map  |          | summary of   | Section   |
+   |                |     |     |          | an Agent     | 3.11.2    |
+   |                |     |     |          | Conversation |           |
+   |                |     |     |          | Record       |           |
+   +----------------+-----+-----+----------+--------------+-----------+
+
+                   Table 19: New COSE Header Parameters
+
+8.  References
+
+8.1.  Normative References
+
+   [AICPA_TSC_2017]
+              American Institute of Certified Public Accountants and
+              Chartered Institute of Management Accountants, "Trust
+              Services Criteria for Security, Availability, Processing
+              Integrity, Confidentiality, and Privacy (With Revised
+              Points of Focus - 2022)", AICPA Trust Services Criteria,
+              2017, <https://www.aicpa-cima.com/resources/download/2017-
+              trust-services-criteria-with-revised-points-of-focus-
+              2022>.
 
    [BCP26]    Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/rfc/rfc8126>.
+
+   [BSI_AI_FINANCE_2024]
+              Bundesamt fuer Sicherheit in der Informationstechnik,
+              "Test Criteria Catalogue for AI Systems in Finance",
+              BSI AI Finance Test Criteria, 2024,
+              <https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/KI/
+              AI-Finance_Test-Criteria.pdf>.
+
+   [ETSI_TS_104223_2025]
+              European Telecommunications Standards Institute, "Securing
+              Artificial Intelligence (SAI); Baseline Cyber Security
+              Requirements for AI Models and Systems", ETSI TS 104 223,
+              V1.1.1, April 2025, <https://www.etsi.org/deliver/
+              etsi_ts/104200_104299/104223/01.01.01_60/
+              ts_104223v010101p.pdf>.
+
+   [EU_AI_ACT_2024]
+              European Parliament and Council of the European Union,
+              "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+              Official Journal of the European Union L 2024/1689,
+              CELEX: 32024R1689, July 2024,
+              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj>.
+
+   [EU_CRA_2024]
+              European Parliament and Council of the European Union,
+              "Regulation (EU) 2024/2847 (Cyber Resilience Act)",
+              Official Journal of the European Union L 2024/2847,
+              CELEX: 32024R2847, November 2024,
+              <https://eur-lex.europa.eu/eli/reg/2024/2847/oj>.
+
+   [EU_NIS2_2022]
+              European Parliament and Council of the European Union,
+              "Directive (EU) 2022/2555 (NIS 2 Directive)", Official
+              Journal of the European Union L 333, CELEX: 32022L2555,
+              December 2022.
+
+   [FFIEC_IT_HANDBOOK_2024]
+              Federal Financial Institutions Examination Council,
+              "Information Technology Examination Handbook", FFIEC IT
+              Examination Handbook, August 2024,
+              <https://ithandbook.ffiec.gov/>.
 
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
@@ -1907,6 +2163,10 @@ COSE_Sign1 = [
               Parameters",
               <https://www.iana.org/assignments/core-parameters>.
 
+   [IANA.cose_header-parameters]
+              IANA, "COSE Header Parameters",
+              <https://www.iana.org/assignments/cose>.
+
    [IANA.cwt] IANA, "CBOR Web Token (CWT) Claims",
               <https://www.iana.org/assignments/cwt>.
 
@@ -1916,6 +2176,41 @@ COSE_Sign1 = [
    [IANA.media-types]
               IANA, "Media Types",
               <https://www.iana.org/assignments/media-types>.
+
+   [ISO_IEC_42001_2023]
+              International Organization for Standardization and
+              International Electrotechnical Commission, "Information
+              technology - Artificial intelligence - Management system",
+              ISO/IEC 42001:2023, December 2023,
+              <https://www.iso.org/standard/42001>.
+
+   [NIST_AI_100_2_E2025]
+              National Institute of Standards and Technology,
+              "Adversarial Machine Learning: A Taxonomy and Terminology
+              of Attacks and Mitigations", NIST AI 100-2 E2025, March
+              2025, <https://csrc.nist.gov/pubs/ai/100/2/e2025/final>.
+
+   [NIST_SP_800_53_R5]
+              National Institute of Standards and Technology, "Security
+              and Privacy Controls for Information Systems and
+              Organizations", NIST Special Publication 800-53, Revision
+              5, September 2020,
+              <https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final>.
+
+   [OMB_M_21_31]
+              Office of Management and Budget, "Improving the Federal
+              Government's Investigative and Remediation Capabilities
+              Related to Cybersecurity Incidents", OMB
+              Memorandum M-21-31, August 2021,
+              <https://www.whitehouse.gov/wp-content/uploads/2021/08/
+              M-21-31-Improving-the-Federal-Governments-Investigative-
+              and-Remediation-Capabilities-Related-to-Cybersecurity-
+              Incidents.pdf>.
+
+   [PCI_DSS_V4_0_1]
+              PCI Security Standards Council, "Payment Card Industry
+              Data Security Standard", PCI DSS Version 4.0.1, June 2024,
+              <https://www.pcisecuritystandards.org/document_library/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1970,7 +2265,14 @@ COSE_Sign1 = [
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
-6.2.  Informative References
+8.2.  Informative References
+
+   [EMERGENT_MISALIGNMENT_2025]
+              Betley, J., Tan, D., Warncke, N., Sztyber-Betley, A., Bao,
+              X., Soto, M., Labenz, N., and O. Evans, "Emergent
+              Misalignment: Narrow finetuning can produce broadly
+              misaligned LLMs", arXiv 2502.17424, PMLR 267:4043-4068,
+              February 2025, <https://arxiv.org/abs/2502.17424>.
 
    [I-D.ietf-scitt-architecture]
               Birkholz, H., Delignat-Lavaud, A., Fournet, C., Deshpande,
@@ -1979,6 +2281,18 @@ COSE_Sign1 = [
               Internet-Draft, draft-ietf-scitt-architecture-22, 10
               October 2025, <https://datatracker.ietf.org/doc/html/
               draft-ietf-scitt-architecture-22>.
+
+   [ISO_IEC_DIS_24970]
+              International Organization for Standardization and
+              International Electrotechnical Commission, "Artificial
+              intelligence - AI system logging", ISO/IEC DIS 24970,
+              2025, <https://www.iso.org/standard/88723.html>.
+
+   [RFC6973]  Cooper, A., Tschofenig, H., Aboba, B., Peterson, J.,
+              Morris, J., Hansen, M., and R. Smith, "Privacy
+              Considerations for Internet Protocols", RFC 6973,
+              DOI 10.17487/RFC6973, July 2013,
+              <https://www.rfc-editor.org/rfc/rfc6973>.
 
    [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote ATtestation procedureS (RATS)
@@ -1989,6 +2303,27 @@ COSE_Sign1 = [
               Structures and Process", STD 96, RFC 9052,
               DOI 10.17487/RFC9052, August 2022,
               <https://www.rfc-editor.org/rfc/rfc9052>.
+
+Acknowledgments
+
+   The authors would like to thank: xor-hardener
+
+Contributors
+
+   Thomas Fossati
+   Linaro
+   Email: thomas.fossati@linaro.org
+
+
+   Jaime Jimenez
+   Ericsson
+   Email: jaime@iki.fi
+
+
+   Jari Arkko
+   Ericcson
+   Email: jari.arkko@ericsson.com
+
 
 Authors' Addresses
 
