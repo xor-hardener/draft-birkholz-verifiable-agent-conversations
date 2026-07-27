@@ -2311,8 +2311,8 @@ Acknowledgments
 Contributors
 
    Thomas Fossati
-   Linaro
-   Email: thomas.fossati@linaro.org
+   NVIDIA
+   Email: tfossati@nvidia.com
 
 
    Jaime Jimenez
