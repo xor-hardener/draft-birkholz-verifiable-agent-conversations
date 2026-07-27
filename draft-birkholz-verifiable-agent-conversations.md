@@ -34,6 +34,9 @@ contributor:
  - name: Jari Arkko
    organization: Ericcson
    email: jari.arkko@ericsson.com
+ - name: Samuel Waymouth
+   organization: AWS
+   email: swaym@amazon.co.uk
 
 normative:
   RFC4648: base64
