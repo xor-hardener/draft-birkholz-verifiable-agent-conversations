@@ -5,9 +5,9 @@
 Network Working Group                                        H. Birkholz
 Internet-Draft                                                          
 Intended status: Standards Track                                T. Heldt
-Expires: 8 November 2026                                                
+Expires: 28 January 2027                                                
                                                                O. Steele
-                                                              7 May 2026
+                                                            27 July 2026
 
 
                  Verifiable Agent Conversation Records
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 November 2026.
+   This Internet-Draft will expire on 28 January 2027.
 
 Copyright Notice
 
@@ -2318,6 +2318,11 @@ Contributors
    Jaime Jimenez
    Ericsson
    Email: jaime@iki.fi
+
+
+   Jari Arkko
+   Ericcson
+   Email: jari.arkko@ericsson.com
 
 
 Authors' Addresses
