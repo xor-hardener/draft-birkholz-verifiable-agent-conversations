@@ -31,6 +31,9 @@ contributor:
  - name: Jaime Jimenez
    organization: Ericsson
    email: jaime@iki.fi
+ - name: Jari Arkko
+   organization: Ericcson
+   email: jari.arkko@ericsson.com
 
 normative:
   RFC4648: base64
