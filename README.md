@@ -4,7 +4,7 @@
 
 This is the working area for the individual Internet-Draft, "Verifiable Agent Conversations".
 
-* [Editor's Copy](https://xor-hardener.github.io/draft-birkholz-verifiable-agent-conversations/draft-birkholz-verifiable-agent-conversations.html)
+* [Editor's Copy](https://xor-sciences.github.io/draft-birkholz-verifiable-agent-conversations/)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-birkholz-verifiable-agent-conversations)
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-birkholz-verifiable-agent-conversations)
 * [Compare Editor's Copy to Individual Draft](https://xor-hardener.github.io/draft-birkholz-verifiable-agent-conversations/#go.draft-birkholz-verifiable-agent-conversations.diff)
