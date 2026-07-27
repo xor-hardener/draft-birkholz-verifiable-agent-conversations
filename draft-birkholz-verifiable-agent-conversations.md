@@ -26,8 +26,8 @@ author:
 
 contributor:
  - name: Thomas Fossati
-   organization: Linaro
-   email: thomas.fossati@linaro.org
+   organization: NVIDIA
+   email: tfossati@nvidia.com
  - name: Jaime Jimenez
    organization: Ericsson
    email: jaime@iki.fi
