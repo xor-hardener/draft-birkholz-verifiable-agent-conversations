@@ -338,7 +338,7 @@ Explicit requirements are listed as follows:
 | NIS2 | "Precise logging of when an incident was first detected" |
 
 Mapping to this specification:
-The `timestamp` field in each entry uses `abstract-timestamp` which accepts both RFC 3339 strings and POSIX Seconds since Epoch, ensuring interoperability across implementations.
+The `timestamp` field in each entry uses `abstract-timestamp` which accepts both RFC 3339 strings and numeric epoch milliseconds, ensuring interoperability across implementations.
 
 ### REQ-3: Actor Identification
 
