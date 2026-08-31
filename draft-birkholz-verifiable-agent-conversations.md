@@ -40,6 +40,9 @@ contributor:
  - name: Thomas McCarthy-Howe
    organization: Strolid
    email: thomas.howe@strolid.com
+ - name: Houda Labiod
+   organization: Huawei Technologies France S.A.S.U.
+   email: houda.labiod@huawei.com
 
 normative:
   RFC4648: base64
