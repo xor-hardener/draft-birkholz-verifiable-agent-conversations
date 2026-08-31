@@ -37,6 +37,9 @@ contributor:
  - name: Samuel Waymouth
    organization: AWS
    email: swaym@amazon.co.uk
+ - name: Thomas McCarthy-Howe
+   organization: Strolid
+   email: thomas.howe@strolid.com
 
 normative:
   RFC4648: base64
