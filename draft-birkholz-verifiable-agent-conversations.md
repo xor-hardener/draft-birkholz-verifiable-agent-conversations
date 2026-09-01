@@ -1432,6 +1432,14 @@ Attackers who can manipulate timestamps can backdate records, freeze participant
 Timestamps within records are attested by the signer, not independently verified.
 Implementations requiring independent timestamp verification SHOULD use external timestamping services or transparency logs such as those defined in {{-scitt-arch}}.
 
+The envelope assigns unprotected header label 394 specifically to Receipts.
+No corresponding label or value encoding is defined here for other forms of
+external temporal evidence. The generic extension space can carry additional
+values, but independent implementations would still need a separate
+specification or prior agreement to identify the label and interpret its
+contents. A future revision could define such a convention, or make explicit
+that Receipts are the interoperable mechanism intended by this document.
+
 ## Adversarial Content
 
 Processing verifiable agent conversation records involves parsing content that may be produced by adversaries.
