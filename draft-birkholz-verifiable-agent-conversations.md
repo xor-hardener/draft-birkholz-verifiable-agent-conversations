@@ -1119,8 +1119,12 @@ cost:
 
 ## File Attribution Types
 
-NOTE: This section is specified but not yet validated against real session data.
-Implementation is pending.
+NOTE: This section has undergone an initial structural check against one real human-agent session record.
+That exercise compared only observable structure, including field names, types, and counts; no session content was shared.
+The container, conversation entries, tool invocations, tool results, reasoning entries, and content hashing at trace level could be represented by the current model.
+File attribution was only partly representable: for this record, provenance was available at whole-file granularity, with a digest and mixed human-agent contribution, but without line-range information.
+No VAC record was serialized or tested for CDDL conformance as part of this exercise.
+Validation across additional session classes remains future work.
 
 File attribution captures what code was produced: which files were modified, which line ranges were changed, and who authored them.
 
